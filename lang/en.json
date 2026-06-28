@@ -26,6 +26,7 @@
     "copy_pdf_url": "Copy PDF Url",
     "download_pdf": "Download PDF",
     "save": "Save",
+    "skip": "Skip",
     "create": "Create",
     "cancel": "Cancel",
     "accept": "Accept",
@@ -1483,7 +1484,9 @@
       "update_failed": "Update Failed",
       "update_failed_text": "Sorry! Your update failed on : {step} step",
       "update_warning": "All of the application files and default template files will be overwritten when you update the application using this utility. Please take a backup of your templates & database before updating.",
-      "requirements_not_met": "Update cannot continue because some system requirements are not met (including minimum PHP version). Please fix the failed requirements and try again."
+      "requirements_not_met": "Update cannot continue because some system requirements are not met (including minimum PHP version). Please fix the failed requirements and try again.",
+      "containerized_title": "Running in Docker",
+      "containerized_message": "The in-app updater is disabled for Docker installs. To upgrade, pull the latest image and recreate the container:"
     },
     "backup": {
       "title": "Backups | Backups",
