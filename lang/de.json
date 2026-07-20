@@ -278,7 +278,7 @@
   "items": {
     "title": "Artikel",
     "items_list": "Artikel-Liste",
-    "name": "Name",
+    "name": "Artikelbezeichnung",
     "unit": "Einheit",
     "description": "Beschreibung",
     "added_on": "Hinzugefügt am",
