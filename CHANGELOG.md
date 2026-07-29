@@ -7,6 +7,15 @@ section beneath it is what CI publishes to the updater — see
 Releases before 2.4.0 are on GitHub:
 https://github.com/InvoiceShelf/InvoiceShelf/releases
 
+## 2.4.3-beta.3 — 2026-07-29
+
+A third pre-release, cut to verify the release pipeline end to end after the previous one exposed a hole in it. **It contains no application changes.**
+
+- Releases now stop at a draft, and publishing is a deliberate act. 2.4.3-beta.2 was published by the workflow itself, and because GitHub does not start workflow runs from events raised by `GITHUB_TOKEN`, nothing downstream ran — that release reached the updater only after being registered by hand, and never got Docker images.
+- Laravel Boost has been removed and `AGENTS.md` is now the single source of truth for contributor and agent guidance, matching the 3.x branch.
+
+Insider channel only. 2.4.2 remains current on stable and there is nothing here you need.
+
 ## 2.4.3-beta.2 — 2026-07-29
 
 A second pre-release, cut to exercise the tag-triggered release flow. **It contains no application changes** — the only thing on 2.x since beta.1 is the release tooling itself:
