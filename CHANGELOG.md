@@ -1,0 +1,88 @@
+# Changelog
+
+Release notes for the 2.x line. Each `##` heading is a released version, and the
+section beneath it is what CI publishes to the updater — see
+`.github/scripts/changelog-section.php`.
+
+Releases before 2.4.0 are on GitHub:
+https://github.com/InvoiceShelf/InvoiceShelf/releases
+
+## 2.4.2 — 2026-07-29
+
+Maintenance release for the 2.x line, fixing five issues reported against the Docker images. Recommended for all self-hosted 2.x installs.
+
+### Containers failing to start on mounted volumes
+
+The entrypoint now recreates `storage/framework`, `storage/logs` and `storage/app` when a volume is missing them, instead of leaving the app to die with `Please provide a valid cache path`. Docker seeds a named volume only once, when it is empty, so a volume created by an older image never gained those directories on its own.
+
+It also no longer aborts on a `chown` it has no permission to make — a single file owned by your host user was previously enough to stop the container booting. If a mount genuinely is not writable, startup now says so and names the fix rather than failing later with a stack trace.
+
+Fixes [docker#75](https://github.com/InvoiceShelf/docker/issues/75), [docker#69](https://github.com/InvoiceShelf/docker/issues/69); improves [docker#77](https://github.com/InvoiceShelf/docker/issues/77) and [docker#63](https://github.com/InvoiceShelf/docker/issues/63).
+
+### The application timezone was ignored
+
+`APP_TIMEZONE` had no effect at all, so recurring invoices and scheduled tasks always ran on UTC no matter what you configured. Setting `TIMEZONE` on the container now works as documented.
+
+**Behaviour change:** if you have been setting `TIMEZONE` expecting it to work, your schedules will move to that timezone after upgrading. Fixes [docker#64](https://github.com/InvoiceShelf/docker/issues/64).
+
+### Setup wizard blank on MariaDB
+
+A fresh install using the shipped `docker-compose.mysql.yml` could not get past the database step, because that file sets `DB_CONNECTION=mariadb` and the wizard had no form for it. Fixes [docker#79](https://github.com/InvoiceShelf/docker/issues/79).
+
+### Gotenberg on a private network
+
+The SSRF guard added in 2.4.0 rejected `http://pdf:3000` — its own shipped default — which made the standard sidecar setup impossible to configure. Name the host you trust to permit it, and only it:
+
+```
+GOTENBERG_ALLOWED_PRIVATE_HOST=http://pdf:3000
+```
+
+Every other private address stays blocked, so the setting cannot be repointed at an internal service. Fixes [#688](https://github.com/InvoiceShelf/InvoiceShelf/issues/688).
+
+### PHP 8.5 compatibility
+
+`PDO::MYSQL_ATTR_SSL_CA` is deprecated in PHP 8.5; the correct constant is now resolved per version. No change on PHP 8.4.
+
+---
+
+Docker: `invoiceshelf/invoiceshelf:2.4.2` (also `:latest`, `:2`, `:2.4`).
+
+## 2.4.1 — 2026-06-14
+
+Security patch for the 2.x line.
+
+Fixes a multi-tenant authorization issue in user management where a company owner could access user accounts belonging to another company. **All self-hosted 2.x installs should update.**
+
+Docker: `invoiceshelf/invoiceshelf:2.4.1` (also `:latest`, `:2`, `:2.4`).
+
+## 2.4.0 — 2026-06-12
+
+### 2.x is entering feature freeze
+
+InvoiceShelf **2.4.0 marks the feature freeze for the 2.x line.** New feature development now moves to the next-generation **3.x** branch. From here, **2.x will receive security patches only, through September 1, 2027 (2027-09-01)** — no new features, but it stays supported and safe to run. We recommend planning your upgrade to 3.x before then; the in-app updater path to 3.x is being prepared.
+
+This release rolls up the final round of 2.x work: security hardening, dependency updates, groundwork for a clean v2 → v3 upgrade, a move to pnpm for the frontend toolchain, and a couple of contributor features.
+
+### Security
+- Enforce company scope on notes, estimate→invoice conversion, and user bulk-delete — GHSA-85wc, GHSA-j2vg, GHSA-wxrv (#661)
+- Harden public EmailLog token endpoints — GHSA-73q7 (#662)
+- Validate `ORDER BY` input on list endpoints — GHSA-cp8p (#663)
+- Restrict the Gotenberg renderer host to public addresses — GHSA-mfxg (#664)
+- Recompute document totals server-side so client-supplied totals aren't trusted — GHSA-8c69 (#665)
+- Update dependencies to patched versions (#674): `laravel/framework` (CVE-2026-48019), `symfony/*`, `guzzlehttp/psr7`, `vite`
+- Patch frontend dependencies — axios, vite, postcss, follow-redirects (#653)
+
+### Improvements
+- Add duplicate expense action (#617) — @mchev
+- Support 3-decimal tax percentages, e.g. `6.625%` (#616) — @mchev
+- Updater: manifest-based stale-file cleanup + cache clearing, preparing a clean v2 → v3 in-app upgrade path (#659)
+
+### Build & Tooling
+- Migrate the frontend toolchain to **pnpm** and pin a stable Vite build (#666, #674)
+
+### Translations
+- New Crowdin translation updates across many locales (#615)
+
+> ℹ️ The CSV export work (#649) was reverted before this release and is deferred.
+
+**Full Changelog**: https://github.com/InvoiceShelf/InvoiceShelf/compare/2.3.3...2.4.0
