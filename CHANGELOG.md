@@ -7,6 +7,16 @@ section beneath it is what CI publishes to the updater — see
 Releases before 2.4.0 are on GitHub:
 https://github.com/InvoiceShelf/InvoiceShelf/releases
 
+## 2.4.3-beta.1 — 2026-07-29
+
+A pre-release cut to exercise the release pipeline end to end. **It contains no application changes** — everything since 2.4.2 is release tooling:
+
+- Registration on the updater is fixed, and can now be re-run for an existing tag without production access. Previously a failure there left a release published but offered to nobody.
+- Re-running a registration no longer rebuilds and republishes the `:latest` Docker image as a side effect.
+- Release notes now come from `CHANGELOG.md`, so what installs are offered is written and reviewed alongside the change rather than composed at publish time.
+
+Insider channel only. If you are on stable, 2.4.2 remains current and there is nothing here you need.
+
 ## 2.4.2 — 2026-07-29
 
 Maintenance release for the 2.x line, fixing five issues reported against the Docker images. Recommended for all self-hosted 2.x installs.
