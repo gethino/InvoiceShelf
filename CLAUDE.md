@@ -75,6 +75,42 @@ Supports MySQL, PostgreSQL, and SQLite. Prefer Eloquent over raw queries. Use `M
 - Every change must have tests (feature tests preferred over unit tests)
 - Run `vendor/bin/pint --dirty --format agent` after modifying PHP files
 
+## Releasing
+
+Releases are cut by pushing a tag. Nothing is typed into GitHub by hand.
+
+```bash
+# 1. Add a "## <version> — <date>" section to CHANGELOG.md and bump version.md,
+#    in a PR like any other change — the notes are reviewed with the code.
+# 2. Once merged, tag the merge commit:
+git tag 2.4.3 && git push origin 2.4.3
+```
+
+`release.yaml` then runs the tests, reads the `CHANGELOG.md` section for that tag,
+builds the package with `make clean dist`, and creates a **draft** release with the
+zip attached. It stops there and prints the draft URL in the run summary.
+
+**You publish the draft yourself.** That is deliberate, not an omission: GitHub does
+not start workflow runs from events created with `GITHUB_TOKEN`, so a release
+published by the workflow reaches nothing downstream. Pressing Publish fires
+`release: published` under your own identity, which triggers `docker.yaml` to
+register the release on the updater and build the Docker images. **Until you
+publish, no install is offered anything.**
+
+Notes on the mechanics:
+
+- **A tag with no `CHANGELOG.md` section fails the run** before anything is built,
+  so a release can never go out with empty notes.
+- **`prerelease` and "mark as latest" are set on the draft**, derived from the tag: a
+  `-` suffix (`2.4.3-beta.1`) means pre-release, which routes it to the **insider**
+  channel so ordinary installs are not offered it. "Latest" is gated on
+  `LATEST_MAJOR` in the workflows — bump it there when 3.x becomes the stable line.
+- **If registration fails**, re-run it without cutting a new release: run the
+  `Docker Build and Push` workflow manually with `register_tag` set to the version.
+  That path is idempotent and does not rebuild the Docker images.
+- `.github/scripts/changelog-section.php <version>` prints what the updater will be
+  sent, so you can check the notes locally before tagging.
+
 ## CI Pipeline
 
 GitHub Actions (`check.yaml`): runs Pint style check, then builds frontend and runs Pest tests on PHP 8.4.
