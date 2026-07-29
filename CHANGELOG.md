@@ -7,6 +7,14 @@ section beneath it is what CI publishes to the updater — see
 Releases before 2.4.0 are on GitHub:
 https://github.com/InvoiceShelf/InvoiceShelf/releases
 
+## 2.4.3-beta.2 — 2026-07-29
+
+A second pre-release, cut to exercise the tag-triggered release flow. **It contains no application changes** — the only thing on 2.x since beta.1 is the release tooling itself:
+
+- Releases are now cut by pushing a tag. The notes come from this file, the package is attached before the release is published, and a tag with no changelog section stops the run before anything is published.
+
+This is the first release on this branch created without anyone publishing it by hand. Insider channel only; 2.4.2 remains current on stable and there is nothing here you need.
+
 ## 2.4.3-beta.1 — 2026-07-29
 
 A pre-release cut to exercise the release pipeline end to end. **It contains no application changes** — everything since 2.4.2 is release tooling:
