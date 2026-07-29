@@ -1,0 +1,51 @@
+name: Tests
+
+# Called by docker.yaml and release.yaml rather than written out in both. The
+# release artifact's file list already existed in two places on the 3.x branch
+# and drift was only a matter of time; the test definition should not repeat it.
+on:
+  workflow_call:
+
+jobs:
+  tests:
+    name: PHP Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version:
+          - 8.4
+    env:
+      extensions: bcmath, curl, dom, gd, imagick, json, libxml, mbstring, pcntl, pdo, pdo_mysql, zip
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP Action
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.extensions }}
+          coverage: xdebug
+          tools: pecl, composer
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@4.0.0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Compile Front-end
+        run: pnpm build
+
+      - name: Apply tests ${{ matrix.php-version }}
+        run: php artisan test
