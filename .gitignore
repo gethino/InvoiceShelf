@@ -27,3 +27,9 @@ package-lock.json
 /docker/development/docker-compose.yml
 /docker/production/docker-compose.yml
 /docker-compose.yaml
+
+# Agent docs: AGENTS.md is the canonical, committed source of truth.
+# The per-tool files are local symlinks to it — `composer run ai-docs` creates them.
+/CLAUDE.md
+/GEMINI.md
+/.github/copilot-instructions.md
