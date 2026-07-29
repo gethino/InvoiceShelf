@@ -1,6 +1,6 @@
 name: Tests
 
-# Called by docker.yaml and release.yaml rather than written out in both. The
+# Called by publish.yaml and release.yaml rather than written out in both. The
 # release artifact's file list already existed in two places on the 3.x branch
 # and drift was only a matter of time; the test definition should not repeat it.
 on:
