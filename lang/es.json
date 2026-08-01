@@ -1048,16 +1048,27 @@
     },
     "pdf": {
       "title": "Configuración de PDF",
-      "footer_text": "Texto de pie de página",
-      "pdf_layout": "Diseño PDF",
       "pdf_configuration": "Ajustes de Generación PDF",
       "section_description": "Cambiar la forma en que se generan PDFs",
       "driver": "Controlador de PDF a utilizar",
-      "papersize": "Tamaño del papel",
-      "papersize_hint": "Tamaño de papel en anchura y altura (ej. \"210mm 297mm\")",
       "gotenberg_host": "Servidor de Gotenberg",
       "pdf_variables_save_successfully": "Configuración de PDF guardada correctamente",
-      "pdf_variables_save_error": "No se pudo guardar la configuración de PDF"
+      "pdf_variables_save_error": "No se pudo guardar la configuración de PDF",
+      "page_setup": "Page Setup",
+      "page_setup_hint": "Applies to every document, whichever driver renders it.",
+      "paper_size": "Paper Size",
+      "paper_width": "Paper Width",
+      "paper_height": "Paper Height",
+      "orientation": "Orientation",
+      "portrait": "Portrait",
+      "landscape": "Landscape",
+      "margin_top": "Top Margin",
+      "margin_right": "Right Margin",
+      "margin_bottom": "Bottom Margin",
+      "margin_left": "Left Margin",
+      "length_hint": "A number and a unit, e.g. \"210mm\". Accepts: pt, px, pc, mm, cm, in.",
+      "page_numbers": "Page Numbers",
+      "page_numbers_hint": "Repeat the page number at the foot of every page. Needs a bottom margin to sit in."
     },
     "company_info": {
       "company_info": "Información de la compañía",
@@ -1777,7 +1788,8 @@
     "at_least_one_ability": "Por favor, selecciona al menos un permiso.",
     "valid_driver_key": "Por favor, introduza una clave {driver} válida.",
     "valid_exchange_rate": "Por favor, introduce una tasa de cambio válida.",
-    "company_name_not_same": "El nombre de la empresa debe coincidir con el nombre indicado."
+    "company_name_not_same": "El nombre de la empresa debe coincidir con el nombre indicado.",
+    "invalid_length": "Enter a number and a unit, e.g. \"210mm\". Accepts: pt, px, pc, mm, cm, in."
   },
   "errors": {
     "starter_plan": "¡Esta función está disponible en el plan Starter y en adelante!",
