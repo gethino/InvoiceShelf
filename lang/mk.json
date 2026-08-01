@@ -1048,16 +1048,27 @@
     },
     "pdf": {
       "title": "PDF поставка",
-      "footer_text": "Текст на подножје",
-      "pdf_layout": "PDF распоред",
       "pdf_configuration": "Поставки за генерирање на PDF",
       "section_description": "Променете го начинот на кој се генерираат PDF документите",
       "driver": "PDF драјвер за користење",
-      "papersize": "Големина на хартија",
-      "papersize_hint": "Големина на хартија во ширина и висина (пр. „210mm 297mm\")",
       "gotenberg_host": "Хост на Gotenberg сервис",
       "pdf_variables_save_successfully": "PDF конфигурацијата е зачувана успешно",
-      "pdf_variables_save_error": "PDF конфигурацијата не може да се зачува"
+      "pdf_variables_save_error": "PDF конфигурацијата не може да се зачува",
+      "page_setup": "Page Setup",
+      "page_setup_hint": "Applies to every document, whichever driver renders it.",
+      "paper_size": "Paper Size",
+      "paper_width": "Paper Width",
+      "paper_height": "Paper Height",
+      "orientation": "Orientation",
+      "portrait": "Portrait",
+      "landscape": "Landscape",
+      "margin_top": "Top Margin",
+      "margin_right": "Right Margin",
+      "margin_bottom": "Bottom Margin",
+      "margin_left": "Left Margin",
+      "length_hint": "A number and a unit, e.g. \"210mm\". Accepts: pt, px, pc, mm, cm, in.",
+      "page_numbers": "Page Numbers",
+      "page_numbers_hint": "Repeat the page number at the foot of every page. Needs a bottom margin to sit in."
     },
     "company_info": {
       "company_info": "Информации за компанија",
@@ -1777,7 +1788,8 @@
     "at_least_one_ability": "Ве молиме изберете најмалку една дозвола.",
     "valid_driver_key": "Ве молиме внесете валиден {driver} клуч.",
     "valid_exchange_rate": "Ве молиме внесете валиден девизен курс.",
-    "company_name_not_same": "Името на компанијата мора да се совпаѓа со даденото име."
+    "company_name_not_same": "Името на компанијата мора да се совпаѓа со даденото име.",
+    "invalid_length": "Enter a number and a unit, e.g. \"210mm\". Accepts: pt, px, pc, mm, cm, in."
   },
   "errors": {
     "starter_plan": "Оваа функција е достапна на Starter планот и понатаму!",
