@@ -1048,16 +1048,27 @@
     },
     "pdf": {
       "title": "Configurazione PDF",
-      "footer_text": "Testo del piè di pagina",
-      "pdf_layout": "Layout PDF",
       "pdf_configuration": "Impostazioni Generazione PDF",
       "section_description": "Cambia il modo in cui vengono generati i PDF",
       "driver": "Driver PDF da usare",
-      "papersize": "Dimensioni del foglio",
-      "papersize_hint": "Dimensioni del foglio in larghezza e altezza (Es. \"210mm 297mm\")",
       "gotenberg_host": "Gotenberg service host",
       "pdf_variables_save_successfully": "Configurazione PDF salvata correttamente",
-      "pdf_variables_save_error": "La configurazione PDF non può essere salvata"
+      "pdf_variables_save_error": "La configurazione PDF non può essere salvata",
+      "page_setup": "Page Setup",
+      "page_setup_hint": "Applies to every document, whichever driver renders it.",
+      "paper_size": "Paper Size",
+      "paper_width": "Paper Width",
+      "paper_height": "Paper Height",
+      "orientation": "Orientation",
+      "portrait": "Portrait",
+      "landscape": "Landscape",
+      "margin_top": "Top Margin",
+      "margin_right": "Right Margin",
+      "margin_bottom": "Bottom Margin",
+      "margin_left": "Left Margin",
+      "length_hint": "A number and a unit, e.g. \"210mm\". Accepts: pt, px, pc, mm, cm, in.",
+      "page_numbers": "Page Numbers",
+      "page_numbers_hint": "Repeat the page number at the foot of every page. Needs a bottom margin to sit in."
     },
     "company_info": {
       "company_info": "Info azienda",
@@ -1777,7 +1788,8 @@
     "at_least_one_ability": "Seleziona almeno un permesso.",
     "valid_driver_key": "Inserisci una chiave {driver} valida.",
     "valid_exchange_rate": "Inserisci un tasso di cambio valido.",
-    "company_name_not_same": "Il nome dell'azienda deve corrispondere al nome indicato."
+    "company_name_not_same": "Il nome dell'azienda deve corrispondere al nome indicato.",
+    "invalid_length": "Enter a number and a unit, e.g. \"210mm\". Accepts: pt, px, pc, mm, cm, in."
   },
   "errors": {
     "starter_plan": "Questa funzione è disponibile dal piano Starter, in poi!",
