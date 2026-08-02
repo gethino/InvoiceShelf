@@ -63,30 +63,14 @@ class TaxSummaryReportController extends Controller
         $to_date = Carbon::createFromFormat('Y-m-d', $request->to_date)->translatedFormat($dateFormat);
         $currency = Currency::findOrFail(CompanySetting::getSetting('currency', $company->id));
 
-        $colors = [
-            'primary_text_color',
-            'heading_text_color',
-            'section_heading_text_color',
-            'border_color',
-            'body_text_color',
-            'footer_text_color',
-            'footer_total_color',
-            'footer_bg_color',
-            'date_text_color',
-        ];
-
-        $colorSettings = CompanySetting::whereIn('option', $colors)
-            ->whereCompany($company->id)
-            ->get();
-
         view()->share([
             'taxTypes' => $taxTypes,
             'totalTaxAmount' => $totalAmount,
             'expenseTaxTypes' => $expenseTaxTypes,
             'totalExpenseTaxAmount' => $totalExpenseTaxAmount,
             'netTaxAmount' => $netTaxAmount,
-            'colorSettings' => $colorSettings,
             'company' => $company,
+            'logo' => $company->logo_path,
             'from_date' => $from_date,
             'to_date' => $to_date,
             'currency' => $currency,
