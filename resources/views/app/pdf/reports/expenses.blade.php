@@ -217,9 +217,9 @@
             <p class="expense-title">{{ $group['name'] }}</p>
               <table width="100%" style="margin-bottom:18px;">
                 <tr class="item-table-heading-row">
-                    <th style="width: 15%;" class="text-left item-table-heading-left">@lang('expenses.date')</th>
-                    <th style="width: 70%;" class="text-left item-table-heading-left">@lang('expenses.note')</th>
-                    <th style="width: 15%;" class="text-right item-table-heading-right">@lang('expenses.amount')</th>
+                    <th style="width: 15%;" class="text-left item-table-heading-left">@lang('pdf_expense_date_label')</th>
+                    <th style="width: 70%;" class="text-left item-table-heading-left">@lang('pdf_expense_note_label')</th>
+                    <th style="width: 15%;" class="text-right item-table-heading-right">@lang('pdf_expense_amount_label')</th>
                 </tr>
                 @foreach ($group['expenses'] as $expense)
                 <tr class="item-row">

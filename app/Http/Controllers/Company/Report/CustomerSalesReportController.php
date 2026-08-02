@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\CompanySetting;
 use App\Models\Currency;
 use App\Models\Customer;
+use App\Support\Pdf\PdfPageSetup;
 use App\Support\Pdf\PdfTemplateUtils;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -99,7 +100,7 @@ class CustomerSalesReportController extends Controller
         // template picker it has no concept of.
         $templatePath = PdfTemplateUtils::resolveView('reports', 'sales-customers');
 
-        $pdf = Pdf::loadView($templatePath);
+        $pdf = Pdf::loadView($templatePath, [], PdfPageSetup::forReports());
 
         if ($request->has('preview')) {
             return view($templatePath);
