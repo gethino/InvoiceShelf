@@ -20,7 +20,7 @@
 > [`2.x` release](https://github.com/InvoiceShelf/InvoiceShelf/tree/2.x) for a
 > production installation.
 
-![InvoiceShelf dashboard](.github/assets/invoiceshelf-dashboard.png)
+![InvoiceShelf dashboard](resources/static/img/invoiceshelf-dashboard.png)
 
 ## Run your invoicing from one place
 
