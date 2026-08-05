@@ -9,6 +9,7 @@ use App\Http\Requests\CompaniesRequest;
 use App\Http\Resources\CompanyResource;
 use App\Models\Company;
 use App\Services\Company\CompanyService;
+use App\Support\Hashids\HashidConnection;
 use Illuminate\Http\Request;
 use Silber\Bouncer\BouncerFacade;
 
@@ -70,7 +71,7 @@ class CompaniesController extends Controller
         $user = $request->user();
 
         $company = Company::create($request->getCompanyPayload());
-        $company->unique_hash = Hashids::connection(Company::class)->encode($company->id);
+        $company->unique_hash = Hashids::connection(HashidConnection::Company->value)->encode($company->id);
         $company->save();
         $this->companyService->setupDefaults($company);
         $user->companies()->attach($company->id);

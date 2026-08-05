@@ -13,6 +13,7 @@ use App\Models\Estimate;
 use App\Models\ExchangeRateLog;
 use App\Models\Invoice;
 use App\Services\Mail\CompanyMailConfigService;
+use App\Support\Hashids\HashidConnection;
 use App\Support\Pdf\PdfMetadata;
 use App\Support\Pdf\PdfTemplateUtils;
 use Carbon\Carbon;
@@ -34,7 +35,7 @@ class EstimateService
         }
 
         $estimate = Estimate::create($data);
-        $estimate->unique_hash = Hashids::connection(Estimate::class)->encode($estimate->id);
+        $estimate->unique_hash = Hashids::connection(HashidConnection::Estimate->value)->encode($estimate->id);
         $serial = (new SerialNumberService)
             ->setModel($estimate)
             ->setCompany($estimate->company_id)
@@ -266,7 +267,7 @@ class EstimateService
             'sales_tax_address_type' => $estimate->sales_tax_address_type,
         ]);
 
-        $newEstimate->unique_hash = Hashids::connection(Estimate::class)->encode($newEstimate->id);
+        $newEstimate->unique_hash = Hashids::connection(HashidConnection::Estimate->value)->encode($newEstimate->id);
         $newEstimate->save();
 
         $estimate->load('items.taxes');
@@ -355,7 +356,7 @@ class EstimateService
             'sales_tax_address_type' => $estimate->sales_tax_address_type,
         ]);
 
-        $invoice->unique_hash = Hashids::connection(Invoice::class)->encode($invoice->id);
+        $invoice->unique_hash = Hashids::connection(HashidConnection::Invoice->value)->encode($invoice->id);
         $invoice->save();
 
         $this->documentItemService->createItems($invoice, $estimate->items->toArray());

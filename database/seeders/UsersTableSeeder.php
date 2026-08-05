@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Setting;
 use App\Models\User;
 use App\Services\Company\CompanyService;
+use App\Support\Hashids\HashidConnection;
 use App\Support\Setup\InstallUtils;
 use Illuminate\Database\Seeder;
 use Silber\Bouncer\BouncerFacade;
@@ -31,7 +32,7 @@ class UsersTableSeeder extends Seeder
             'slug' => 'xyz',
         ]);
 
-        $company->unique_hash = Hashids::connection(Company::class)->encode($company->id);
+        $company->unique_hash = Hashids::connection(HashidConnection::Company->value)->encode($company->id);
         $company->save();
         app(CompanyService::class)->setupDefaults($company);
         $user->companies()->attach($company->id);

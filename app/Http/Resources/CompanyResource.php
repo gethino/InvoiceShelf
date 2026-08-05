@@ -50,7 +50,7 @@ class CompanyResource extends JsonResource
         return DB::table('assigned_roles')
             ->join('roles', 'roles.id', '=', 'assigned_roles.role_id')
             ->where('assigned_roles.entity_id', $user->id)
-            ->where('assigned_roles.entity_type', get_class($user))
+            ->where('assigned_roles.entity_type', $user->getMorphClass())
             ->where('assigned_roles.scope', $this->id)
             ->value('roles.title');
     }

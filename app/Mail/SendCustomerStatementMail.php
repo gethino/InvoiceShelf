@@ -27,7 +27,7 @@ class SendCustomerStatementMail extends Mailable
             'bcc' => $this->data['bcc'] ?? null,
             'subject' => $this->data['subject'],
             'body' => $this->data['body'],
-            'mailable_type' => $this->data['customer']::class,
+            'mailable_type' => $this->data['customer']->getMorphClass(),
             'mailable_id' => $this->data['customer']->id,
         ]);
 

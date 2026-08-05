@@ -6,6 +6,7 @@ use App\Facades\Hashids;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Support\CreditNoteAmounts;
+use App\Support\Hashids\HashidConnection;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -230,7 +231,7 @@ class CreditNoteService
             'sales_tax_address_type' => $invoice->sales_tax_address_type,
         ]);
 
-        $creditNote->unique_hash = Hashids::connection(Invoice::class)->encode($creditNote->id);
+        $creditNote->unique_hash = Hashids::connection(HashidConnection::Invoice->value)->encode($creditNote->id);
         $creditNote->save();
 
         // recompute: false throughout. The calculator has already decided every

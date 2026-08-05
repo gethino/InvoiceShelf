@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\CompanySetting;
+use App\Platform\Persistence\ModelIdentityMap;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,7 +19,7 @@ class CustomFieldValueResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'custom_field_valuable_type' => $this->custom_field_valuable_type,
+            'custom_field_valuable_type' => ModelIdentityMap::publicType($this->custom_field_valuable_type),
             'custom_field_valuable_id' => $this->custom_field_valuable_id,
             'type' => $this->type,
             'boolean_answer' => $this->boolean_answer,

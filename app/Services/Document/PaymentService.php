@@ -11,6 +11,7 @@ use App\Models\ExchangeRateLog;
 use App\Models\Invoice;
 use App\Models\Payment;
 use App\Services\Mail\CompanyMailConfigService;
+use App\Support\Hashids\HashidConnection;
 use App\Support\Pdf\PdfMetadata;
 use App\Support\Pdf\PdfTemplateUtils;
 use Carbon\Carbon;
@@ -32,7 +33,7 @@ class PaymentService
 
         $payment = DB::transaction(function () use ($data, $allocations, $request): Payment {
             $payment = Payment::create($data);
-            $payment->unique_hash = Hashids::connection(Payment::class)->encode($payment->id);
+            $payment->unique_hash = Hashids::connection(HashidConnection::Payment->value)->encode($payment->id);
 
             $serial = (new SerialNumberService)
                 ->setModel($payment)
@@ -218,7 +219,7 @@ class PaymentService
 
         return DB::transaction(function () use ($data, $serial, $invoice): Payment {
             $payment = Payment::create($data);
-            $payment->unique_hash = Hashids::connection(Payment::class)->encode($payment->id);
+            $payment->unique_hash = Hashids::connection(HashidConnection::Payment->value)->encode($payment->id);
             $payment->sequence_number = $serial->nextSequenceNumber;
             $payment->customer_sequence_number = $serial->nextCustomerSequenceNumber;
             $payment->save();

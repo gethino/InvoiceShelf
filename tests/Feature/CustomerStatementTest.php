@@ -192,7 +192,7 @@ test('sending a statement attaches the live PDF and logs it against the customer
     $sent->build();
 
     expect(EmailLog::query()
-        ->where('mailable_type', Customer::class)
+        ->where('mailable_type', $customer->getMorphClass())
         ->where('mailable_id', $customer->id)
         ->where('from', 'configured@example.test')
         ->exists())->toBeTrue();

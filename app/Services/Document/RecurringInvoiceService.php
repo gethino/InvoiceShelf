@@ -10,6 +10,7 @@ use App\Models\Customer;
 use App\Models\ExchangeRateLog;
 use App\Models\Invoice;
 use App\Models\RecurringInvoice;
+use App\Support\Hashids\HashidConnection;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
@@ -171,7 +172,7 @@ class RecurringInvoiceService
         $newInvoice['base_tax'] = $recurringInvoice->exchange_rate * $recurringInvoice->tax;
         $newInvoice['base_total'] = $recurringInvoice->exchange_rate * $recurringInvoice->total;
         $invoice = Invoice::create($newInvoice);
-        $invoice->unique_hash = Hashids::connection(Invoice::class)->encode($invoice->id);
+        $invoice->unique_hash = Hashids::connection(HashidConnection::Invoice->value)->encode($invoice->id);
         $invoice->save();
 
         $recurringInvoice->load('items.taxes');

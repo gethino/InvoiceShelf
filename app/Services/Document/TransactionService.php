@@ -4,13 +4,14 @@ namespace App\Services\Document;
 
 use App\Facades\Hashids;
 use App\Models\Transaction;
+use App\Support\Hashids\HashidConnection;
 
 class TransactionService
 {
     public function create(array $data): Transaction
     {
         $transaction = Transaction::create($data);
-        $transaction->unique_hash = Hashids::connection(Transaction::class)->encode($transaction->id);
+        $transaction->unique_hash = Hashids::connection(HashidConnection::Transaction->value)->encode($transaction->id);
         $transaction->save();
 
         return $transaction;

@@ -30,6 +30,7 @@ use App\Models\Unit;
 use App\Models\User;
 use App\Services\Document\PaymentAllocationService;
 use App\Services\Document\SerialNumberService;
+use App\Support\Hashids\HashidConnection;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
@@ -522,7 +523,7 @@ class RealisticDemoSeeder extends Seeder
 
         $invoice->sequence_number = $serial->nextSequenceNumber;
         $invoice->customer_sequence_number = $serial->nextCustomerSequenceNumber;
-        $invoice->unique_hash = Hashids::connection(Invoice::class)->encode($invoice->id);
+        $invoice->unique_hash = Hashids::connection(HashidConnection::Invoice->value)->encode($invoice->id);
         $invoice->created_at = $invoiceDate;
         $invoice->updated_at = $invoiceDate;
         $invoice->save();
@@ -599,7 +600,7 @@ class RealisticDemoSeeder extends Seeder
 
         $payment->sequence_number = $serial->nextSequenceNumber;
         $payment->customer_sequence_number = $serial->nextCustomerSequenceNumber;
-        $payment->unique_hash = Hashids::connection(Payment::class)->encode($payment->id);
+        $payment->unique_hash = Hashids::connection(HashidConnection::Payment->value)->encode($payment->id);
         $payment->created_at = $paymentDate;
         $payment->updated_at = $paymentDate;
         Payment::withoutEvents(fn () => $payment->save());
@@ -699,7 +700,7 @@ class RealisticDemoSeeder extends Seeder
 
         $estimate->sequence_number = $serial->nextSequenceNumber;
         $estimate->customer_sequence_number = $serial->nextCustomerSequenceNumber;
-        $estimate->unique_hash = Hashids::connection(Estimate::class)->encode($estimate->id);
+        $estimate->unique_hash = Hashids::connection(HashidConnection::Estimate->value)->encode($estimate->id);
         $estimate->created_at = $estimateDate;
         $estimate->updated_at = $estimateDate;
         $estimate->save();

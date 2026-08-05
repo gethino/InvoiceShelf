@@ -22,15 +22,15 @@ class EmailLogFactory extends Factory
      */
     public function definition(): array
     {
+        $mailable = $this->faker->randomElement([Invoice::class, Estimate::class, Payment::class]);
+
         return [
             'from' => $this->faker->unique()->safeEmail(),
             'to' => $this->faker->unique()->safeEmail(),
             'subject' => $this->faker->sentence(),
             'body' => $this->faker->text(),
-            'mailable_type' => $this->faker->randomElement([Invoice::class, Estimate::class, Payment::class]),
-            'mailable_id' => function (array $log) {
-                return $log['mailable_type']::factory();
-            },
+            'mailable_type' => (new $mailable)->getMorphClass(),
+            'mailable_id' => $mailable::factory(),
         ];
     }
 }

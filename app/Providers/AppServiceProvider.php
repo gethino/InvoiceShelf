@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\AiConversation;
 use App\Models\User;
+use App\Platform\Persistence\ModelIdentityMap;
 use App\Policies\AiConversationPolicy;
 use App\Policies\CompanyPolicy;
 use App\Policies\CreditNotePolicy;
@@ -26,6 +27,7 @@ use App\Support\Bouncer\BouncerDefaultScope;
 use App\Support\Setup\InstallUtils;
 use App\Support\Setup\InstallWizardAuth;
 use Gate;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Mail;
@@ -61,6 +63,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        ModelIdentityMap::enforce();
+        Factory::guessFactoryNamesUsing(
+            fn (string $modelName): string => 'Database\\Factories\\'.class_basename($modelName).'Factory'
+        );
+
         $this->configureInstallWizardTokenAuth();
 
         if (InstallUtils::isDbCreated()) {

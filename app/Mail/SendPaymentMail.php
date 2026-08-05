@@ -5,6 +5,8 @@ namespace App\Mail;
 use App\Facades\Hashids;
 use App\Models\EmailLog;
 use App\Models\Payment;
+use App\Platform\Persistence\ModelIdentityMap;
+use App\Support\Hashids\HashidConnection;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -40,11 +42,11 @@ class SendPaymentMail extends Mailable
             'bcc' => $this->data['bcc'] ?? null,
             'subject' => $this->data['subject'],
             'body' => $this->data['body'],
-            'mailable_type' => Payment::class,
+            'mailable_type' => ModelIdentityMap::aliasFor(Payment::class),
             'mailable_id' => $this->data['payment']['id'],
         ]);
 
-        $log->token = Hashids::connection(EmailLog::class)->encode($log->id);
+        $log->token = Hashids::connection(HashidConnection::EmailLog->value)->encode($log->id);
         $log->save();
 
         $this->data['url'] = route('payment', ['email_log' => $log->token]);
