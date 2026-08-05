@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Company\Estimate;
 
 use App\Domains\Sales\Models\Estimate;
 use App\Http\Controllers\Controller;
-use App\Support\Pdf\PdfTemplateUtils;
+use App\Platform\Pdf\Rendering\PdfTemplateUtils;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

@@ -4,8 +4,6 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\CompaniesController;
 use App\Http\Controllers\Admin\CountriesController;
 use App\Http\Controllers\Admin\CurrenciesController;
-use App\Http\Controllers\Admin\FontController;
-use App\Http\Controllers\Admin\Settings\PDFConfigurationController;
 use App\Http\Controllers\Admin\Settings\SettingsController;
 use App\Http\Controllers\Admin\UpdateController;
 use App\Http\Controllers\Admin\UsersController;
@@ -349,11 +347,10 @@ Route::prefix('/v1')->group(function () {
 
             require app_path('Platform/Storage/routes/company.php');
 
-            // Fonts
+            // PDF rendering and fonts
             // ----------------------------------
 
-            Route::get('/fonts/status', [FontController::class, 'status']);
-            Route::post('/fonts/{package}/install', [FontController::class, 'install']);
+            require app_path('Platform/Pdf/routes/admin.php');
 
             // Exchange Rate
             // ----------------------------------
@@ -401,15 +398,6 @@ Route::prefix('/v1')->group(function () {
             require app_path('Platform/Mail/routes/company.php');
 
             require app_path('Platform/Ai/routes/company.php');
-
-            // PDF Generation
-            // ----------------------------------
-
-            Route::get('/pdf/drivers', [PDFConfigurationController::class, 'getDrivers']);
-
-            Route::get('/pdf/config', [PDFConfigurationController::class, 'getEnvironment']);
-
-            Route::post('/pdf/config', [PDFConfigurationController::class, 'saveEnvironment']);
 
             Route::apiResource('notes', NotesController::class);
 

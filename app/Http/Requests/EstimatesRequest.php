@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Domains\Accounts\Models\CompanySetting;
 use App\Domains\Contacts\Models\Customer;
 use App\Domains\Sales\Models\Estimate;
-use App\Rules\PdfTemplateExists;
+use App\Platform\Pdf\Rules\PdfTemplateExists;
 use App\Support\DocumentTotals;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;

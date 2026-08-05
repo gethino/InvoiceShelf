@@ -2,7 +2,7 @@
 
 use App\Domains\Accounts\Models\User;
 use App\Domains\Receivables\Models\Payment;
-use App\Support\Pdf\PdfTemplateUtils;
+use App\Platform\Pdf\Rendering\PdfTemplateUtils;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;

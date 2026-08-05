@@ -3,11 +3,10 @@
 namespace App\Providers;
 
 use App\Platform\Mail\Contracts\MailConfigurator;
-use App\Platform\Operations\Models\Setting;
+use App\Platform\Pdf\Contracts\PdfConfigurator;
 use App\Platform\Storage\Application\FileDiskService;
 use App\Platform\Storage\Models\FileDisk;
 use App\Support\Setup\InstallUtils;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 
 class AppConfigProvider extends ServiceProvider
@@ -23,7 +22,7 @@ class AppConfigProvider extends ServiceProvider
         }
 
         $this->configureMailFromDatabase();
-        $this->configurePDFFromDatabase();
+        $this->configurePdfFromDatabase();
         $this->configureFileSystemFromDatabase();
     }
 
@@ -43,57 +42,10 @@ class AppConfigProvider extends ServiceProvider
     /**
      * Configure PDF settings from database
      */
-    protected function configurePDFFromDatabase(): void
+    protected function configurePdfFromDatabase(): void
     {
         try {
-            $pageSettings = [
-                'pdf_paper_width' => 'pdf.page.paper_width',
-                'pdf_paper_height' => 'pdf.page.paper_height',
-                'pdf_orientation' => 'pdf.page.orientation',
-                'pdf_margin_top' => 'pdf.page.margin_top',
-                'pdf_margin_right' => 'pdf.page.margin_right',
-                'pdf_margin_bottom' => 'pdf.page.margin_bottom',
-                'pdf_margin_left' => 'pdf.page.margin_left',
-            ];
-
-            $pdfSettings = Setting::getSettings(array_merge(
-                ['pdf_driver', 'gotenberg_host', 'gotenberg_pdfa', 'pdf_page_numbers'],
-                array_keys($pageSettings),
-            ));
-
-            if (! empty($pdfSettings['pdf_driver'])) {
-                Config::set('pdf.driver', $pdfSettings['pdf_driver']);
-
-                if ($pdfSettings['pdf_driver'] === 'gotenberg') {
-                    if (! empty($pdfSettings['gotenberg_host'])) {
-                        Config::set('pdf.connections.gotenberg.host', $pdfSettings['gotenberg_host']);
-                    }
-
-                    // Empty is a real choice here -- it means an ordinary PDF --
-                    // so an explicitly stored blank must override an env default.
-                    if (isset($pdfSettings['gotenberg_pdfa'])) {
-                        Config::set('pdf.connections.gotenberg.pdfa', $pdfSettings['gotenberg_pdfa'] ?: null);
-                    }
-                }
-            }
-
-            // Page geometry is applied regardless of driver. Note the isset guard
-            // rather than !empty: a saved margin of "0mm" is a deliberate choice,
-            // and !empty() would discard it and silently fall back to the default.
-            foreach ($pageSettings as $setting => $configKey) {
-                if (isset($pdfSettings[$setting]) && trim((string) $pdfSettings[$setting]) !== '') {
-                    Config::set($configKey, $pdfSettings[$setting]);
-                }
-            }
-
-            // Stored as a string, so cast rather than passing '0' through as a
-            // truthy value.
-            if (isset($pdfSettings['pdf_page_numbers'])) {
-                Config::set(
-                    'pdf.page.page_numbers',
-                    filter_var($pdfSettings['pdf_page_numbers'], FILTER_VALIDATE_BOOLEAN)
-                );
-            }
+            app(PdfConfigurator::class)->applyGlobalConfig();
         } catch (\Exception $e) {
             // Silently fail if database is not available (during installation, migrations, etc.)
             // This prevents the application from breaking during setup

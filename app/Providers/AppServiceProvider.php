@@ -38,7 +38,6 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
 use Silber\Bouncer\Database\Models as BouncerModels;
 use Silber\Bouncer\Database\Role;
-use View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -77,8 +76,6 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Gate::policy(Role::class, RolePolicy::class);
-        View::addNamespace('pdf_templates', storage_path('app/templates/pdf'));
-
         $this->bootAuth();
         $this->bootBroadcast();
 
@@ -154,7 +151,6 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('manage settings', [SettingsPolicy::class, 'manageSettings']);
         Gate::define('manage company', [SettingsPolicy::class, 'manageCompany']);
-        Gate::define('manage pdf config', [SettingsPolicy::class, 'managePDFConfig']);
         Gate::define('manage notes', [NotePolicy::class, 'manageNotes']);
         Gate::define('view notes', [NotePolicy::class, 'viewNotes']);
 

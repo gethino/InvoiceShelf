@@ -5,9 +5,9 @@ namespace App\Traits;
 use App\Domains\Accounts\Models\CompanySetting;
 use App\Domains\Contacts\Models\Address;
 use App\Platform\Operations\Models\Setting;
+use App\Platform\Pdf\Application\FontService;
+use App\Platform\Pdf\Rendering\PdfHtmlSanitizer;
 use App\Platform\Storage\Models\FileDisk;
-use App\Services\FontService;
-use App\Support\Pdf\PdfHtmlSanitizer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 

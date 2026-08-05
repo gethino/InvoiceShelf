@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Domains\Accounts\Models\CompanySetting;
-use App\Facades\Pdf;
-use App\Support\Pdf\PdfPageSetup;
+use App\Platform\Pdf\Facades\Pdf;
+use App\Platform\Pdf\Rendering\PdfPageSetup;
 use Illuminate\Support\Facades\App;
 
 class CustomerStatementPdfService

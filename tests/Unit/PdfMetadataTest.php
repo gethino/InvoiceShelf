@@ -1,9 +1,9 @@
 <?php
 
 use App\Domains\Accounts\Models\Company;
-use App\Support\Pdf\DompdfDriver;
-use App\Support\Pdf\GotenbergPdfDriver;
-use App\Support\Pdf\PdfMetadata;
+use App\Platform\Pdf\Rendering\DompdfDriver;
+use App\Platform\Pdf\Rendering\GotenbergPdfDriver;
+use App\Platform\Pdf\Rendering\PdfMetadata;
 
 /**
  * Generated files carried no document properties at all, so an archive of them

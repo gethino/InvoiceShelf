@@ -11,7 +11,7 @@ use App\Domains\Receivables\Contracts\PaymentPdfDataProvider;
 use App\Domains\Sales\Models\Invoice;
 use App\Jobs\GeneratePaymentPdfJob;
 use App\Platform\Mail\Models\EmailLog;
-use App\Support\Pdf\PdfHtmlSanitizer;
+use App\Platform\Pdf\Rendering\PdfHtmlSanitizer;
 use App\Support\SafeOrderBy;
 use App\Traits\GeneratesPdfTrait;
 use App\Traits\HasCustomFieldsTrait;
