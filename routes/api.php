@@ -24,9 +24,6 @@ use App\Http\Controllers\Company\General\SerialNumberController;
 use App\Http\Controllers\Company\Invoice\InvoicesController;
 use App\Http\Controllers\Company\Invoice\InvoiceTemplatesController;
 use App\Http\Controllers\Company\Members\MembersController;
-use App\Http\Controllers\Company\Payment\CreditAllocationsController;
-use App\Http\Controllers\Company\Payment\PaymentMethodsController;
-use App\Http\Controllers\Company\Payment\PaymentsController;
 use App\Http\Controllers\Company\RecurringInvoice\RecurringInvoiceController;
 use App\Http\Controllers\Company\RecurringInvoice\RecurringInvoiceFrequencyController;
 use App\Http\Controllers\Company\Role\AbilitiesController;
@@ -43,8 +40,6 @@ use App\Http\Controllers\CustomerPortal\General\BootstrapController as CustomerB
 use App\Http\Controllers\CustomerPortal\General\DashboardController as CustomerDashboardController;
 use App\Http\Controllers\CustomerPortal\General\ProfileController as CustomerProfileController;
 use App\Http\Controllers\CustomerPortal\Invoice\InvoicesController as CustomerInvoicesController;
-use App\Http\Controllers\CustomerPortal\Payment\PaymentMethodController;
-use App\Http\Controllers\CustomerPortal\Payment\PaymentsController as CustomerPaymentsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -198,8 +193,6 @@ Route::prefix('/v1')->group(function () {
 
             Route::get('customers/{customer}/statement', CustomerStatementController::class);
             Route::post('customers/{customer}/statement/send', SendCustomerStatementController::class);
-            Route::post('customers/{customer}/credit-allocations', [CreditAllocationsController::class, 'store']);
-
             Route::resource('customers', CustomersController::class);
 
             // Items
@@ -264,17 +257,7 @@ Route::prefix('/v1')->group(function () {
             // Payments
             // ----------------------------------
 
-            Route::get('/payments/{payment}/send/preview', [PaymentsController::class, 'sendPreview']);
-
-            Route::post('/payments/{payment}/send', [PaymentsController::class, 'send']);
-
-            Route::put('/payments/{payment}/allocations', [PaymentsController::class, 'replaceAllocations']);
-
-            Route::post('/payments/delete', [PaymentsController::class, 'delete']);
-
-            Route::apiResource('payments', PaymentsController::class);
-
-            Route::apiResource('payment-methods', PaymentMethodsController::class);
+            require app_path('Domains/Receivables/routes/company.php');
 
             // Custom fields
             // ----------------------------------
@@ -395,11 +378,7 @@ Route::prefix('/v1')->group(function () {
 
             Route::get('estimates/{id}', [CustomerEstimatesController::class, 'show']);
 
-            Route::get('payments', [CustomerPaymentsController::class, 'index']);
-
-            Route::get('payments/{id}', [CustomerPaymentsController::class, 'show']);
-
-            Route::get('/payment-method', PaymentMethodController::class);
+            require app_path('Domains/Receivables/routes/customer.php');
 
             require app_path('Domains/Purchases/routes/customer.php');
 

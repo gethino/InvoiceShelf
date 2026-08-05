@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Domains\Receivables\Contracts\PaymentPdfDataProvider;
 use App\Domains\Sales\Contracts\EstimatePdfDataProvider;
 use App\Domains\Sales\Contracts\InvoicePdfDataProvider;
 use App\Platform\Operations\Installation\Application\InstallationState;
@@ -14,14 +13,12 @@ use App\Policies\DashboardPolicy;
 use App\Policies\EstimatePolicy;
 use App\Policies\InvoicePolicy;
 use App\Policies\OwnerPolicy;
-use App\Policies\PaymentPolicy;
 use App\Policies\RecurringInvoicePolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SettingsPolicy;
 use App\Policies\UserPolicy;
 use App\Services\Document\EstimateService;
 use App\Services\Document\InvoiceService;
-use App\Services\Document\PaymentService;
 use App\Support\Bouncer\BouncerDefaultScope;
 use Gate;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -84,7 +81,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(EstimatePdfDataProvider::class, EstimateService::class);
         $this->app->bind(InvoicePdfDataProvider::class, InvoiceService::class);
-        $this->app->bind(PaymentPdfDataProvider::class, PaymentService::class);
 
         BouncerModels::scope(new BouncerDefaultScope);
     }
@@ -144,13 +140,11 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('send invoice', [InvoicePolicy::class, 'send']);
         Gate::define('create credit note', [CreditNotePolicy::class, 'create']);
         Gate::define('send estimate', [EstimatePolicy::class, 'send']);
-        Gate::define('send payment', [PaymentPolicy::class, 'send']);
 
         Gate::define('delete multiple customers', [CustomerPolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple users', [UserPolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple invoices', [InvoicePolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple estimates', [EstimatePolicy::class, 'deleteMultiple']);
-        Gate::define('delete multiple payments', [PaymentPolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple recurring invoices', [RecurringInvoicePolicy::class, 'deleteMultiple']);
 
         Gate::define('view dashboard', [DashboardPolicy::class, 'view']);

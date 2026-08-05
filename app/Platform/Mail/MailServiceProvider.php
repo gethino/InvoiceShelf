@@ -2,7 +2,9 @@
 
 namespace App\Platform\Mail;
 
+use App\Platform\Mail\Application\EloquentEmailLogWriter;
 use App\Platform\Mail\Application\MailConfigurationService;
+use App\Platform\Mail\Contracts\EmailLogWriter;
 use App\Platform\Mail\Contracts\MailConfigurator;
 use App\Platform\Mail\Policies\MailAccessPolicy;
 use Illuminate\Contracts\Foundation\Application;
@@ -18,6 +20,7 @@ class MailServiceProvider extends ServiceProvider
             MailConfigurator::class,
             fn (Application $app): MailConfigurator => $app->make(MailConfigurationService::class),
         );
+        $this->app->bind(EmailLogWriter::class, EloquentEmailLogWriter::class);
     }
 
     public function boot(): void

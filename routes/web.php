@@ -6,7 +6,6 @@ use App\Http\Controllers\Company\Auth\LoginController;
 use App\Http\Controllers\CustomerPortal\Auth\LoginController as CustomerLoginController;
 use App\Http\Controllers\CustomerPortal\EstimatePdfController as CustomerEstimatePdfController;
 use App\Http\Controllers\CustomerPortal\InvoicePdfController as CustomerInvoicePdfController;
-use App\Http\Controllers\CustomerPortal\PaymentPdfController as CustomerPaymentPdfController;
 use App\Http\Controllers\Pdf\DocumentPdfController;
 use Illuminate\Support\Facades\Route;
 
@@ -64,7 +63,7 @@ Route::middleware('pdf-auth')->group(function () {
     // -------------------------------------------------
     Route::get('/invoices/pdf/{invoice:unique_hash}', [DocumentPdfController::class, 'invoice']);
     Route::get('/estimates/pdf/{estimate:unique_hash}', [DocumentPdfController::class, 'estimate']);
-    Route::get('/payments/pdf/{payment:unique_hash}', [DocumentPdfController::class, 'payment']);
+    require app_path('Domains/Receivables/routes/pdf.php');
 });
 
 // customer pdf endpoints for invoice, estimate and Payment
@@ -77,8 +76,7 @@ Route::prefix('/customer')->group(function () {
     Route::get('/estimates/{email_log:token}', [CustomerEstimatePdfController::class, 'getEstimate']);
     Route::get('/estimates/view/{email_log:token}', [CustomerEstimatePdfController::class, 'getPdf'])->name('estimate');
 
-    Route::get('/payments/{email_log:token}', [CustomerPaymentPdfController::class, 'getPayment']);
-    Route::get('/payments/view/{email_log:token}', [CustomerPaymentPdfController::class, 'getPdf'])->name('payment');
+    require app_path('Domains/Receivables/routes/public.php');
 });
 
 // Setup for installation of app

@@ -1,10 +1,10 @@
 <?php
 
 use App\Domains\Contacts\Models\Customer;
+use App\Domains\Receivables\Application\PaymentService;
 use App\Domains\Receivables\Models\Payment;
 use App\Domains\Receivables\Models\PaymentAllocation;
 use App\Domains\Sales\Models\Invoice;
-use App\Services\Document\PaymentService;
 use Illuminate\Support\Facades\Artisan;
 
 beforeEach(function () {

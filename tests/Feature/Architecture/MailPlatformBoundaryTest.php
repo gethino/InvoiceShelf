@@ -1,6 +1,8 @@
 <?php
 
+use App\Platform\Mail\Application\EloquentEmailLogWriter;
 use App\Platform\Mail\Application\MailConfigurationService;
+use App\Platform\Mail\Contracts\EmailLogWriter;
 use App\Platform\Mail\Contracts\MailConfigurator;
 use App\Platform\Mail\Http\Admin\MailConfigurationController;
 use App\Platform\Mail\Http\Company\CompanyMailConfigurationController;
@@ -11,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 test('the mail platform owns configuration and authorization', function () {
     expect(app()->getProviders(MailServiceProvider::class))->toHaveCount(1)
         ->and(app(MailConfigurator::class))->toBeInstanceOf(MailConfigurationService::class)
+        ->and(app(EmailLogWriter::class))->toBeInstanceOf(EloquentEmailLogWriter::class)
         ->and(Gate::has('manage email config'))->toBeTrue();
 
     expect(class_exists('App\\Services\\Mail\\MailConfigurationService'))->toBeFalse()

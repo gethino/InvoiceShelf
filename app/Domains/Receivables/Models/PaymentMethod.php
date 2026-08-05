@@ -98,18 +98,6 @@ class PaymentMethod extends Model
     }
 
     /**
-     * Create a new payment method from a validated form request.
-     */
-    public static function createPaymentMethod(mixed $request): self
-    {
-        $data = $request->getPaymentMethodPayload();
-
-        $paymentMethod = self::create($data);
-
-        return $paymentMethod;
-    }
-
-    /**
      * Retrieve the settings array for a payment method by its ID.
      */
     public static function getSettings(int $id): mixed
