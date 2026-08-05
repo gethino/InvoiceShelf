@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Support\Setup;
+namespace App\Platform\Operations\Installation\Application;
 
-use App\Http\Requests\DatabaseEnvironmentRequest;
-use App\Http\Requests\DomainEnvironmentRequest;
+use App\Platform\Operations\Installation\Http\Requests\DatabaseEnvironmentRequest;
+use App\Platform\Operations\Installation\Http\Requests\DomainEnvironmentRequest;
 use Exception;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;

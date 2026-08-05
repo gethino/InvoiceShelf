@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Platform\Operations\Installation\Http\Middleware;
 
+use App\Platform\Operations\Installation\Application\InstallationState;
+use App\Platform\Operations\Installation\Authentication\InstallWizardAuth;
 use App\Platform\Operations\Models\Setting;
-use App\Support\Setup\InstallUtils;
-use App\Support\Setup\InstallWizardAuth;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +28,7 @@ class UseInstallWizardTokenAuth
 
     private function installationIsIncomplete(): bool
     {
-        if (! InstallUtils::isDbCreated()) {
+        if (! InstallationState::isDbCreated()) {
             return true;
         }
 

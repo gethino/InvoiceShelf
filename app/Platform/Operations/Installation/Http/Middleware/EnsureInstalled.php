@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Platform\Operations\Installation\Http\Middleware;
 
+use App\Platform\Operations\Installation\Application\InstallationState;
 use App\Platform\Operations\Models\Setting;
-use App\Support\Setup\InstallUtils;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class InstallationMiddleware
+class EnsureInstalled
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class InstallationMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         try {
-            if (! InstallUtils::isDbCreated() || Setting::getSetting('profile_complete') !== 'COMPLETED') {
+            if (! InstallationState::isDbCreated() || Setting::getSetting('profile_complete') !== 'COMPLETED') {
                 return redirect('/installation');
             }
         } catch (\Exception $e) {

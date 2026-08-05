@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Setup;
+namespace App\Platform\Operations\Installation\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\DatabaseEnvironmentRequest;
-use App\Support\Setup\EnvironmentManager;
-use App\Support\Setup\InstallUtils;
+use App\Platform\Http\Controller;
+use App\Platform\Operations\Installation\Application\EnvironmentManager;
+use App\Platform\Operations\Installation\Application\InstallationState;
+use App\Platform\Operations\Installation\Http\Requests\DatabaseEnvironmentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
@@ -39,7 +39,7 @@ class DatabaseConfigurationController extends Controller
             Artisan::call('storage:link');
             Artisan::call('migrate --seed --force');
             // Set version.
-            InstallUtils::setCurrentVersion();
+            InstallationState::setCurrentVersion();
         }
 
         return response()->json($results);

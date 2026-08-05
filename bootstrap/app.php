@@ -6,19 +6,19 @@ use App\Http\Middleware\CustomerGuest;
 use App\Http\Middleware\CustomerPortalMiddleware;
 use App\Http\Middleware\CustomerRedirectIfAuthenticated;
 use App\Http\Middleware\EncryptCookies;
-use App\Http\Middleware\InstallationMiddleware;
 use App\Http\Middleware\PreventRequestForgery;
 use App\Http\Middleware\RedirectIfAuthenticated;
-use App\Http\Middleware\RedirectIfInstalled;
 use App\Http\Middleware\RedirectIfUnauthorized;
 use App\Http\Middleware\ScopeBouncer;
 use App\Http\Middleware\SuperAdminMiddleware;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
-use App\Http\Middleware\UseInstallWizardTokenAuth;
 use App\Platform\Modules\Runtime\ModuleRuntimeAutoloader;
 use App\Platform\Operations\Http\Middleware\CronJobMiddleware;
 use App\Platform\Operations\Http\Middleware\EnsureNotContainerized;
+use App\Platform\Operations\Installation\Http\Middleware\EnsureInstalled;
+use App\Platform\Operations\Installation\Http\Middleware\RedirectIfInstalled;
+use App\Platform\Operations\Installation\Http\Middleware\UseInstallWizardTokenAuth;
 use App\Platform\Pdf\Http\Middleware\PdfMiddleware;
 use App\Platform\Storage\Http\Middleware\ConfigMiddleware;
 use App\Providers\AppServiceProvider;
@@ -88,7 +88,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'customer-guest' => CustomerGuest::class,
             'customer-portal' => CustomerPortalMiddleware::class,
             'guest' => RedirectIfAuthenticated::class,
-            'install' => InstallationMiddleware::class,
+            'install' => EnsureInstalled::class,
             'not-containerized' => EnsureNotContainerized::class,
             'pdf-auth' => PdfMiddleware::class,
             'redirect-if-installed' => RedirectIfInstalled::class,

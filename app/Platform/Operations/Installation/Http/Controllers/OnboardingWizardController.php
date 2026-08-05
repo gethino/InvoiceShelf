@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Setup;
+namespace App\Platform\Operations\Installation\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Platform\Http\Controller;
+use App\Platform\Operations\Installation\Application\InstallationState;
 use App\Platform\Operations\Models\Setting;
-use App\Support\Setup\InstallUtils;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -17,7 +17,7 @@ class OnboardingWizardController extends Controller
      */
     public function getStep(Request $request)
     {
-        if (! InstallUtils::isDbCreated()) {
+        if (! InstallationState::isDbCreated()) {
             return response()->json([
                 'profile_complete' => 0,
                 'profile_language' => 'en',

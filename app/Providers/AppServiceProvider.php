@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Domains\Receivables\Contracts\PaymentPdfDataProvider;
 use App\Domains\Sales\Contracts\EstimatePdfDataProvider;
 use App\Domains\Sales\Contracts\InvoicePdfDataProvider;
+use App\Platform\Operations\Installation\Application\InstallationState;
 use App\Platform\Persistence\ModelIdentityMap;
 use App\Policies\CompanyPolicy;
 use App\Policies\CreditNotePolicy;
@@ -26,16 +27,12 @@ use App\Services\Document\EstimateService;
 use App\Services\Document\InvoiceService;
 use App\Services\Document\PaymentService;
 use App\Support\Bouncer\BouncerDefaultScope;
-use App\Support\Setup\InstallUtils;
-use App\Support\Setup\InstallWizardAuth;
 use Gate;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Sanctum\Sanctum;
 use Silber\Bouncer\Database\Models as BouncerModels;
 use Silber\Bouncer\Database\Role;
 
@@ -69,9 +66,7 @@ class AppServiceProvider extends ServiceProvider
             fn (string $modelName): string => 'Database\\Factories\\'.class_basename($modelName).'Factory'
         );
 
-        $this->configureInstallWizardTokenAuth();
-
-        if (InstallUtils::isDbCreated()) {
+        if (InstallationState::isDbCreated()) {
             $this->addMenus();
         }
 
@@ -177,22 +172,5 @@ class AppServiceProvider extends ServiceProvider
     public function bootBroadcast()
     {
         Broadcast::routes(['middleware' => 'api.auth']);
-    }
-
-    private function configureInstallWizardTokenAuth(): void
-    {
-        Sanctum::authenticateAccessTokensUsing(function ($accessToken, bool $isValid): bool {
-            if (! $isValid) {
-                return false;
-            }
-
-            $request = request();
-
-            if (! $request instanceof Request || ! $request->attributes->get('install_wizard', false)) {
-                return $isValid;
-            }
-
-            return $accessToken->can(InstallWizardAuth::TOKEN_ABILITY);
-        });
     }
 }

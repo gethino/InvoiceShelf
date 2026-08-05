@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Setup;
+namespace App\Platform\Operations\Installation\Http\Controllers;
 
 use App\Domains\Accounts\Models\User;
-use App\Http\Controllers\Controller;
-use App\Support\Setup\InstallWizardAuth;
+use App\Platform\Http\Controller;
+use App\Platform\Operations\Installation\Authentication\InstallWizardAuth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

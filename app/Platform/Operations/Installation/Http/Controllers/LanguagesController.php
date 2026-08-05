@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Setup;
+namespace App\Platform\Operations\Installation\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Platform\Http\Controller;
 use Illuminate\Http\JsonResponse;
 
 class LanguagesController extends Controller

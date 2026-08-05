@@ -55,14 +55,6 @@ use App\Http\Controllers\CustomerPortal\General\ProfileController as CustomerPro
 use App\Http\Controllers\CustomerPortal\Invoice\InvoicesController as CustomerInvoicesController;
 use App\Http\Controllers\CustomerPortal\Payment\PaymentMethodController;
 use App\Http\Controllers\CustomerPortal\Payment\PaymentsController as CustomerPaymentsController;
-use App\Http\Controllers\Setup\AppDomainController;
-use App\Http\Controllers\Setup\DatabaseConfigurationController;
-use App\Http\Controllers\Setup\FilePermissionsController;
-use App\Http\Controllers\Setup\FinishController;
-use App\Http\Controllers\Setup\LanguagesController;
-use App\Http\Controllers\Setup\LoginController;
-use App\Http\Controllers\Setup\OnboardingWizardController;
-use App\Http\Controllers\Setup\RequirementsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -124,29 +116,8 @@ Route::prefix('/v1')->group(function () {
     // ----------------------------------
 
     Route::middleware(['redirect-if-installed'])->prefix('installation')->group(function () {
-        Route::get('/wizard-step', [OnboardingWizardController::class, 'getStep']);
-
-        Route::post('/wizard-step', [OnboardingWizardController::class, 'updateStep']);
-
-        Route::post('/wizard-language', [OnboardingWizardController::class, 'saveLanguage']);
-
-        Route::get('/languages', [LanguagesController::class, 'languages']);
-
-        Route::get('/requirements', [RequirementsController::class, 'requirements']);
-
-        Route::get('/permissions', [FilePermissionsController::class, 'permissions']);
-
-        Route::post('/database/config', [DatabaseConfigurationController::class, 'saveDatabaseEnvironment']);
-
-        Route::get('/database/config', [DatabaseConfigurationController::class, 'getDatabaseEnvironment']);
-
-        Route::put('/set-domain', AppDomainController::class);
-
+        require app_path('Platform/Operations/Installation/routes/api.php');
         require app_path('Platform/Ai/routes/installer.php');
-
-        Route::post('/login', LoginController::class);
-
-        Route::post('/finish', FinishController::class);
     });
 
     // Super Admin

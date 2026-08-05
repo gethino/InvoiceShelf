@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Setup;
+namespace App\Platform\Operations\Installation\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Support\Setup\FilePermissionChecker;
+use App\Platform\Http\Controller;
+use App\Platform\Operations\Installation\Application\FilePermissionChecker;
 use Illuminate\Http\JsonResponse;
 
 class FilePermissionsController extends Controller

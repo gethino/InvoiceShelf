@@ -3,9 +3,9 @@
 namespace App\Platform\Operations\Application;
 
 use App\Platform\Mail\Contracts\MailConfigurator;
+use App\Platform\Operations\Installation\Application\InstallationState;
 use App\Platform\Pdf\Contracts\PdfConfigurator;
 use App\Platform\Storage\Contracts\StorageConfigurator;
-use App\Support\Setup\InstallUtils;
 
 class RuntimeConfigurationService
 {
@@ -17,7 +17,7 @@ class RuntimeConfigurationService
 
     public function apply(): void
     {
-        if (! InstallUtils::isDbCreated()) {
+        if (! InstallationState::isDbCreated()) {
             return;
         }
 

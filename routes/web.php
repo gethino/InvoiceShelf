@@ -15,7 +15,6 @@ use App\Http\Controllers\CustomerPortal\EstimatePdfController as CustomerEstimat
 use App\Http\Controllers\CustomerPortal\InvoicePdfController as CustomerInvoicePdfController;
 use App\Http\Controllers\CustomerPortal\PaymentPdfController as CustomerPaymentPdfController;
 use App\Http\Controllers\Pdf\DocumentPdfController;
-use App\Http\Controllers\Setup\SessionLoginController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Auth
@@ -116,23 +115,7 @@ Route::prefix('/customer')->group(function () {
 // Setup for installation of app
 // ----------------------------------------------
 
-Route::get('/installation', function () {
-    return view('app');
-})->name('install')
-    ->middleware(['redirect-if-installed']);
-
-// Catch-all for installation wizard sub-routes (language, requirements,
-// permissions, database, domain, mail, account, company, preferences).
-// The Vue Router handles the actual step rendering on the SPA side; this
-// just makes sure deep links and hard refreshes inside the wizard hit the
-// SPA shell instead of 404ing.
-Route::get('/installation/{vue?}', function () {
-    return view('app');
-})->where('vue', '.*')
-    ->middleware(['redirect-if-installed']);
-
-Route::post('/installation/session-login', SessionLoginController::class)
-    ->middleware(['redirect-if-installed', 'auth:sanctum']);
+require app_path('Platform/Operations/Installation/routes/web.php');
 
 // Registration via invitation (serves SPA)
 // -------------------------------------------------

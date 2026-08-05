@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Setup;
+namespace App\Platform\Operations\Installation\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\DomainEnvironmentRequest;
-use App\Support\Setup\EnvironmentManager;
+use App\Platform\Http\Controller;
+use App\Platform\Operations\Installation\Application\EnvironmentManager;
+use App\Platform\Operations\Installation\Http\Requests\DomainEnvironmentRequest;
 use Illuminate\Support\Facades\Artisan;
 
 class AppDomainController extends Controller

@@ -3,8 +3,8 @@
 use App\Domains\Accounts\Models\CompanySetting;
 use App\Domains\Metadata\Models\CustomField;
 use App\Domains\Money\Models\Currency;
+use App\Platform\Operations\Installation\Application\InstallationState;
 use App\Platform\Operations\Models\Setting;
-use App\Support\Setup\InstallUtils;
 use Illuminate\Support\Str;
 
 /**
@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
  */
 function get_company_setting($key, $company_id)
 {
-    if (! InstallUtils::isDbCreated()) {
+    if (! InstallationState::isDbCreated()) {
         return null;
     }
 
@@ -29,7 +29,7 @@ function get_company_setting($key, $company_id)
  */
 function get_app_setting($key)
 {
-    if (! InstallUtils::isDbCreated()) {
+    if (! InstallationState::isDbCreated()) {
         return null;
     }
 
@@ -43,7 +43,7 @@ function get_app_setting($key)
  */
 function get_page_title($company_id)
 {
-    if (! InstallUtils::isDbCreated()) {
+    if (! InstallationState::isDbCreated()) {
         return null;
     }
 

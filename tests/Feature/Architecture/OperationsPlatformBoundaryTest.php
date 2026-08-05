@@ -2,6 +2,9 @@
 
 use App\Platform\Operations\Http\Middleware\CronJobMiddleware;
 use App\Platform\Operations\Http\Middleware\EnsureNotContainerized;
+use App\Platform\Operations\Installation\Http\Middleware\EnsureInstalled;
+use App\Platform\Operations\Installation\Http\Middleware\RedirectIfInstalled;
+use App\Platform\Operations\Installation\Http\Middleware\UseInstallWizardTokenAuth;
 use App\Platform\Operations\OperationsServiceProvider;
 use App\Platform\Storage\Application\FileDiskService;
 use App\Platform\Storage\Contracts\StorageConfigurator;
@@ -23,7 +26,11 @@ test('the operations platform owns runtime configuration commands and authorizat
         ->and(class_exists('App\\Http\\Controllers\\AppVersionController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Admin\\UpdateController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Admin\\Settings\\SettingsController'))->toBeFalse()
-        ->and(class_exists('App\\Http\\Controllers\\Webhook\\CronJobController'))->toBeFalse();
+        ->and(class_exists('App\\Http\\Controllers\\Webhook\\CronJobController'))->toBeFalse()
+        ->and(class_exists('App\\Support\\Setup\\InstallUtils'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Controllers\\Setup\\LoginController'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Middleware\\InstallationMiddleware'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Requests\\DatabaseEnvironmentRequest'))->toBeFalse();
 });
 
 test('the operations platform preserves its public routes and middleware', function () {
@@ -64,4 +71,42 @@ test('the operations platform preserves its public routes and middleware', funct
     expect($routes->get('GET|HEAD api/cron')->gatherMiddleware())->toContain('cron-job')
         ->and(app('router')->getMiddleware()['cron-job'] ?? null)->toBe(CronJobMiddleware::class)
         ->and(app('router')->getMiddleware()['not-containerized'] ?? null)->toBe(EnsureNotContainerized::class);
+});
+
+test('the operations platform owns installation routes and middleware', function () {
+    $routes = collect(Route::getRoutes()->getRoutes())
+        ->filter(fn ($route): bool => (
+            str_starts_with($route->uri(), 'api/v1/installation/')
+            && ! str_starts_with($route->uri(), 'api/v1/installation/ai/')
+        ) || str_starts_with($route->uri(), 'installation'))
+        ->keyBy(fn ($route): string => implode('|', $route->methods()).' '.$route->uri());
+
+    expect($routes->keys()->sort()->values()->all())->toBe(collect([
+        'GET|HEAD api/v1/installation/database/config',
+        'GET|HEAD api/v1/installation/languages',
+        'GET|HEAD api/v1/installation/permissions',
+        'GET|HEAD api/v1/installation/requirements',
+        'GET|HEAD api/v1/installation/wizard-step',
+        'GET|HEAD installation',
+        'GET|HEAD installation/{vue?}',
+        'POST api/v1/installation/database/config',
+        'POST api/v1/installation/finish',
+        'POST api/v1/installation/login',
+        'POST api/v1/installation/wizard-language',
+        'POST api/v1/installation/wizard-step',
+        'POST installation/session-login',
+        'PUT api/v1/installation/set-domain',
+    ])->sort()->values()->all());
+
+    foreach ($routes->filter(fn ($route) => str_starts_with($route->uri(), 'api/')) as $route) {
+        expect($route->getActionName())
+            ->toStartWith('App\\Platform\\Operations\\Installation\\Http\\Controllers\\')
+            ->and($route->gatherMiddleware())->toContain('redirect-if-installed');
+    }
+
+    expect($routes->get('POST installation/session-login')->getActionName())
+        ->toBe('App\\Platform\\Operations\\Installation\\Http\\Controllers\\SessionLoginController')
+        ->and(app('router')->getMiddleware()['install'] ?? null)->toBe(EnsureInstalled::class)
+        ->and(app('router')->getMiddleware()['redirect-if-installed'] ?? null)->toBe(RedirectIfInstalled::class)
+        ->and(app()->make(UseInstallWizardTokenAuth::class))->toBeInstanceOf(UseInstallWizardTokenAuth::class);
 });

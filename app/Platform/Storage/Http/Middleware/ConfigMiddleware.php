@@ -2,8 +2,8 @@
 
 namespace App\Platform\Storage\Http\Middleware;
 
+use App\Platform\Operations\Installation\Application\InstallationState;
 use App\Platform\Storage\Models\FileDisk;
-use App\Support\Setup\InstallUtils;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +17,7 @@ class ConfigMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (InstallUtils::isDbCreated()) {
+        if (InstallationState::isDbCreated()) {
             // Only handle dynamic file disk switching when file_disk_id is provided
             if ($request->has('file_disk_id')) {
                 $file_disk = FileDisk::find($request->file_disk_id);

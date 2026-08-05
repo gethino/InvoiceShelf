@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Support\Setup;
+namespace App\Platform\Operations\Installation\Application;
 
 use App\Platform\Operations\Models\Setting;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\File;
 
-class InstallUtils
+class InstallationState
 {
     /**
      * Check if database is created

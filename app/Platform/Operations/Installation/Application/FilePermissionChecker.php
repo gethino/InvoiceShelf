@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support\Setup;
+namespace App\Platform\Operations\Installation\Application;
 
 class FilePermissionChecker
 {
