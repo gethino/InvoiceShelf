@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Rules\Backup;
+namespace App\Platform\Storage\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Support\Str;
 
-class PathToZip implements ValidationRule
+class BackupDisk implements ValidationRule
 {
     /**
      * Create a new rule instance.
@@ -23,8 +22,10 @@ class PathToZip implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (! Str::endsWith($value, '.zip')) {
-            $fail('The given value must be a path to a zip file.');
+        $configuredBackupDisks = config('backup.backup.destination.disks');
+
+        if (! in_array($value, $configuredBackupDisks)) {
+            $fail('This disk is not configured as a backup disk.');
         }
     }
 }

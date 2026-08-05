@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Platform\Storage\Http\Requests;
 
 use App\Rules\PublicHttpUrl;
 use Illuminate\Foundation\Http\FormRequest;

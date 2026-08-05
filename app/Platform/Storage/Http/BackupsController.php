@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Platform\Storage\Http;
 
-use App\Http\Controllers\Controller;
-use App\Jobs\CreateBackupJob;
-use App\Rules\Backup\PathToZip;
-use App\Services\Storage\BackupService;
+use App\Platform\Http\Controller;
+use App\Platform\Storage\Application\BackupService;
+use App\Platform\Storage\Jobs\CreateBackupJob;
+use App\Platform\Storage\Rules\PathToZip;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

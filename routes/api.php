@@ -1,12 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\BackupsController;
 use App\Http\Controllers\Admin\CompaniesController;
 use App\Http\Controllers\Admin\CountriesController;
 use App\Http\Controllers\Admin\CurrenciesController;
 use App\Http\Controllers\Admin\FontController;
-use App\Http\Controllers\Admin\Settings\DiskController;
 use App\Http\Controllers\Admin\Settings\MailConfigurationController;
 use App\Http\Controllers\Admin\Settings\PDFConfigurationController;
 use App\Http\Controllers\Admin\Settings\SettingsController;
@@ -351,15 +349,7 @@ Route::prefix('/v1')->group(function () {
             // Backup & Disk
             // ----------------------------------
 
-            Route::apiResource('backups', BackupsController::class);
-
-            Route::apiResource('/disks', DiskController::class);
-
-            Route::get('download-backup', [BackupsController::class, 'download']);
-
-            Route::get('/disk/drivers', [DiskController::class, 'getDiskDrivers']);
-            Route::get('/disk/purposes', [DiskController::class, 'getDiskPurposes']);
-            Route::put('/disk/purposes', [DiskController::class, 'updateDiskPurposes']);
+            require app_path('Platform/Storage/routes/company.php');
 
             // Fonts
             // ----------------------------------

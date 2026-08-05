@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Storage;
+namespace App\Platform\Storage\Application;
 
 use App\Platform\Operations\Models\Setting;
 use App\Platform\Storage\Models\FileDisk;

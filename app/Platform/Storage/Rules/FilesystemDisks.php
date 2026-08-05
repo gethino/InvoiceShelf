@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Rules\Backup;
+namespace App\Platform\Storage\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class BackupDisk implements ValidationRule
+class FilesystemDisks implements ValidationRule
 {
     /**
      * Create a new rule instance.
@@ -22,10 +22,10 @@ class BackupDisk implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $configuredBackupDisks = config('backup.backup.destination.disks');
+        $configuredFileSystemDisks = array_keys(config('filesystems.disks'));
 
-        if (! in_array($value, $configuredBackupDisks)) {
-            $fail('This disk is not configured as a backup disk.');
+        if (! in_array($value, $configuredFileSystemDisks)) {
+            $fail('This disk is not configured as a filesystem disk.');
         }
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 use App\Domains\Accounts\Models\User;
-use App\Jobs\CreateBackupJob;
+use App\Platform\Storage\Jobs\CreateBackupJob;
 use App\Platform\Storage\Models\FileDisk;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Queue;

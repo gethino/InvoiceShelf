@@ -2,7 +2,7 @@
 
 namespace App\Platform\Storage\Models;
 
-use App\Services\Storage\FileDiskService;
+use App\Platform\Storage\Application\FileDiskService;
 use App\Support\SafeOrderBy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

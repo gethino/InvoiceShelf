@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Storage;
+namespace App\Platform\Storage\Application;
 
 use App\Platform\Storage\Models\FileDisk;
 use App\Support\Net\PrivateNetworkGuard;

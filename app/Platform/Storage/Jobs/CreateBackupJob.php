@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Platform\Storage\Jobs;
 
-use App\Services\Storage\BackupConfigurationFactory;
+use App\Platform\Storage\Application\BackupConfigurationFactory;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

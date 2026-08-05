@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Settings;
+namespace App\Platform\Storage\Http;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\DiskEnvironmentRequest;
-use App\Http\Resources\FileDiskResource;
+use App\Platform\Http\Controller;
 use App\Platform\Operations\Models\Setting;
+use App\Platform\Storage\Application\FileDiskService;
+use App\Platform\Storage\Http\Requests\DiskEnvironmentRequest;
+use App\Platform\Storage\Http\Resources\FileDiskResource;
 use App\Platform\Storage\Models\FileDisk;
-use App\Services\Storage\FileDiskService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

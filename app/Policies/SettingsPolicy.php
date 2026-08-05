@@ -19,24 +19,6 @@ class SettingsPolicy
         return false;
     }
 
-    public function manageBackups(User $user)
-    {
-        if ($user->isSuperAdmin()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function manageFileDisk(User $user)
-    {
-        if ($user->isSuperAdmin()) {
-            return true;
-        }
-
-        return false;
-    }
-
     public function manageEmailConfig(User $user)
     {
         if ($user->isSuperAdmin()) {

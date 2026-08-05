@@ -2,10 +2,10 @@
 
 use App\Platform\Ai\AiServiceProvider;
 use App\Platform\Modules\ModuleServiceProvider;
+use App\Platform\Storage\StorageServiceProvider;
 use App\Providers\AppConfigProvider;
 use App\Providers\AppServiceProvider;
 use App\Providers\DriverRegistryProvider;
-use App\Providers\DropboxServiceProvider;
 use App\Providers\PdfServiceProvider;
 use App\Providers\RouteServiceProvider;
 use App\Providers\ScrambleServiceProvider;
@@ -16,7 +16,7 @@ return [
     HashidsServiceProvider::class,
     AppServiceProvider::class,
     RouteServiceProvider::class,
-    DropboxServiceProvider::class,
+    StorageServiceProvider::class,
     ViewServiceProvider::class,
     PdfServiceProvider::class,
     DriverRegistryProvider::class,
