@@ -46,24 +46,6 @@ class SettingsPolicy
         return false;
     }
 
-    public function manageAiConfig(User $user)
-    {
-        if ($user->isSuperAdmin()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Any authenticated user with an active company context can use AI features,
-     * subject to the per-company kill-switch in AiConfigurationService.
-     */
-    public function useAi(User $user)
-    {
-        return $user !== null;
-    }
-
     public function managePDFConfig(User $user)
     {
         if ($user->isSuperAdmin()) {

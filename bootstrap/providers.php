@@ -1,7 +1,7 @@
 <?php
 
+use App\Platform\Ai\AiServiceProvider;
 use App\Platform\Modules\ModuleServiceProvider;
-use App\Providers\AiServiceProvider;
 use App\Providers\AppConfigProvider;
 use App\Providers\AppServiceProvider;
 use App\Providers\DriverRegistryProvider;

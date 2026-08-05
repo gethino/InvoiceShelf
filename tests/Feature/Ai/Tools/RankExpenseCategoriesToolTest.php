@@ -3,7 +3,7 @@
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Purchases\Models\Expense;
 use App\Domains\Purchases\Models\ExpenseCategory;
-use App\Services\Ai\Tools\RankExpenseCategoriesTool;
+use App\Platform\Ai\Application\Tools\RankExpenseCategoriesTool;
 use Illuminate\Support\Facades\Artisan;
 
 beforeEach(function () {

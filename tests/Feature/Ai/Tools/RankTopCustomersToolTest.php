@@ -4,7 +4,7 @@ use App\Domains\Accounts\Models\Company;
 use App\Domains\Contacts\Models\Customer;
 use App\Domains\Receivables\Models\Payment;
 use App\Domains\Sales\Models\Invoice;
-use App\Services\Ai\Tools\RankTopCustomersTool;
+use App\Platform\Ai\Application\Tools\RankTopCustomersTool;
 use Illuminate\Support\Facades\Artisan;
 
 beforeEach(function () {

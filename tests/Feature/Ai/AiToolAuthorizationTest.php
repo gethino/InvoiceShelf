@@ -3,10 +3,10 @@
 use App\Domains\Accounts\Models\User;
 use App\Domains\Contacts\Models\Customer;
 use App\Domains\Sales\Models\Invoice;
+use App\Platform\Ai\Application\AiConfigurationService;
+use App\Platform\Ai\Data\AiChatResponse;
+use App\Platform\Ai\Drivers\AiDriverFactory;
 use App\Platform\Ai\Models\AiMessage;
-use App\Services\AiConfigurationService;
-use App\Support\Ai\AiChatResponse;
-use App\Support\Ai\AiDriverFactory;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Sanctum\Sanctum;
 use Silber\Bouncer\BouncerFacade;

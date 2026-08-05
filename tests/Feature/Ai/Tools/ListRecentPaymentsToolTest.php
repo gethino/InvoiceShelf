@@ -5,7 +5,7 @@ use App\Domains\Contacts\Models\Customer;
 use App\Domains\Receivables\Models\Payment;
 use App\Domains\Receivables\Models\PaymentAllocation;
 use App\Domains\Sales\Models\Invoice;
-use App\Services\Ai\Tools\ListRecentPaymentsTool;
+use App\Platform\Ai\Application\Tools\ListRecentPaymentsTool;
 use Illuminate\Support\Facades\Artisan;
 
 beforeEach(function () {

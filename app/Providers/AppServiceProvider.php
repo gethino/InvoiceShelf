@@ -5,9 +5,7 @@ namespace App\Providers;
 use App\Domains\Receivables\Contracts\PaymentPdfDataProvider;
 use App\Domains\Sales\Contracts\EstimatePdfDataProvider;
 use App\Domains\Sales\Contracts\InvoicePdfDataProvider;
-use App\Platform\Ai\Models\AiConversation;
 use App\Platform\Persistence\ModelIdentityMap;
-use App\Policies\AiConversationPolicy;
 use App\Policies\CompanyPolicy;
 use App\Policies\CreditNotePolicy;
 use App\Policies\CustomerPolicy;
@@ -79,7 +77,6 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Gate::policy(Role::class, RolePolicy::class);
-        Gate::policy(AiConversation::class, AiConversationPolicy::class);
         View::addNamespace('pdf_templates', storage_path('app/templates/pdf'));
 
         $this->bootAuth();
@@ -160,8 +157,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('manage backups', [SettingsPolicy::class, 'manageBackups']);
         Gate::define('manage file disk', [SettingsPolicy::class, 'manageFileDisk']);
         Gate::define('manage email config', [SettingsPolicy::class, 'manageEmailConfig']);
-        Gate::define('manage ai config', [SettingsPolicy::class, 'manageAiConfig']);
-        Gate::define('use ai', [SettingsPolicy::class, 'useAi']);
         Gate::define('manage pdf config', [SettingsPolicy::class, 'managePDFConfig']);
         Gate::define('manage notes', [NotePolicy::class, 'manageNotes']);
         Gate::define('view notes', [NotePolicy::class, 'viewNotes']);

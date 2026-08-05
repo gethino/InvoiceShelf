@@ -6,7 +6,6 @@ use App\Http\Controllers\Admin\CompaniesController;
 use App\Http\Controllers\Admin\CountriesController;
 use App\Http\Controllers\Admin\CurrenciesController;
 use App\Http\Controllers\Admin\FontController;
-use App\Http\Controllers\Admin\Settings\AiConfigurationController;
 use App\Http\Controllers\Admin\Settings\DiskController;
 use App\Http\Controllers\Admin\Settings\MailConfigurationController;
 use App\Http\Controllers\Admin\Settings\PDFConfigurationController;
@@ -14,9 +13,6 @@ use App\Http\Controllers\Admin\Settings\SettingsController;
 use App\Http\Controllers\Admin\UpdateController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\AppVersionController;
-use App\Http\Controllers\Company\Ai\ChatController as AiChatController;
-use App\Http\Controllers\Company\Ai\ConversationController as AiConversationController;
-use App\Http\Controllers\Company\Ai\GenerationController as AiGenerationController;
 use App\Http\Controllers\Company\Auth\AuthController;
 use App\Http\Controllers\Company\Auth\ForgotPasswordController;
 use App\Http\Controllers\Company\Auth\InvitationRegistrationController;
@@ -51,7 +47,6 @@ use App\Http\Controllers\Company\RecurringInvoice\RecurringInvoiceController;
 use App\Http\Controllers\Company\RecurringInvoice\RecurringInvoiceFrequencyController;
 use App\Http\Controllers\Company\Role\AbilitiesController;
 use App\Http\Controllers\Company\Role\RolesController;
-use App\Http\Controllers\Company\Settings\CompanyAiConfigurationController;
 use App\Http\Controllers\Company\Settings\CompanyController;
 use App\Http\Controllers\Company\Settings\CompanyMailConfigurationController;
 use App\Http\Controllers\Company\Settings\CompanySettingsController;
@@ -69,7 +64,6 @@ use App\Http\Controllers\CustomerPortal\General\ProfileController as CustomerPro
 use App\Http\Controllers\CustomerPortal\Invoice\InvoicesController as CustomerInvoicesController;
 use App\Http\Controllers\CustomerPortal\Payment\PaymentMethodController;
 use App\Http\Controllers\CustomerPortal\Payment\PaymentsController as CustomerPaymentsController;
-use App\Http\Controllers\Setup\AiConfigurationController as InstallerAiConfigurationController;
 use App\Http\Controllers\Setup\AppDomainController;
 use App\Http\Controllers\Setup\DatabaseConfigurationController;
 use App\Http\Controllers\Setup\FilePermissionsController;
@@ -158,8 +152,7 @@ Route::prefix('/v1')->group(function () {
 
         Route::put('/set-domain', AppDomainController::class);
 
-        Route::get('/ai/config', [InstallerAiConfigurationController::class, 'show']);
-        Route::post('/ai/config', [InstallerAiConfigurationController::class, 'save']);
+        require app_path('Platform/Ai/routes/installer.php');
 
         Route::post('/login', LoginController::class);
 
@@ -431,28 +424,7 @@ Route::prefix('/v1')->group(function () {
             Route::post('/company/mail/company-config', [CompanyMailConfigurationController::class, 'saveMailConfig']);
             Route::post('/company/mail/company-test', [CompanyMailConfigurationController::class, 'testMailConfig']);
 
-            // AI Configuration
-            // ----------------------------------
-
-            Route::get('/ai/drivers', [AiConfigurationController::class, 'getDrivers']);
-            Route::get('/ai/config', [AiConfigurationController::class, 'getConfig']);
-            Route::post('/ai/config', [AiConfigurationController::class, 'saveConfig']);
-            Route::post('/ai/test', [AiConfigurationController::class, 'testConnection']);
-
-            Route::get('/company/ai/config', [CompanyAiConfigurationController::class, 'getConfig']);
-            Route::post('/company/ai/config', [CompanyAiConfigurationController::class, 'saveConfig']);
-            Route::post('/company/ai/test', [CompanyAiConfigurationController::class, 'testConnection']);
-
-            // AI Chat + text generation — rate-limited via the 'ai' limiter defined in RouteServiceProvider
-            Route::middleware('throttle:ai')->group(function () {
-                Route::post('/ai/chat', AiChatController::class);
-                Route::get('/ai/conversations', [AiConversationController::class, 'index']);
-                Route::get('/ai/conversations/{id}', [AiConversationController::class, 'show']);
-                Route::patch('/ai/conversations/{id}', [AiConversationController::class, 'update']);
-                Route::delete('/ai/conversations/{id}', [AiConversationController::class, 'destroy']);
-
-                Route::post('/ai/generate', AiGenerationController::class);
-            });
+            require app_path('Platform/Ai/routes/company.php');
 
             // PDF Generation
             // ----------------------------------
