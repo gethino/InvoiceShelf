@@ -36,6 +36,37 @@ test('legacy model types migrate to stable aliases and can be rolled back', func
     expect(DB::table('abilities')->where('id', $abilityId)->value('entity_type'))->toBe('App\\Models\\Invoice');
 });
 
+test('legacy bouncer role identities migrate and can be rolled back', function () {
+    $roleId = DB::table('roles')->insertGetId([
+        'name' => 'architecture-migration-role',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+    $abilityId = DB::table('abilities')->insertGetId([
+        'name' => 'architecture-migration-ability',
+        'only_owned' => false,
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+    $permissionId = DB::table('permissions')->insertGetId([
+        'ability_id' => $abilityId,
+        'entity_id' => $roleId,
+        'entity_type' => 'roles',
+        'forbidden' => false,
+    ]);
+
+    $migration = require database_path('migrations/2026_08_05_120000_stabilize_model_type_aliases.php');
+    $migration->up();
+
+    expect(DB::table('permissions')->where('id', $permissionId)->value('entity_type'))
+        ->toBe('bouncer_role');
+
+    $migration->down();
+
+    expect(DB::table('permissions')->where('id', $permissionId)->value('entity_type'))
+        ->toBe('roles');
+});
+
 test('unknown model identities are left untouched', function () {
     $abilityId = DB::table('abilities')->insertGetId([
         'name' => 'architecture-unknown-test',

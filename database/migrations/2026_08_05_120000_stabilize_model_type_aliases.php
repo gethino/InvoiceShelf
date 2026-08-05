@@ -70,10 +70,16 @@ return new class extends Migration
         'user_setting' => 'UserSetting',
     ];
 
-    /** @var array<string, class-string> */
+    /** @var array<string, array{legacy: string, types: list<string>}> */
     public const VENDOR_ALIASES = [
-        'bouncer_ability' => Ability::class,
-        'bouncer_role' => Role::class,
+        'bouncer_ability' => [
+            'legacy' => 'abilities',
+            'types' => ['abilities', Ability::class],
+        ],
+        'bouncer_role' => [
+            'legacy' => 'roles',
+            'types' => ['roles', Role::class],
+        ],
     ];
 
     public function up(): void
@@ -116,10 +122,10 @@ return new class extends Migration
                         ->update([$column => $up ? $alias : 'App\\Models\\'.$basename]);
                 }
 
-                foreach (self::VENDOR_ALIASES as $alias => $legacyType) {
+                foreach (self::VENDOR_ALIASES as $alias => $mapping) {
                     DB::table($table)
-                        ->whereIn($column, $up ? [$alias, $legacyType] : [$alias])
-                        ->update([$column => $up ? $alias : $legacyType]);
+                        ->whereIn($column, $up ? [$alias, ...$mapping['types']] : [$alias])
+                        ->update([$column => $up ? $alias : $mapping['legacy']]);
                 }
             }
         }
