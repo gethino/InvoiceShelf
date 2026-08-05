@@ -1,7 +1,14 @@
 <?php
 
-namespace App\Http\Resources\Customer;
+namespace App\Domains\Purchases\Http\Resources;
 
+use App\Domains\Metadata\Http\Resources\CustomFieldValueResource;
+use App\Domains\Money\Http\Resources\CurrencyResource;
+use App\Domains\Taxation\Http\Resources\TaxResource;
+use App\Http\Resources\CompanyResource;
+use App\Http\Resources\CustomerResource;
+use App\Http\Resources\PaymentMethodResource;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -26,17 +33,22 @@ class ExpenseResource extends JsonResource
             'attachment_receipt_meta' => $this->receipt_meta,
             'company_id' => $this->company_id,
             'expense_category_id' => $this->expense_category_id,
+            'creator_id' => $this->creator_id,
             'formatted_expense_date' => $this->formattedExpenseDate,
             'formatted_created_at' => $this->formattedCreatedAt,
             'exchange_rate' => $this->exchange_rate,
             'currency_id' => $this->currency_id,
             'base_amount' => $this->base_amount,
             'payment_method_id' => $this->payment_method_id,
+            'taxes' => TaxResource::collection($this->whenLoaded('taxes')),
             'customer' => $this->when($this->customer()->exists(), function () {
                 return new CustomerResource($this->customer);
             }),
             'expense_category' => $this->when($this->category()->exists(), function () {
                 return new ExpenseCategoryResource($this->category);
+            }),
+            'creator' => $this->when($this->creator()->exists(), function () {
+                return new UserResource($this->creator);
             }),
             'fields' => $this->when($this->fields()->exists(), function () {
                 return CustomFieldValueResource::collection($this->fields);

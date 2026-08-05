@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Company\Expense;
+namespace App\Domains\Purchases\Http\Controllers\Company;
 
+use App\Domains\Purchases\Application\ExpenseService;
+use App\Domains\Purchases\Contracts\ExpenseReceiptManager;
+use App\Domains\Purchases\Data\PendingExpenseReceipt;
+use App\Domains\Purchases\Http\Requests\DeleteExpensesRequest;
+use App\Domains\Purchases\Http\Requests\ExpenseRequest;
+use App\Domains\Purchases\Http\Requests\UploadExpenseReceiptRequest;
+use App\Domains\Purchases\Http\Resources\ExpenseResource;
 use App\Domains\Purchases\Models\Expense;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\DeleteExpensesRequest;
-use App\Http\Requests\ExpenseRequest;
-use App\Http\Requests\UploadExpenseReceiptRequest;
-use App\Http\Resources\ExpenseResource;
-use App\Services\Document\ExpenseService;
+use App\Platform\Http\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -16,6 +18,7 @@ class ExpensesController extends Controller
 {
     public function __construct(
         private readonly ExpenseService $expenseService,
+        private readonly ExpenseReceiptManager $expenseReceiptManager,
     ) {}
 
     /**
@@ -52,7 +55,12 @@ class ExpensesController extends Controller
     {
         $this->authorize('create', Expense::class);
 
-        $expense = $this->expenseService->create($request);
+        $expense = $this->expenseService->create(
+            attributes: $request->getExpensePayload(),
+            taxes: $request->has('taxes') ? $request->input('taxes') : null,
+            receipt: $this->receipt($request),
+            customFields: $this->customFields($request),
+        );
 
         return new ExpenseResource($expense);
     }
@@ -80,7 +88,14 @@ class ExpensesController extends Controller
     {
         $this->authorize('update', $expense);
 
-        $expense = $this->expenseService->update($expense, $request);
+        $expense = $this->expenseService->update(
+            expense: $expense,
+            attributes: $request->getExpensePayload(),
+            taxes: $request->has('taxes') ? $request->input('taxes') : null,
+            receipt: $this->receipt($request),
+            removeReceipt: (bool) $request->input('is_attachment_receipt_removed', false),
+            customFields: $this->customFields($request),
+        );
 
         return new ExpenseResource($expense);
     }
@@ -104,15 +119,13 @@ class ExpensesController extends Controller
     {
         $this->authorize('view', $expense);
 
-        if ($expense) {
-            $media = $expense->getFirstMedia('receipts');
+        $receipt = $this->expenseReceiptManager->first($expense);
 
-            if ($media) {
-                return response()->file($media->getPath());
-            }
-
-            return respondJson('receipt_does_not_exist', 'Receipt does not exist.');
+        if ($receipt) {
+            return response()->file($receipt->path);
         }
+
+        return respondJson('receipt_does_not_exist', 'Receipt does not exist.');
     }
 
     public function uploadReceipt(UploadExpenseReceiptRequest $request, Expense $expense)
@@ -122,13 +135,12 @@ class ExpensesController extends Controller
         $data = json_decode($request->attachment_receipt);
 
         if ($data) {
-            if ($request->type === 'edit') {
-                $expense->clearMediaCollection('receipts');
-            }
-
-            $expense->addMediaFromBase64($data->data)
-                ->usingFileName($data->name)
-                ->toMediaCollection('receipts');
+            $this->expenseReceiptManager->attachBase64(
+                $expense,
+                $data->data,
+                $data->name,
+                $request->type === 'edit',
+            );
         }
 
         return response()->json([
@@ -140,21 +152,49 @@ class ExpensesController extends Controller
     {
         $this->authorize('view', $expense);
 
-        if ($expense) {
-            $media = $expense->getFirstMedia('receipts');
-            if ($media) {
-                $imagePath = $media->getPath();
-                $response = \Response::download($imagePath, $media->file_name);
-                if (ob_get_contents()) {
-                    ob_end_clean();
-                }
+        $receipt = $this->expenseReceiptManager->first($expense);
 
-                return $response;
+        if ($receipt) {
+            $response = response()->download($receipt->path, $receipt->fileName);
+            if (ob_get_contents()) {
+                ob_end_clean();
             }
+
+            return $response;
         }
 
         return response()->json([
             'error' => 'receipt_not_found',
         ]);
+    }
+
+    /** @return array<int, mixed>|null */
+    private function customFields(ExpenseRequest $request): ?array
+    {
+        $customFields = $request->input('customFields');
+
+        if (! $customFields) {
+            return null;
+        }
+
+        if (is_string($customFields)) {
+            $customFields = json_decode($customFields);
+        }
+
+        return is_array($customFields) ? $customFields : null;
+    }
+
+    private function receipt(ExpenseRequest $request): ?PendingExpenseReceipt
+    {
+        $receipt = $request->file('attachment_receipt');
+
+        if (! $receipt) {
+            return null;
+        }
+
+        return new PendingExpenseReceipt(
+            $receipt->getPathname(),
+            $receipt->getClientOriginalName(),
+        );
     }
 }

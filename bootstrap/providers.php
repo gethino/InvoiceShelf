@@ -3,6 +3,7 @@
 use App\Domains\Catalog\CatalogServiceProvider;
 use App\Domains\Metadata\MetadataServiceProvider;
 use App\Domains\Money\MoneyServiceProvider;
+use App\Domains\Purchases\PurchasesServiceProvider;
 use App\Domains\Reporting\ReportingServiceProvider;
 use App\Domains\Taxation\TaxationServiceProvider;
 use App\Platform\Ai\AiServiceProvider;
@@ -27,6 +28,7 @@ return [
     CatalogServiceProvider::class,
     MetadataServiceProvider::class,
     MoneyServiceProvider::class,
+    PurchasesServiceProvider::class,
     TaxationServiceProvider::class,
     ReportingServiceProvider::class,
     AiServiceProvider::class,

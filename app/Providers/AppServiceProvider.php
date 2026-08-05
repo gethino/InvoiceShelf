@@ -12,7 +12,6 @@ use App\Policies\CreditNotePolicy;
 use App\Policies\CustomerPolicy;
 use App\Policies\DashboardPolicy;
 use App\Policies\EstimatePolicy;
-use App\Policies\ExpensePolicy;
 use App\Policies\InvoicePolicy;
 use App\Policies\OwnerPolicy;
 use App\Policies\PaymentPolicy;
@@ -151,7 +150,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('delete multiple users', [UserPolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple invoices', [InvoicePolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple estimates', [EstimatePolicy::class, 'deleteMultiple']);
-        Gate::define('delete multiple expenses', [ExpensePolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple payments', [PaymentPolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple recurring invoices', [RecurringInvoicePolicy::class, 'deleteMultiple']);
 

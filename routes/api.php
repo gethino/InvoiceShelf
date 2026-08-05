@@ -15,8 +15,6 @@ use App\Http\Controllers\Company\Customer\SendCustomerStatementController;
 use App\Http\Controllers\Company\Dashboard\DashboardController;
 use App\Http\Controllers\Company\Estimate\EstimatesController;
 use App\Http\Controllers\Company\Estimate\EstimateTemplatesController;
-use App\Http\Controllers\Company\Expense\ExpenseCategoriesController;
-use App\Http\Controllers\Company\Expense\ExpensesController;
 use App\Http\Controllers\Company\General\BootstrapController;
 use App\Http\Controllers\Company\General\ConfigController;
 use App\Http\Controllers\Company\General\FormatsController;
@@ -41,7 +39,6 @@ use App\Http\Controllers\CustomerPortal\Auth\ForgotPasswordController as AuthFor
 use App\Http\Controllers\CustomerPortal\Auth\ResetPasswordController as AuthResetPasswordController;
 use App\Http\Controllers\CustomerPortal\Estimate\AcceptEstimateController as CustomerAcceptEstimateController;
 use App\Http\Controllers\CustomerPortal\Estimate\EstimatesController as CustomerEstimatesController;
-use App\Http\Controllers\CustomerPortal\Expense\ExpensesController as CustomerExpensesController;
 use App\Http\Controllers\CustomerPortal\General\BootstrapController as CustomerBootstrapController;
 use App\Http\Controllers\CustomerPortal\General\DashboardController as CustomerDashboardController;
 use App\Http\Controllers\CustomerPortal\General\ProfileController as CustomerProfileController;
@@ -262,15 +259,7 @@ Route::prefix('/v1')->group(function () {
             // Expenses
             // ----------------------------------
 
-            Route::get('/expenses/{expense}/show/receipt', [ExpensesController::class, 'showReceipt']);
-
-            Route::post('/expenses/{expense}/upload/receipts', [ExpensesController::class, 'uploadReceipt']);
-
-            Route::post('/expenses/delete', [ExpensesController::class, 'delete']);
-
-            Route::apiResource('expenses', ExpensesController::class);
-
-            Route::apiResource('categories', ExpenseCategoriesController::class);
+            require app_path('Domains/Purchases/routes/company.php');
 
             // Payments
             // ----------------------------------
@@ -412,9 +401,7 @@ Route::prefix('/v1')->group(function () {
 
             Route::get('/payment-method', PaymentMethodController::class);
 
-            Route::get('expenses', [CustomerExpensesController::class, 'index']);
-
-            Route::get('expenses/{id}', [CustomerExpensesController::class, 'show']);
+            require app_path('Domains/Purchases/routes/customer.php');
 
             Route::post('/profile', [CustomerProfileController::class, 'updateProfile']);
 

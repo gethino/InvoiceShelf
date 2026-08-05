@@ -2,11 +2,11 @@
 
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\User;
+use App\Domains\Purchases\Http\Controllers\Company\ExpensesController;
+use App\Domains\Purchases\Http\Requests\ExpenseRequest;
 use App\Domains\Purchases\Models\Expense;
 use App\Domains\Taxation\Models\Tax;
 use App\Domains\Taxation\Models\TaxType;
-use App\Http\Controllers\Company\Expense\ExpensesController;
-use App\Http\Requests\ExpenseRequest;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Sanctum\Sanctum;
 

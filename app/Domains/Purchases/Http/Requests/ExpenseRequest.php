@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Domains\Purchases\Http\Requests;
 
 use App\Domains\Accounts\Models\CompanySetting;
 use App\Domains\Taxation\Models\TaxType;

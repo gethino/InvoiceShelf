@@ -3,7 +3,6 @@
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanyInvitation;
 use App\Http\Controllers\Company\Auth\LoginController;
-use App\Http\Controllers\Company\Expense\ExpensesController;
 use App\Http\Controllers\CustomerPortal\Auth\LoginController as CustomerLoginController;
 use App\Http\Controllers\CustomerPortal\EstimatePdfController as CustomerEstimatePdfController;
 use App\Http\Controllers\CustomerPortal\InvoicePdfController as CustomerInvoicePdfController;
@@ -38,10 +37,7 @@ Route::post('/{company:slug}/customer/logout', function () {
 Route::middleware('auth:sanctum')->prefix('reports')->group(function () {
     require app_path('Domains/Reporting/routes/web.php');
 
-    // download expense receipt
-    // -------------------------------------------------
-    Route::get('/expenses/{expense}/download-receipt', [ExpensesController::class, 'downloadReceipt']);
-    Route::get('/expenses/{expense}/receipt', [ExpensesController::class, 'showReceipt']);
+    require app_path('Domains/Purchases/routes/web.php');
 });
 
 // PDF Endpoints

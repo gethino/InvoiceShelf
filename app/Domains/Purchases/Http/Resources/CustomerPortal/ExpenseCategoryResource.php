@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Resources\Customer;
+namespace App\Domains\Purchases\Http\Resources\CustomerPortal;
 
+use App\Http\Resources\Customer\CompanyResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

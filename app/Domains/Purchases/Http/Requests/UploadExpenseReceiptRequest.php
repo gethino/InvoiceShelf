@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Domains\Purchases\Http\Requests;
 
+use App\Rules\Base64Mime;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class DeleteExpensesRequest extends FormRequest
+class UploadExpenseReceiptRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,12 +21,9 @@ class DeleteExpensesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ids' => [
-                'required',
-            ],
-            'ids.*' => [
-                'required',
-                Rule::exists('expenses', 'id'),
+            'attachment_receipt' => [
+                'nullable',
+                new Base64Mime(['gif', 'jpg', 'png']),
             ],
         ];
     }

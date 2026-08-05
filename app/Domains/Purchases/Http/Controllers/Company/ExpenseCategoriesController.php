@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Company\Expense;
+namespace App\Domains\Purchases\Http\Controllers\Company;
 
+use App\Domains\Purchases\Http\Requests\ExpenseCategoryRequest;
+use App\Domains\Purchases\Http\Resources\ExpenseCategoryResource;
 use App\Domains\Purchases\Models\ExpenseCategory;
-use App\ExpensesCategory;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ExpenseCategoryRequest;
-use App\Http\Resources\ExpenseCategoryResource;
+use App\Platform\Http\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -77,7 +76,6 @@ class ExpenseCategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  ExpensesCategory  $category
      * @return Response
      */
     public function destroy(ExpenseCategory $category)

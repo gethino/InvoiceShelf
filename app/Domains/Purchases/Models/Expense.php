@@ -53,13 +53,6 @@ class Expense extends Model implements HasMedia
         ];
     }
 
-    protected static function booted(): void
-    {
-        static::deleting(function (Expense $expense): void {
-            $expense->taxes()->delete();
-        });
-    }
-
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('receipts');
