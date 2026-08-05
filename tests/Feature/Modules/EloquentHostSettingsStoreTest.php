@@ -53,3 +53,19 @@ test('host settings store scopes company values and deletion to the supplied com
     expect($store->getCompany($companyA->id, 'ai.api_key', 'fallback'))->toBe('fallback')
         ->and($store->getCompany($companyB->id, 'ai.api_key'))->toBe('company-b-opaque-value');
 });
+
+test('host settings store deletes one key across every company without touching other keys', function () {
+    $store = new EloquentHostSettingsStore;
+    $companyA = Company::firstOrFail();
+    $companyB = Company::factory()->create();
+
+    $store->putCompany($companyA->id, 'ai.chat_enabled', true);
+    $store->putCompany($companyB->id, 'ai.chat_enabled', false);
+    $store->putCompany($companyB->id, 'unrelated.setting', 'kept');
+
+    $store->deleteCompanyForAll('ai.chat_enabled');
+
+    expect($store->getCompany($companyA->id, 'ai.chat_enabled', 'missing'))->toBe('missing')
+        ->and($store->getCompany($companyB->id, 'ai.chat_enabled', 'missing'))->toBe('missing')
+        ->and($store->getCompany($companyB->id, 'unrelated.setting'))->toBe('kept');
+});

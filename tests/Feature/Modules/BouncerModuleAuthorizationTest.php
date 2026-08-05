@@ -30,11 +30,13 @@ test('module authorization resolves stable resource keys within the supplied com
 
     hostGrant($user, $companyA->id, 'view-item', Item::class);
     hostGrant($user, $companyA->id, 'dashboard');
+    BouncerFacade::scope()->to($companyA->id);
 
     expect($authorization->allows($user->id, $companyA->id, 'view-item', 'item'))->toBeTrue()
         ->and($authorization->allows($user->id, $companyA->id, 'dashboard'))->toBeTrue()
         ->and($authorization->allows($user->id, $companyB->id, 'view-item', 'item'))->toBeFalse()
-        ->and($authorization->allows($user->id, $companyA->id, 'view-item', 'invoice'))->toBeFalse();
+        ->and($authorization->allows($user->id, $companyA->id, 'view-item', 'invoice'))->toBeFalse()
+        ->and(BouncerFacade::scope()->appendToCacheKey('scope'))->toBe('scope-'.$companyA->id);
 });
 
 test('module authorization refuses users outside the company and unknown stable resource keys', function () {

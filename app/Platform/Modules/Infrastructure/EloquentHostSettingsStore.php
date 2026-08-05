@@ -44,4 +44,9 @@ class EloquentHostSettingsStore implements SettingsStore
             ->where('option', $key)
             ->delete();
     }
+
+    public function deleteCompanyForAll(string $key): void
+    {
+        CompanySetting::query()->where('option', $key)->delete();
+    }
 }

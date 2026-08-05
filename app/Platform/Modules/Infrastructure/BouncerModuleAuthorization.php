@@ -34,16 +34,15 @@ class BouncerModuleAuthorization implements ModuleAuthorization
             return false;
         }
 
-        // Module calls are not necessarily made from an HTTP request, so they
-        // cannot rely on ScopeBouncer middleware having established this scope.
-        BouncerFacade::scope()->to($companyId);
-
         if ($resource === null) {
-            return $user->can($ability);
+            return BouncerFacade::scope()->onceTo($companyId, fn (): bool => $user->can($ability));
         }
 
         $model = self::RESOURCE_MODELS[$resource] ?? throw new LogicException("Unknown module resource: {$resource}");
 
-        return $user->can($ability, $model);
+        // Module calls are not necessarily made from an HTTP request, so they
+        // cannot rely on ScopeBouncer middleware having established this scope.
+        // Keep the caller's scope intact for long-running workers and tests.
+        return BouncerFacade::scope()->onceTo($companyId, fn (): bool => $user->can($ability, $model));
     }
 }
