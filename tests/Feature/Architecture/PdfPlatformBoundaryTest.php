@@ -16,7 +16,7 @@ test('the pdf platform owns rendering configuration fonts and authorization', fu
         ->and(app('pdf.driver'))->toBeInstanceOf(PdfService::class)
         ->and(app(PdfConfigurator::class))->toBeInstanceOf(PdfConfigurationService::class)
         ->and(Gate::has('manage pdf config'))->toBeTrue()
-        ->and(Artisan::all())->toHaveKey('make:template');
+        ->and(Artisan::all())->toHaveKeys(['make:template', 'pdf:compare']);
 
     expect(class_exists('App\\Providers\\PdfServiceProvider'))->toBeFalse()
         ->and(class_exists('App\\Services\\FontService'))->toBeFalse()
@@ -24,6 +24,8 @@ test('the pdf platform owns rendering configuration fonts and authorization', fu
         ->and(class_exists('App\\Http\\Controllers\\Admin\\FontController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Admin\\Settings\\PDFConfigurationController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Requests\\PDFConfigurationRequest'))->toBeFalse()
+        ->and(class_exists('App\\Console\\Commands\\ComparePdfDriversCommand'))->toBeFalse()
+        ->and(trait_exists('App\\Traits\\GeneratesPdfTrait'))->toBeFalse()
         ->and(is_dir(app_path('Support/Pdf')))->toBeFalse();
 });
 

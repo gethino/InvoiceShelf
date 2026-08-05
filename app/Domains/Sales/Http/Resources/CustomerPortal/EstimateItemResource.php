@@ -2,8 +2,8 @@
 
 namespace App\Domains\Sales\Http\Resources\CustomerPortal;
 
-use App\Http\Resources\Customer\CustomFieldValueResource;
-use App\Http\Resources\Customer\TaxResource;
+use App\Domains\Metadata\Http\Resources\CustomerPortal\CustomFieldValueResource;
+use App\Domains\Taxation\Http\Resources\CustomerPortal\TaxResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

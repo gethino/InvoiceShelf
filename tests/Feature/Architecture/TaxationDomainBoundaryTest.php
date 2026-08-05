@@ -14,7 +14,9 @@ test('the taxation domain owns tax-type authorization and HTTP adapters', functi
         ->and(class_exists('App\\Http\\Controllers\\Company\\Settings\\TaxTypesController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Requests\\TaxTypeRequest'))->toBeFalse()
         ->and(class_exists('App\\Http\\Resources\\TaxTypeResource'))->toBeFalse()
-        ->and(class_exists('App\\Http\\Resources\\TaxResource'))->toBeFalse();
+        ->and(class_exists('App\\Http\\Resources\\TaxResource'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Resources\\Customer\\TaxTypeResource'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Resources\\Customer\\TaxResource'))->toBeFalse();
 });
 
 test('the taxation domain preserves tax-type routes and middleware', function () {

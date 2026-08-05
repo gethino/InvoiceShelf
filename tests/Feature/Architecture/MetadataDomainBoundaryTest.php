@@ -28,6 +28,8 @@ test('the metadata domain owns custom fields notes and authorization', function 
         ->and(class_exists('App\\Http\\Requests\\NotesRequest'))->toBeFalse()
         ->and(class_exists('App\\Http\\Resources\\CustomFieldResource'))->toBeFalse()
         ->and(class_exists('App\\Http\\Resources\\CustomFieldValueResource'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Resources\\Customer\\CustomFieldResource'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Resources\\Customer\\CustomFieldValueResource'))->toBeFalse()
         ->and(class_exists('App\\Http\\Resources\\NoteResource'))->toBeFalse()
         ->and(class_exists('App\\Http\\Resources\\CustomFieldCollection'))->toBeFalse()
         ->and(class_exists('App\\Http\\Resources\\CustomFieldValueCollection'))->toBeFalse()

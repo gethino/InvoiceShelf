@@ -65,6 +65,8 @@ test('the accounts domain owns account behavior and authorization', function () 
         ->and(class_exists('App\\Http\\Controllers\\Company\\Role\\RolesController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Company\\Settings\\CompanyController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Resources\\CompanyCollection'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Resources\\Customer\\CompanyResource'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Resources\\Customer\\UserResource'))->toBeFalse()
         ->and(class_exists('App\\Http\\Resources\\RoleCollection'))->toBeFalse()
         ->and(class_exists('App\\Http\\Resources\\UserCollection'))->toBeFalse();
 });

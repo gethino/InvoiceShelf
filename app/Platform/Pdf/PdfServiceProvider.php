@@ -3,6 +3,7 @@
 namespace App\Platform\Pdf;
 
 use App\Platform\Pdf\Application\PdfConfigurationService;
+use App\Platform\Pdf\Console\ComparePdfDriversCommand;
 use App\Platform\Pdf\Console\CreateTemplateCommand;
 use App\Platform\Pdf\Contracts\PdfConfigurator;
 use App\Platform\Pdf\Policies\PdfAccessPolicy;
@@ -30,6 +31,7 @@ class PdfServiceProvider extends ServiceProvider
         View::addNamespace('pdf_templates', storage_path('app/templates/pdf'));
 
         $this->commands([
+            ComparePdfDriversCommand::class,
             CreateTemplateCommand::class,
         ]);
     }

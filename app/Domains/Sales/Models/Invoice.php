@@ -14,10 +14,10 @@ use App\Domains\Receivables\Models\Transaction;
 use App\Domains\Sales\Contracts\InvoicePdfDataProvider;
 use App\Domains\Taxation\Models\Tax;
 use App\Platform\Mail\Models\EmailLog;
+use App\Platform\Pdf\Concerns\GeneratesPdf;
 use App\Platform\Pdf\Rendering\PdfHtmlSanitizer;
 use App\Platform\Pdf\Rendering\PdfTemplateUtils;
 use App\Support\SafeOrderBy;
-use App\Traits\GeneratesPdfTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -34,7 +34,7 @@ class Invoice extends Model implements HasMedia
 {
     protected $table = 'invoices';
 
-    use GeneratesPdfTrait;
+    use GeneratesPdf;
     use HasCustomFields;
     use HasFactory;
     use InteractsWithMedia;

@@ -26,11 +26,51 @@ test('the operations platform owns runtime configuration commands and authorizat
         ->and(class_exists('App\\Http\\Controllers\\AppVersionController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Admin\\UpdateController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Admin\\Settings\\SettingsController'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Controllers\\Admin\\AdminDashboardController'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Controllers\\Company\\General\\BootstrapController'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Controllers\\Company\\General\\ConfigController'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Controllers\\Company\\General\\FormatsController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Webhook\\CronJobController'))->toBeFalse()
         ->and(class_exists('App\\Support\\Setup\\InstallUtils'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Setup\\LoginController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Middleware\\InstallationMiddleware'))->toBeFalse()
         ->and(class_exists('App\\Http\\Requests\\DatabaseEnvironmentRequest'))->toBeFalse();
+});
+
+test('the operations platform owns bootstrap configuration and admin diagnostics routes', function () {
+    $routes = collect(Route::getRoutes()->getRoutes())
+        ->filter(fn ($route): bool => in_array($route->uri(), [
+            'api/v1/bootstrap',
+            'api/v1/config',
+            'api/v1/current-company',
+            'api/v1/date/formats',
+            'api/v1/super-admin/dashboard',
+            'api/v1/time/formats',
+            'api/v1/timezones',
+        ], true))
+        ->keyBy(fn ($route): string => implode('|', $route->methods()).' '.$route->uri());
+
+    expect($routes->keys()->sort()->values()->all())->toBe(collect([
+        'GET|HEAD api/v1/bootstrap',
+        'GET|HEAD api/v1/config',
+        'GET|HEAD api/v1/current-company',
+        'GET|HEAD api/v1/date/formats',
+        'GET|HEAD api/v1/super-admin/dashboard',
+        'GET|HEAD api/v1/time/formats',
+        'GET|HEAD api/v1/timezones',
+    ])->sort()->values()->all());
+
+    foreach ($routes as $route) {
+        expect($route->getActionName())->toStartWith('App\\Platform\\Operations\\Http\\')
+            ->and($route->gatherMiddleware())->toContain('auth:sanctum');
+    }
+
+    expect($routes->get('GET|HEAD api/v1/super-admin/dashboard')->gatherMiddleware())
+        ->toContain('super-admin')
+        ->and($routes->except('GET|HEAD api/v1/super-admin/dashboard')->every(
+            fn ($route): bool => in_array('company', $route->gatherMiddleware(), true)
+                && in_array('bouncer', $route->gatherMiddleware(), true),
+        ))->toBeTrue();
 });
 
 test('the operations platform preserves its public routes and middleware', function () {

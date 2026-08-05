@@ -10,6 +10,7 @@ test('the reporting domain owns report queries rendering and authorization', fun
     expect(app()->getProviders(ReportingServiceProvider::class))->toHaveCount(1)
         ->and(app(CustomerStatementQuery::class))->toBeInstanceOf(CustomerStatementQuery::class)
         ->and(app(CustomerStatementPdfRenderer::class))->toBeInstanceOf(CustomerStatementPdfRenderer::class)
+        ->and(Gate::has('view dashboard'))->toBeTrue()
         ->and(Gate::has('view report'))->toBeTrue();
 
     expect(class_exists('App\\Policies\\ReportPolicy'))->toBeFalse()
@@ -21,12 +22,32 @@ test('the reporting domain owns report queries rendering and authorization', fun
         ->and(class_exists('App\\Mail\\SendCustomerStatementMail'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Company\\Customer\\CustomerStatementController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Company\\Customer\\SendCustomerStatementController'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Controllers\\Company\\Dashboard\\DashboardController'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Controllers\\Company\\General\\SearchController'))->toBeFalse()
+        ->and(class_exists('App\\Policies\\DashboardPolicy'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Company\\Report\\CustomerSalesReportController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Company\\Report\\CustomerStatementReportController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Company\\Report\\ExpensesReportController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Company\\Report\\ItemSalesReportController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Company\\Report\\ProfitLossReportController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Company\\Report\\TaxSummaryReportController'))->toBeFalse();
+});
+
+test('the reporting domain owns dashboard and search projections', function () {
+    $routes = collect(Route::getRoutes()->getRoutes())
+        ->filter(fn ($route): bool => in_array($route->uri(), [
+            'api/v1/dashboard',
+            'api/v1/search',
+            'api/v1/search/user',
+        ], true));
+
+    expect($routes)->toHaveCount(3);
+
+    foreach ($routes as $route) {
+        expect($route->getActionName())
+            ->toStartWith('App\\Domains\\Reporting\\Http\\Controllers\\Company\\')
+            ->and($route->gatherMiddleware())->toContain('auth:sanctum', 'company', 'bouncer');
+    }
 });
 
 test('the reporting domain preserves customer statement api routes', function () {

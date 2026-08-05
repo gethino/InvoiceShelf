@@ -2,7 +2,7 @@
 
 namespace App\Domains\Money;
 
-use App\Adapters\Money\LegacyExchangeRateBackfill;
+use App\Adapters\Money\EloquentExchangeRateBackfill;
 use App\Domains\Money\Contracts\ExchangeRateBackfill;
 use App\Domains\Money\ExchangeRates\CurrencyConverterDriver;
 use App\Domains\Money\ExchangeRates\CurrencyFreakDriver;
@@ -18,7 +18,7 @@ class MoneyServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->bind(ExchangeRateBackfill::class, LegacyExchangeRateBackfill::class);
+        $this->app->bind(ExchangeRateBackfill::class, EloquentExchangeRateBackfill::class);
     }
 
     public function boot(): void

@@ -4,9 +4,7 @@ namespace App\Providers;
 
 use App\Platform\Operations\Installation\Application\InstallationState;
 use App\Platform\Persistence\ModelIdentityMap;
-use App\Policies\DashboardPolicy;
 use App\Support\Bouncer\BouncerDefaultScope;
-use Gate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Mail;
@@ -48,7 +46,6 @@ class AppServiceProvider extends ServiceProvider
             $this->addMenus();
         }
 
-        $this->bootAuth();
         $this->bootBroadcast();
 
         // In demo mode, prevent all outgoing emails and notifications
@@ -108,13 +105,6 @@ class AppServiceProvider extends ServiceProvider
             ->data('group', $data['group'])
             ->data('group_label', $data['group_label'] ?? '')
             ->data('priority', $data['priority'] ?? 100);
-    }
-
-    public function bootAuth()
-    {
-
-        Gate::define('view dashboard', [DashboardPolicy::class, 'view']);
-
     }
 
     public function bootBroadcast()

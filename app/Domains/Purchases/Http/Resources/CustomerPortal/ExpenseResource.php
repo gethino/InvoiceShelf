@@ -2,11 +2,11 @@
 
 namespace App\Domains\Purchases\Http\Resources\CustomerPortal;
 
+use App\Domains\Accounts\Http\Resources\CustomerPortal\CompanyResource;
 use App\Domains\Contacts\Http\Resources\CustomerPortal\CustomerResource;
+use App\Domains\Metadata\Http\Resources\CustomerPortal\CustomFieldValueResource;
+use App\Domains\Money\Http\Resources\CustomerPortal\CurrencyResource;
 use App\Domains\Receivables\Http\Resources\CustomerPortal\PaymentMethodResource;
-use App\Http\Resources\Customer\CompanyResource;
-use App\Http\Resources\Customer\CurrencyResource;
-use App\Http\Resources\Customer\CustomFieldValueResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

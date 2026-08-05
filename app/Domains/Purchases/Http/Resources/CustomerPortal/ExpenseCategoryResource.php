@@ -2,7 +2,7 @@
 
 namespace App\Domains\Purchases\Http\Resources\CustomerPortal;
 
-use App\Http\Resources\Customer\CompanyResource;
+use App\Domains\Accounts\Http\Resources\CustomerPortal\CompanyResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

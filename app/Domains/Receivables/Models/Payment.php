@@ -12,9 +12,9 @@ use App\Domains\Receivables\Contracts\PaymentPdfDataProvider;
 use App\Domains\Receivables\Jobs\GeneratePaymentPdfJob;
 use App\Domains\Sales\Models\Invoice;
 use App\Platform\Mail\Models\EmailLog;
+use App\Platform\Pdf\Concerns\GeneratesPdf;
 use App\Platform\Pdf\Rendering\PdfHtmlSanitizer;
 use App\Support\SafeOrderBy;
-use App\Traits\GeneratesPdfTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,7 +30,7 @@ class Payment extends Model implements HasMedia
 {
     protected $table = 'payments';
 
-    use GeneratesPdfTrait;
+    use GeneratesPdf;
     use HasCustomFields;
     use HasFactory;
     use InteractsWithMedia;

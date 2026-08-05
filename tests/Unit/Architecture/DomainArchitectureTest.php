@@ -40,6 +40,25 @@ test('platform code does not depend on legacy controllers', function () {
     }
 });
 
+test('legacy application layer directories contain no php classes', function () {
+    $legacyDirectories = [
+        'Console/Commands',
+        'Http/Controllers',
+        'Http/Requests',
+        'Http/Resources',
+        'Jobs',
+        'Mail',
+        'Models',
+        'Policies',
+        'Services',
+        'Traits',
+    ];
+
+    foreach ($legacyDirectories as $directory) {
+        expect(phpFilesUnder(app_path($directory)))->toBe([]);
+    }
+});
+
 test('support remains independent of domains', function () {
     foreach (phpFilesUnder(app_path('Support')) as $file) {
         expect(file_get_contents($file))->not->toContain('App\\Domains');

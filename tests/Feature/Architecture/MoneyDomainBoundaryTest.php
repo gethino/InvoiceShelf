@@ -1,6 +1,6 @@
 <?php
 
-use App\Adapters\Money\LegacyExchangeRateBackfill;
+use App\Adapters\Money\EloquentExchangeRateBackfill;
 use App\Domains\Money\Contracts\ExchangeRateBackfill;
 use App\Domains\Money\ExchangeRates\CurrencyConverterDriver;
 use App\Domains\Money\ExchangeRates\CurrencyFreakDriver;
@@ -13,7 +13,7 @@ use InvoiceShelf\Modules\Registry;
 
 test('the money domain owns exchange-rate behavior and authorization', function () {
     expect(app()->getProviders(MoneyServiceProvider::class))->toHaveCount(1)
-        ->and(app(ExchangeRateBackfill::class))->toBeInstanceOf(LegacyExchangeRateBackfill::class)
+        ->and(app(ExchangeRateBackfill::class))->toBeInstanceOf(EloquentExchangeRateBackfill::class)
         ->and(Gate::getPolicyFor(ExchangeRateProvider::class))->toBeInstanceOf(ExchangeRateProviderPolicy::class)
         ->and(Registry::driverMeta('exchange_rate', 'currency_converter')['class'] ?? null)
         ->toBe(CurrencyConverterDriver::class)
@@ -28,7 +28,8 @@ test('the money domain owns exchange-rate behavior and authorization', function 
         ->and(class_exists('App\\Http\\Controllers\\Admin\\CurrenciesController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Controllers\\Company\\ExchangeRate\\ExchangeRateProviderController'))->toBeFalse()
         ->and(class_exists('App\\Http\\Requests\\ExchangeRateProviderRequest'))->toBeFalse()
-        ->and(class_exists('App\\Http\\Resources\\CurrencyResource'))->toBeFalse();
+        ->and(class_exists('App\\Http\\Resources\\CurrencyResource'))->toBeFalse()
+        ->and(class_exists('App\\Http\\Resources\\Customer\\CurrencyResource'))->toBeFalse();
 });
 
 test('the money domain preserves its public routes and middleware', function () {

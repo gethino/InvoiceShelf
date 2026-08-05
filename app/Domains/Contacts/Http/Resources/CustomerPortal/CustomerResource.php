@@ -2,9 +2,9 @@
 
 namespace App\Domains\Contacts\Http\Resources\CustomerPortal;
 
-use App\Http\Resources\Customer\CompanyResource;
-use App\Http\Resources\Customer\CurrencyResource;
-use App\Http\Resources\Customer\CustomFieldValueResource;
+use App\Domains\Accounts\Http\Resources\CustomerPortal\CompanyResource;
+use App\Domains\Metadata\Http\Resources\CustomerPortal\CustomFieldValueResource;
+use App\Domains\Money\Http\Resources\CustomerPortal\CurrencyResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

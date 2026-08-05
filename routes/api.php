@@ -1,11 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Company\Dashboard\DashboardController;
-use App\Http\Controllers\Company\General\BootstrapController;
-use App\Http\Controllers\Company\General\ConfigController;
-use App\Http\Controllers\Company\General\FormatsController;
-use App\Http\Controllers\Company\General\SearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,7 +53,7 @@ Route::prefix('/v1')->group(function () {
     // ----------------------------------
 
     Route::middleware(['auth:sanctum', 'super-admin'])->prefix('super-admin')->group(function () {
-        Route::get('dashboard', [AdminDashboardController::class, 'index']);
+        require app_path('Platform/Operations/routes/admin.php');
         require app_path('Domains/Accounts/routes/admin.php');
     });
 
@@ -71,43 +65,14 @@ Route::prefix('/v1')->group(function () {
     Route::middleware(['auth:sanctum', 'company'])->group(function () {
         Route::middleware(['bouncer'])->group(function () {
             require app_path('Domains/Accounts/routes/company.php');
-
-            // Bootstrap
-            // ----------------------------------
-
-            Route::get('/bootstrap', BootstrapController::class);
+            require app_path('Platform/Operations/routes/company.php');
 
             // Currencies
             // ----------------------------------
 
             require app_path('Domains/Money/routes/company.php');
 
-            // Dashboard
-            // ----------------------------------
-
-            Route::get('/dashboard', DashboardController::class);
-
-            // Search users
-            // ----------------------------------
-
-            Route::get('/search', SearchController::class);
-
-            Route::get('/search/user', [SearchController::class, 'users']);
-
-            // MISC
-            // ----------------------------------
-
-            Route::get('/config', ConfigController::class);
-
-            Route::get('/timezones', [FormatsController::class, 'timezones']);
-
-            Route::get('/date/formats', [FormatsController::class, 'dateFormats']);
-
-            Route::get('/time/formats', [FormatsController::class, 'timeFormats']);
-
-            Route::get('/current-company', [BootstrapController::class, 'currentCompany']);
-
-            // Customers
+            // Reporting and customers
             // ----------------------------------
 
             require app_path('Domains/Reporting/routes/company.php');
