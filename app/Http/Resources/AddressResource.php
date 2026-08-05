@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Domains\Accounts\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

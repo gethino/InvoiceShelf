@@ -2,6 +2,8 @@
 
 namespace App\Domains\Receivables\Http\Resources;
 
+use App\Domains\Accounts\Http\Resources\CompanyResource;
+use App\Http\Resources\InvoiceResource;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

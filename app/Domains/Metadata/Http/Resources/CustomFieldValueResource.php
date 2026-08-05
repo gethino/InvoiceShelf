@@ -2,8 +2,8 @@
 
 namespace App\Domains\Metadata\Http\Resources;
 
+use App\Domains\Accounts\Http\Resources\CompanyResource;
 use App\Domains\Accounts\Models\CompanySetting;
-use App\Http\Resources\CompanyResource;
 use App\Platform\Persistence\ModelIdentityMap;
 use Carbon\Carbon;
 use Illuminate\Http\Request;

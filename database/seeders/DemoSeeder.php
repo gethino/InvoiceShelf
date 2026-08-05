@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Domains\Accounts\Application\CompanyService;
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
 use App\Domains\Accounts\Models\User;
@@ -10,7 +11,6 @@ use App\Domains\Contacts\Models\Customer;
 use App\Domains\Money\Models\Currency;
 use App\Facades\Hashids;
 use App\Platform\Operations\Models\Setting;
-use App\Services\Company\CompanyService;
 use App\Support\Hashids\HashidConnection;
 use Illuminate\Database\Seeder;
 use Silber\Bouncer\BouncerFacade;

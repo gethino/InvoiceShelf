@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Accounts\AccountsServiceProvider;
 use App\Domains\Catalog\CatalogServiceProvider;
 use App\Domains\Metadata\MetadataServiceProvider;
 use App\Domains\Money\MoneyServiceProvider;
@@ -26,6 +27,7 @@ return [
     StorageServiceProvider::class,
     ViewServiceProvider::class,
     PdfServiceProvider::class,
+    AccountsServiceProvider::class,
     CatalogServiceProvider::class,
     MetadataServiceProvider::class,
     MoneyServiceProvider::class,

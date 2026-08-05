@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Domains\Accounts\Http\Resources\CompanyResource;
 use App\Domains\Metadata\Http\Resources\CustomFieldValueResource;
 use App\Domains\Money\Http\Resources\CurrencyResource;
 use Illuminate\Http\Request;

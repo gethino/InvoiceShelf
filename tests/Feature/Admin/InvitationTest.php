@@ -1,9 +1,9 @@
 <?php
 
+use App\Domains\Accounts\Mail\CompanyInvitationMail;
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanyInvitation;
 use App\Domains\Accounts\Models\User;
-use App\Mail\CompanyInvitationMail;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\Sanctum;

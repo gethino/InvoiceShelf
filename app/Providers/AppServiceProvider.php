@@ -6,17 +6,12 @@ use App\Domains\Sales\Contracts\EstimatePdfDataProvider;
 use App\Domains\Sales\Contracts\InvoicePdfDataProvider;
 use App\Platform\Operations\Installation\Application\InstallationState;
 use App\Platform\Persistence\ModelIdentityMap;
-use App\Policies\CompanyPolicy;
 use App\Policies\CreditNotePolicy;
 use App\Policies\CustomerPolicy;
 use App\Policies\DashboardPolicy;
 use App\Policies\EstimatePolicy;
 use App\Policies\InvoicePolicy;
-use App\Policies\OwnerPolicy;
 use App\Policies\RecurringInvoicePolicy;
-use App\Policies\RolePolicy;
-use App\Policies\SettingsPolicy;
-use App\Policies\UserPolicy;
 use App\Services\Document\EstimateService;
 use App\Services\Document\InvoiceService;
 use App\Support\Bouncer\BouncerDefaultScope;
@@ -27,7 +22,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\ServiceProvider;
 use Silber\Bouncer\Database\Models as BouncerModels;
-use Silber\Bouncer\Database\Role;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -63,7 +57,6 @@ class AppServiceProvider extends ServiceProvider
             $this->addMenus();
         }
 
-        Gate::policy(Role::class, RolePolicy::class);
         $this->bootAuth();
         $this->bootBroadcast();
 
@@ -132,24 +125,17 @@ class AppServiceProvider extends ServiceProvider
     public function bootAuth()
     {
 
-        Gate::define('create company', [CompanyPolicy::class, 'create']);
-        Gate::define('transfer company ownership', [CompanyPolicy::class, 'transferOwnership']);
-        Gate::define('delete company', [CompanyPolicy::class, 'delete']);
-
-        Gate::define('manage company', [SettingsPolicy::class, 'manageCompany']);
         Gate::define('send invoice', [InvoicePolicy::class, 'send']);
         Gate::define('create credit note', [CreditNotePolicy::class, 'create']);
         Gate::define('send estimate', [EstimatePolicy::class, 'send']);
 
         Gate::define('delete multiple customers', [CustomerPolicy::class, 'deleteMultiple']);
-        Gate::define('delete multiple users', [UserPolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple invoices', [InvoicePolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple estimates', [EstimatePolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple recurring invoices', [RecurringInvoicePolicy::class, 'deleteMultiple']);
 
         Gate::define('view dashboard', [DashboardPolicy::class, 'view']);
 
-        Gate::define('owner only', [OwnerPolicy::class, 'managedByOwner']);
     }
 
     public function bootBroadcast()

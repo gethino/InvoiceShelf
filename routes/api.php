@@ -1,13 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\CompaniesController;
 use App\Http\Controllers\Admin\CountriesController;
-use App\Http\Controllers\Admin\UsersController;
-use App\Http\Controllers\Company\Auth\AuthController;
-use App\Http\Controllers\Company\Auth\ForgotPasswordController;
-use App\Http\Controllers\Company\Auth\InvitationRegistrationController;
-use App\Http\Controllers\Company\Auth\ResetPasswordController;
 use App\Http\Controllers\Company\Customer\CustomersController;
 use App\Http\Controllers\Company\Customer\CustomerStatementController;
 use App\Http\Controllers\Company\Customer\CustomerStatsController;
@@ -18,20 +12,12 @@ use App\Http\Controllers\Company\Estimate\EstimateTemplatesController;
 use App\Http\Controllers\Company\General\BootstrapController;
 use App\Http\Controllers\Company\General\ConfigController;
 use App\Http\Controllers\Company\General\FormatsController;
-use App\Http\Controllers\Company\General\InvitationResponseController;
 use App\Http\Controllers\Company\General\SearchController;
 use App\Http\Controllers\Company\General\SerialNumberController;
 use App\Http\Controllers\Company\Invoice\InvoicesController;
 use App\Http\Controllers\Company\Invoice\InvoiceTemplatesController;
-use App\Http\Controllers\Company\Members\MembersController;
 use App\Http\Controllers\Company\RecurringInvoice\RecurringInvoiceController;
 use App\Http\Controllers\Company\RecurringInvoice\RecurringInvoiceFrequencyController;
-use App\Http\Controllers\Company\Role\AbilitiesController;
-use App\Http\Controllers\Company\Role\RolesController;
-use App\Http\Controllers\Company\Settings\CompanyController;
-use App\Http\Controllers\Company\Settings\CompanySettingsController;
-use App\Http\Controllers\Company\Settings\InvitationController;
-use App\Http\Controllers\Company\Settings\UserProfileController;
 use App\Http\Controllers\CustomerPortal\Auth\ForgotPasswordController as AuthForgotPasswordController;
 use App\Http\Controllers\CustomerPortal\Auth\ResetPasswordController as AuthResetPasswordController;
 use App\Http\Controllers\CustomerPortal\Estimate\AcceptEstimateController as CustomerAcceptEstimateController;
@@ -74,23 +60,7 @@ Route::prefix('/v1')->group(function () {
     // Authentication & Password Reset
     // ----------------------------------
 
-    Route::prefix('auth')->group(function () {
-        Route::post('login', [AuthController::class, 'login']);
-
-        Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-
-        // Send reset password mail
-        Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->middleware('throttle:10,2');
-
-        // handle reset password form process
-        Route::post('reset/password', [ResetPasswordController::class, 'reset']);
-    });
-
-    // Invitation Registration (public)
-    // ----------------------------------
-
-    Route::get('/invitations/{token}/details', [InvitationRegistrationController::class, 'details']);
-    Route::post('/auth/register-with-invitation', [InvitationRegistrationController::class, 'register']);
+    require app_path('Domains/Accounts/routes/public.php');
 
     // Countries
     // ----------------------------------
@@ -110,35 +80,22 @@ Route::prefix('/v1')->group(function () {
 
     Route::middleware(['auth:sanctum', 'super-admin'])->prefix('super-admin')->group(function () {
         Route::get('dashboard', [AdminDashboardController::class, 'index']);
-        Route::get('companies', [CompaniesController::class, 'index']);
-        Route::get('companies/{company}', [CompaniesController::class, 'show']);
-        Route::put('companies/{company}', [CompaniesController::class, 'update']);
-
-        Route::get('users', [UsersController::class, 'index']);
-        Route::get('users/{user}', [UsersController::class, 'show']);
-        Route::put('users/{user}', [UsersController::class, 'update']);
-        Route::post('users/{user}/impersonate', [UsersController::class, 'impersonate']);
+        require app_path('Domains/Accounts/routes/admin.php');
     });
 
     // Stop impersonation - uses auth:sanctum only (the impersonated user's token, not super-admin)
     Route::middleware(['auth:sanctum'])->prefix('super-admin')->group(function () {
-        Route::post('stop-impersonating', [UsersController::class, 'stopImpersonating']);
+        require app_path('Domains/Accounts/routes/impersonation.php');
     });
 
     Route::middleware(['auth:sanctum', 'company'])->group(function () {
         Route::middleware(['bouncer'])->group(function () {
+            require app_path('Domains/Accounts/routes/company.php');
 
             // Bootstrap
             // ----------------------------------
 
             Route::get('/bootstrap', BootstrapController::class);
-
-            // Invitations (user-scoped — respond to invitations)
-            // ----------------------------------
-
-            Route::get('/invitations/pending', [InvitationResponseController::class, 'pending']);
-            Route::post('/invitations/{invitation:token}/accept', [InvitationResponseController::class, 'accept']);
-            Route::post('/invitations/{invitation:token}/decline', [InvitationResponseController::class, 'decline']);
 
             // Currencies
             // ----------------------------------
@@ -149,11 +106,6 @@ Route::prefix('/v1')->group(function () {
             // ----------------------------------
 
             Route::get('/dashboard', DashboardController::class);
-
-            // Auth check
-            // ----------------------------------
-
-            Route::get('/auth/check', [AuthController::class, 'check']);
 
             // Search users
             // ----------------------------------
@@ -178,11 +130,6 @@ Route::prefix('/v1')->group(function () {
             Route::get('/number-placeholders', [SerialNumberController::class, 'placeholders']);
 
             Route::get('/current-company', [BootstrapController::class, 'currentCompany']);
-
-            // Company Invitations (company-scoped — send invitations)
-            // ----------------------------------
-
-            Route::apiResource('company-invitations', InvitationController::class)->only(['index', 'store', 'destroy']);
 
             // Customers
             // ----------------------------------
@@ -274,30 +221,7 @@ Route::prefix('/v1')->group(function () {
 
             require app_path('Platform/Pdf/routes/admin.php');
 
-            // Settings
-            // ----------------------------------
-
-            Route::get('/me', [UserProfileController::class, 'show']);
-
-            Route::put('/me', [UserProfileController::class, 'update']);
-
-            Route::get('/me/settings', [UserProfileController::class, 'showSettings']);
-
-            Route::put('/me/settings', [UserProfileController::class, 'updateSettings']);
-
-            Route::post('/me/upload-avatar', [UserProfileController::class, 'uploadAvatar']);
-
-            Route::put('/company', [CompanyController::class, 'updateCompany']);
-
-            Route::post('/company/upload-logo', [CompanyController::class, 'uploadCompanyLogo']);
-
-            Route::get('/company/settings', [CompanySettingsController::class, 'show']);
-
-            Route::post('/company/settings', [CompanySettingsController::class, 'update']);
-
             require app_path('Platform/Operations/routes/settings.php');
-
-            Route::get('/company/has-transactions', [CompanySettingsController::class, 'checkTransactions']);
 
             // Mails
             // ----------------------------------
@@ -311,12 +235,6 @@ Route::prefix('/v1')->group(function () {
 
             require app_path('Domains/Taxation/routes/company.php');
 
-            // Roles
-            // ----------------------------------
-
-            Route::get('abilities', AbilitiesController::class);
-
-            Route::apiResource('roles', RolesController::class);
         });
 
         // Self Update
@@ -326,23 +244,7 @@ Route::prefix('/v1')->group(function () {
 
         require app_path('Platform/Operations/routes/updater.php');
 
-        // Companies
-        // -------------------------------------------------
-
-        Route::post('companies', [CompaniesController::class, 'store']);
-
-        Route::post('/transfer/ownership/{user}', [CompanySettingsController::class, 'transferOwnership']);
-
-        Route::post('companies/delete', [CompaniesController::class, 'destroy']);
-
-        Route::get('companies', [CompaniesController::class, 'userCompanies']);
-
-        // Users
-        // ----------------------------------
-
-        Route::post('/members/delete', [MembersController::class, 'delete']);
-
-        Route::apiResource('/members', MembersController::class);
+        require app_path('Domains/Accounts/routes/management.php');
 
     });
 

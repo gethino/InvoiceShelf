@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Accounts\Application\CompanyService;
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\User;
 use App\Domains\Contacts\Models\Customer;
@@ -9,7 +10,6 @@ use App\Domains\Receivables\Models\PaymentAllocation;
 use App\Domains\Sales\Models\Invoice;
 use App\Domains\Taxation\Models\Tax;
 use App\Domains\Taxation\Models\TaxType;
-use App\Services\Company\CompanyService;
 use App\Services\CustomerService;
 use Illuminate\Support\Facades\Artisan;
 
@@ -73,7 +73,7 @@ test('company deletion removes receipt taxes through expense model events', func
         'tax_type_id' => $taxType->id,
     ]);
 
-    app(CompanyService::class)->delete($company, $user);
+    app(CompanyService::class)->delete($company);
 
     $this->assertDatabaseMissing('taxes', ['id' => $tax->id]);
 });
@@ -116,7 +116,7 @@ test('company deletion removes payment allocations before bulk payment deletion'
         'invoice_id' => $invoice->id,
     ]);
 
-    app(CompanyService::class)->delete($company, $user);
+    app(CompanyService::class)->delete($company);
 
     $this->assertDatabaseMissing('payment_allocations', ['id' => $allocation->id]);
 });

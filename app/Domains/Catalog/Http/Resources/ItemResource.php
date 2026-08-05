@@ -2,9 +2,9 @@
 
 namespace App\Domains\Catalog\Http\Resources;
 
+use App\Domains\Accounts\Http\Resources\CompanyResource;
 use App\Domains\Money\Http\Resources\CurrencyResource;
 use App\Domains\Taxation\Http\Resources\TaxResource;
-use App\Http\Resources\CompanyResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

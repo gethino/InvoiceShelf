@@ -2,9 +2,9 @@
 
 namespace App\Domains\Receivables\Http\Resources;
 
+use App\Domains\Accounts\Http\Resources\CompanyResource;
 use App\Domains\Metadata\Http\Resources\CustomFieldValueResource;
 use App\Domains\Money\Http\Resources\CurrencyResource;
-use App\Http\Resources\CompanyResource;
 use App\Http\Resources\CustomerResource;
 use App\Http\Resources\InvoiceResource;
 use Illuminate\Http\Request;

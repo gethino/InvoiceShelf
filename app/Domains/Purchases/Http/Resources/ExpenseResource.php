@@ -2,13 +2,13 @@
 
 namespace App\Domains\Purchases\Http\Resources;
 
+use App\Domains\Accounts\Http\Resources\CompanyResource;
+use App\Domains\Accounts\Http\Resources\UserResource;
 use App\Domains\Metadata\Http\Resources\CustomFieldValueResource;
 use App\Domains\Money\Http\Resources\CurrencyResource;
 use App\Domains\Receivables\Http\Resources\PaymentMethodResource;
 use App\Domains\Taxation\Http\Resources\TaxResource;
-use App\Http\Resources\CompanyResource;
 use App\Http\Resources\CustomerResource;
-use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Company\General;
 
+use App\Domains\Accounts\Http\Resources\CompanyInvitationResource;
+use App\Domains\Accounts\Http\Resources\CompanyResource;
+use App\Domains\Accounts\Http\Resources\UserResource;
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanyInvitation;
 use App\Domains\Accounts\Models\CompanySetting;
 use App\Domains\Money\Models\Currency;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CompanyInvitationResource;
-use App\Http\Resources\CompanyResource;
-use App\Http\Resources\UserResource;
 use App\Platform\Ai\Application\AiConfigurationService;
 use App\Platform\Modules\Models\Module;
 use App\Platform\Operations\Models\Setting;

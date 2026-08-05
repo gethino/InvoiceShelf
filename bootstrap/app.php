@@ -1,16 +1,16 @@
 <?php
 
-use App\Http\Middleware\Authenticate;
-use App\Http\Middleware\CompanyMiddleware;
+use App\Domains\Accounts\Http\Middleware\Authenticate;
+use App\Domains\Accounts\Http\Middleware\CompanyMiddleware;
+use App\Domains\Accounts\Http\Middleware\RedirectIfAuthenticated;
+use App\Domains\Accounts\Http\Middleware\RedirectIfUnauthorized;
+use App\Domains\Accounts\Http\Middleware\ScopeBouncer;
+use App\Domains\Accounts\Http\Middleware\SuperAdminMiddleware;
 use App\Http\Middleware\CustomerGuest;
 use App\Http\Middleware\CustomerPortalMiddleware;
 use App\Http\Middleware\CustomerRedirectIfAuthenticated;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\PreventRequestForgery;
-use App\Http\Middleware\RedirectIfAuthenticated;
-use App\Http\Middleware\RedirectIfUnauthorized;
-use App\Http\Middleware\ScopeBouncer;
-use App\Http\Middleware\SuperAdminMiddleware;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Platform\Modules\Runtime\ModuleRuntimeAutoloader;

@@ -1,25 +1,13 @@
 <?php
 
 use App\Domains\Accounts\Models\Company;
-use App\Domains\Accounts\Models\CompanyInvitation;
-use App\Http\Controllers\Company\Auth\LoginController;
 use App\Http\Controllers\CustomerPortal\Auth\LoginController as CustomerLoginController;
 use App\Http\Controllers\CustomerPortal\EstimatePdfController as CustomerEstimatePdfController;
 use App\Http\Controllers\CustomerPortal\InvoicePdfController as CustomerInvoicePdfController;
 use App\Http\Controllers\Pdf\DocumentPdfController;
 use Illuminate\Support\Facades\Route;
 
-// Admin Auth
-// ----------------------------------------------
-
-Route::post('login', [LoginController::class, 'login']);
-
-Route::post('auth/logout', function () {
-    Auth::guard('web')->logout();
-
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
-});
+require app_path('Domains/Accounts/routes/web.php');
 
 // Customer auth
 // ----------------------------------------------
@@ -41,21 +29,6 @@ Route::middleware('auth:sanctum')->prefix('reports')->group(function () {
 
 // PDF Endpoints
 // ----------------------------------------------
-
-// Invitation email link handlers
-// -------------------------------------------------
-
-Route::get('/invitations/{token}/decline', function (string $token) {
-    $invitation = CompanyInvitation::where('token', $token)->pending()->first();
-
-    if (! $invitation) {
-        return view('app')->with(['message' => 'Invitation not found or already expired.']);
-    }
-
-    $invitation->update(['status' => CompanyInvitation::STATUS_DECLINED]);
-
-    return view('app')->with(['message' => 'Invitation declined.']);
-});
 
 Route::middleware('pdf-auth')->group(function () {
 

@@ -2,6 +2,7 @@
 
 namespace App\Domains\Accounts\Models;
 
+use App\Domains\Accounts\Notifications\MailResetPasswordNotification;
 use App\Domains\Catalog\Models\Item;
 use App\Domains\Contacts\Models\Address;
 use App\Domains\Contacts\Models\Customer;
@@ -12,7 +13,6 @@ use App\Domains\Receivables\Models\Payment;
 use App\Domains\Sales\Models\Estimate;
 use App\Domains\Sales\Models\Invoice;
 use App\Domains\Sales\Models\RecurringInvoice;
-use App\Notifications\MailResetPasswordNotification;
 use App\Support\SafeOrderBy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
