@@ -4,6 +4,7 @@ namespace App\Domains\Contacts\Models;
 
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Metadata\Concerns\HasCustomFields;
 use App\Domains\Money\Models\Currency;
 use App\Domains\Purchases\Models\Expense;
 use App\Domains\Receivables\Models\Payment;
@@ -13,7 +14,6 @@ use App\Domains\Sales\Models\RecurringInvoice;
 use App\Notifications\CustomerMailResetPasswordNotification;
 use App\Platform\Mail\Models\EmailLog;
 use App\Support\SafeOrderBy;
-use App\Traits\HasCustomFieldsTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,7 +32,7 @@ class Customer extends Authenticatable implements HasMedia
     protected $table = 'customers';
 
     use HasApiTokens;
-    use HasCustomFieldsTrait;
+    use HasCustomFields;
     use HasFactory;
     use HasRolesAndAbilities;
     use InteractsWithMedia;

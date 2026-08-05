@@ -12,7 +12,6 @@ use App\Http\Controllers\Company\Customer\CustomersController;
 use App\Http\Controllers\Company\Customer\CustomerStatementController;
 use App\Http\Controllers\Company\Customer\CustomerStatsController;
 use App\Http\Controllers\Company\Customer\SendCustomerStatementController;
-use App\Http\Controllers\Company\CustomField\CustomFieldsController;
 use App\Http\Controllers\Company\Dashboard\DashboardController;
 use App\Http\Controllers\Company\Estimate\EstimatesController;
 use App\Http\Controllers\Company\Estimate\EstimateTemplatesController;
@@ -22,7 +21,6 @@ use App\Http\Controllers\Company\General\BootstrapController;
 use App\Http\Controllers\Company\General\ConfigController;
 use App\Http\Controllers\Company\General\FormatsController;
 use App\Http\Controllers\Company\General\InvitationResponseController;
-use App\Http\Controllers\Company\General\NotesController;
 use App\Http\Controllers\Company\General\SearchController;
 use App\Http\Controllers\Company\General\SerialNumberController;
 use App\Http\Controllers\Company\Invoice\InvoicesController;
@@ -292,7 +290,7 @@ Route::prefix('/v1')->group(function () {
             // Custom fields
             // ----------------------------------
 
-            Route::resource('custom-fields', CustomFieldsController::class);
+            require app_path('Domains/Metadata/routes/company.php');
 
             // Backup & Disk
             // ----------------------------------
@@ -335,8 +333,6 @@ Route::prefix('/v1')->group(function () {
             require app_path('Platform/Mail/routes/company.php');
 
             require app_path('Platform/Ai/routes/company.php');
-
-            Route::apiResource('notes', NotesController::class);
 
             // Tax Types
             // ----------------------------------

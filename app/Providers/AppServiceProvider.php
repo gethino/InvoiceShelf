@@ -14,7 +14,6 @@ use App\Policies\DashboardPolicy;
 use App\Policies\EstimatePolicy;
 use App\Policies\ExpensePolicy;
 use App\Policies\InvoicePolicy;
-use App\Policies\NotePolicy;
 use App\Policies\OwnerPolicy;
 use App\Policies\PaymentPolicy;
 use App\Policies\RecurringInvoicePolicy;
@@ -144,9 +143,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('delete company', [CompanyPolicy::class, 'delete']);
 
         Gate::define('manage company', [SettingsPolicy::class, 'manageCompany']);
-        Gate::define('manage notes', [NotePolicy::class, 'manageNotes']);
-        Gate::define('view notes', [NotePolicy::class, 'viewNotes']);
-
         Gate::define('send invoice', [InvoicePolicy::class, 'send']);
         Gate::define('create credit note', [CreditNotePolicy::class, 'create']);
         Gate::define('send estimate', [EstimatePolicy::class, 'send']);

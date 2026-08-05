@@ -5,6 +5,7 @@ namespace App\Services\Document;
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
 use App\Domains\Contacts\Models\Customer;
+use App\Domains\Metadata\Contracts\CustomFieldValueWriter;
 use App\Domains\Money\Models\ExchangeRateLog;
 use App\Domains\Sales\Models\Invoice;
 use App\Domains\Sales\Models\RecurringInvoice;
@@ -19,6 +20,7 @@ class RecurringInvoiceService
     public function __construct(
         private readonly DocumentItemService $documentItemService,
         private readonly InvoiceService $invoiceService,
+        private readonly CustomFieldValueWriter $customFieldValueWriter,
     ) {}
 
     public function create(RecurringInvoiceRequest $request): RecurringInvoice
@@ -38,7 +40,7 @@ class RecurringInvoiceService
         }
 
         if ($request->customFields) {
-            $recurringInvoice->addCustomFields($request->customFields);
+            $this->customFieldValueWriter->attach($recurringInvoice, $request->customFields);
         }
 
         return $recurringInvoice;
@@ -65,7 +67,7 @@ class RecurringInvoiceService
         }
 
         if ($request->customFields) {
-            $recurringInvoice->updateCustomFields($request->customFields);
+            $this->customFieldValueWriter->update($recurringInvoice, $request->customFields);
         }
 
         return $recurringInvoice;
@@ -192,7 +194,7 @@ class RecurringInvoiceService
                 ];
             }
 
-            $invoice->addCustomFields($customField);
+            $this->customFieldValueWriter->attach($invoice, $customField);
         }
 
         if ($recurringInvoice->send_automatically == true) {

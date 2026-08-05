@@ -2,6 +2,7 @@
 
 namespace App\Services\Document;
 
+use App\Domains\Metadata\Contracts\CustomFieldValueWriter;
 use App\Domains\Sales\Models\Invoice;
 use App\Domains\Sales\Models\InvoiceItem;
 use App\Facades\Hashids;
@@ -35,6 +36,7 @@ class CreditNoteService
     public function __construct(
         private readonly DocumentItemService $documentItemService,
         private readonly InvoiceBalanceService $invoiceBalanceService,
+        private readonly CustomFieldValueWriter $customFieldValueWriter,
     ) {}
 
     /**
@@ -262,7 +264,7 @@ class CreditNoteService
                 ];
             }
 
-            $creditNote->addCustomFields($customFields);
+            $this->customFieldValueWriter->attach($creditNote, $customFields);
         }
 
         return $creditNote;

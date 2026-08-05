@@ -2,11 +2,16 @@
 
 namespace App\Services\Document;
 
+use App\Domains\Metadata\Contracts\CustomFieldValueWriter;
 use App\Support\DocumentTotals;
 use Illuminate\Database\Eloquent\Model;
 
 class DocumentItemService
 {
+    public function __construct(
+        private readonly CustomFieldValueWriter $customFieldValueWriter,
+    ) {}
+
     /**
      * Company-currency columns and the column each one is derived from.
      */
@@ -79,7 +84,7 @@ class DocumentItemService
             }
 
             if (array_key_exists('custom_fields', $item) && $item['custom_fields']) {
-                $createdItem->addCustomFields($item['custom_fields']);
+                $this->customFieldValueWriter->attach($createdItem, $item['custom_fields']);
             }
         }
     }

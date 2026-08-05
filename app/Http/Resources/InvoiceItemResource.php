@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Domains\Metadata\Http\Resources\CustomFieldValueResource;
 use App\Domains\Taxation\Http\Resources\TaxResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

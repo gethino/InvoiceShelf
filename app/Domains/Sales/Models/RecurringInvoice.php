@@ -6,10 +6,10 @@ use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
 use App\Domains\Accounts\Models\User;
 use App\Domains\Contacts\Models\Customer;
+use App\Domains\Metadata\Concerns\HasCustomFields;
 use App\Domains\Money\Models\Currency;
 use App\Domains\Taxation\Models\Tax;
 use App\Support\SafeOrderBy;
-use App\Traits\HasCustomFieldsTrait;
 use Carbon\Carbon;
 use Cron;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +21,7 @@ class RecurringInvoice extends Model
 {
     protected $table = 'recurring_invoices';
 
-    use HasCustomFieldsTrait;
+    use HasCustomFields;
     use HasFactory;
 
     protected $guarded = [

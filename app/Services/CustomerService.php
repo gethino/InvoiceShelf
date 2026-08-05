@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Domains\Accounts\Models\CompanySetting;
 use App\Domains\Contacts\Models\Customer;
+use App\Domains\Metadata\Contracts\CustomFieldValueWriter;
 use App\Domains\Purchases\Models\Expense;
 use App\Domains\Receivables\Models\Payment;
 use App\Domains\Receivables\Models\PaymentAllocation;
@@ -15,6 +16,10 @@ use Illuminate\Validation\ValidationException;
 
 class CustomerService
 {
+    public function __construct(
+        private readonly CustomFieldValueWriter $customFieldValueWriter,
+    ) {}
+
     public function create(Request $request): Customer
     {
         $customer = Customer::create($request->getCustomerPayload());
@@ -34,7 +39,7 @@ class CustomerService
         $customFields = $request->customFields;
 
         if ($customFields) {
-            $customer->addCustomFields($customFields);
+            $this->customFieldValueWriter->attach($customer, $customFields);
         }
 
         return Customer::with('billingAddress', 'shippingAddress', 'fields')->find($customer->id);
@@ -72,7 +77,7 @@ class CustomerService
         $customFields = $request->customFields;
 
         if ($customFields) {
-            $customer->updateCustomFields($customFields);
+            $this->customFieldValueWriter->update($customer, $customFields);
         }
 
         return Customer::with('billingAddress', 'shippingAddress', 'fields')->find($customer->id);

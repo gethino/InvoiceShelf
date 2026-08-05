@@ -5,6 +5,7 @@ namespace App\Domains\Accounts\Models;
 use App\Domains\Catalog\Models\Item;
 use App\Domains\Contacts\Models\Address;
 use App\Domains\Contacts\Models\Customer;
+use App\Domains\Metadata\Concerns\HasCustomFields;
 use App\Domains\Money\Models\Currency;
 use App\Domains\Purchases\Models\Expense;
 use App\Domains\Receivables\Models\Payment;
@@ -13,7 +14,6 @@ use App\Domains\Sales\Models\Invoice;
 use App\Domains\Sales\Models\RecurringInvoice;
 use App\Notifications\MailResetPasswordNotification;
 use App\Support\SafeOrderBy;
-use App\Traits\HasCustomFieldsTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -34,7 +34,7 @@ class User extends Authenticatable implements HasMedia
     protected $table = 'users';
 
     use HasApiTokens;
-    use HasCustomFieldsTrait;
+    use HasCustomFields;
     use HasFactory;
     use HasRolesAndAbilities;
     use InteractsWithMedia;

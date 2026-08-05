@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Company\General;
+namespace App\Domains\Metadata\Http\Controllers;
 
+use App\Domains\Metadata\Http\Requests\NotesRequest;
+use App\Domains\Metadata\Http\Resources\NoteResource;
 use App\Domains\Metadata\Models\Note;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\NotesRequest;
-use App\Http\Resources\NoteResource;
+use App\Platform\Http\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 

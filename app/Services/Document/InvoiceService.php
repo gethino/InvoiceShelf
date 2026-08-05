@@ -5,6 +5,7 @@ namespace App\Services\Document;
 use App;
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Metadata\Contracts\CustomFieldValueWriter;
 use App\Domains\Metadata\Models\CustomField;
 use App\Domains\Money\Models\ExchangeRateLog;
 use App\Domains\Sales\Contracts\InvoicePdfDataProvider;
@@ -29,6 +30,7 @@ class InvoiceService implements InvoicePdfDataProvider
         private readonly DocumentItemService $documentItemService,
         private readonly CreditNoteService $creditNoteService,
         private readonly MailConfigurator $mailConfigurator,
+        private readonly CustomFieldValueWriter $customFieldValueWriter,
     ) {}
 
     public function create(Request $request): Invoice
@@ -66,7 +68,7 @@ class InvoiceService implements InvoicePdfDataProvider
         }
 
         if ($request->customFields) {
-            $invoice->addCustomFields($request->customFields);
+            $this->customFieldValueWriter->attach($invoice, $request->customFields);
         }
 
         return Invoice::with([
@@ -150,7 +152,7 @@ class InvoiceService implements InvoicePdfDataProvider
         }
 
         if ($request->customFields) {
-            $invoice->updateCustomFields($request->customFields);
+            $this->customFieldValueWriter->update($invoice, $request->customFields);
         }
 
         return Invoice::with([
@@ -405,7 +407,7 @@ class InvoiceService implements InvoicePdfDataProvider
                 ];
             }
 
-            $newInvoice->addCustomFields($customFields);
+            $this->customFieldValueWriter->attach($newInvoice, $customFields);
         }
 
         return $newInvoice;
@@ -473,7 +475,7 @@ class InvoiceService implements InvoicePdfDataProvider
                 ];
             }
 
-            $estimate->addCustomFields($customFields);
+            $this->customFieldValueWriter->attach($estimate, $customFields);
         }
 
         return $estimate;

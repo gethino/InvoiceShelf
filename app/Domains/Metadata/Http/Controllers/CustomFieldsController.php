@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Company\CustomField;
+namespace App\Domains\Metadata\Http\Controllers;
 
+use App\Domains\Metadata\Application\CustomFieldService;
+use App\Domains\Metadata\Http\Requests\CustomFieldRequest;
+use App\Domains\Metadata\Http\Resources\CustomFieldResource;
 use App\Domains\Metadata\Models\CustomField;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\CustomFieldRequest;
-use App\Http\Resources\CustomFieldResource;
-use App\Services\CustomFieldService;
+use App\Platform\Http\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -45,7 +45,11 @@ class CustomFieldsController extends Controller
     {
         $this->authorize('create', CustomField::class);
 
-        $customField = $this->customFieldService->create($request);
+        $customField = $this->customFieldService->create(
+            $request->validated(),
+            $request->input('default_answer'),
+            (int) $request->header('company'),
+        );
 
         return new CustomFieldResource($customField);
     }
@@ -74,7 +78,11 @@ class CustomFieldsController extends Controller
     {
         $this->authorize('update', $customField);
 
-        $this->customFieldService->update($customField, $request);
+        $this->customFieldService->update(
+            $customField,
+            $request->validated(),
+            $request->input('default_answer'),
+        );
 
         return new CustomFieldResource($customField);
     }

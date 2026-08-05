@@ -6,6 +6,7 @@ use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
 use App\Domains\Accounts\Models\User;
 use App\Domains\Contacts\Models\Customer;
+use App\Domains\Metadata\Concerns\HasCustomFields;
 use App\Domains\Money\Models\Currency;
 use App\Domains\Receivables\Contracts\PaymentPdfDataProvider;
 use App\Domains\Sales\Models\Invoice;
@@ -14,7 +15,6 @@ use App\Platform\Mail\Models\EmailLog;
 use App\Platform\Pdf\Rendering\PdfHtmlSanitizer;
 use App\Support\SafeOrderBy;
 use App\Traits\GeneratesPdfTrait;
-use App\Traits\HasCustomFieldsTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +31,7 @@ class Payment extends Model implements HasMedia
     protected $table = 'payments';
 
     use GeneratesPdfTrait;
-    use HasCustomFieldsTrait;
+    use HasCustomFields;
     use HasFactory;
     use InteractsWithMedia;
 

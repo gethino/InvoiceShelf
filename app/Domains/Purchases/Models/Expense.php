@@ -6,11 +6,11 @@ use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
 use App\Domains\Accounts\Models\User;
 use App\Domains\Contacts\Models\Customer;
+use App\Domains\Metadata\Concerns\HasCustomFields;
 use App\Domains\Money\Models\Currency;
 use App\Domains\Receivables\Models\PaymentMethod;
 use App\Domains\Taxation\Models\Tax;
 use App\Support\SafeOrderBy;
-use App\Traits\HasCustomFieldsTrait;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -28,7 +28,7 @@ class Expense extends Model implements HasMedia
 {
     protected $table = 'expenses';
 
-    use HasCustomFieldsTrait;
+    use HasCustomFields;
     use HasFactory;
     use InteractsWithMedia;
 

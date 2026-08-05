@@ -3,6 +3,7 @@
 namespace App\Services\Document;
 
 use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Metadata\Contracts\CustomFieldValueWriter;
 use App\Domains\Money\Models\ExchangeRateLog;
 use App\Domains\Purchases\Models\Expense;
 use App\Domains\Taxation\Models\TaxType;
@@ -11,6 +12,10 @@ use Illuminate\Support\Facades\DB;
 
 class ExpenseService
 {
+    public function __construct(
+        private readonly CustomFieldValueWriter $customFieldValueWriter,
+    ) {}
+
     public function create(Request $request): Expense
     {
         $expense = DB::transaction(function () use ($request): Expense {
@@ -34,7 +39,7 @@ class ExpenseService
         }
 
         if ($request->customFields) {
-            $expense->addCustomFields(json_decode($request->customFields));
+            $this->customFieldValueWriter->attach($expense, json_decode($request->customFields));
         }
 
         return $expense->load('taxes.taxType');
@@ -67,7 +72,7 @@ class ExpenseService
         }
 
         if ($request->customFields) {
-            $expense->updateCustomFields(json_decode($request->customFields));
+            $this->customFieldValueWriter->update($expense, json_decode($request->customFields));
         }
 
         return $expense->fresh('taxes.taxType');

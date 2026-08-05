@@ -5,6 +5,7 @@ namespace App\Services\Document;
 use App;
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Metadata\Contracts\CustomFieldValueWriter;
 use App\Domains\Metadata\Models\CustomField;
 use App\Domains\Money\Models\ExchangeRateLog;
 use App\Domains\Sales\Contracts\EstimatePdfDataProvider;
@@ -26,6 +27,7 @@ class EstimateService implements EstimatePdfDataProvider
     public function __construct(
         private readonly DocumentItemService $documentItemService,
         private readonly MailConfigurator $mailConfigurator,
+        private readonly CustomFieldValueWriter $customFieldValueWriter,
     ) {}
 
     public function create(Request $request): Estimate
@@ -63,7 +65,7 @@ class EstimateService implements EstimatePdfDataProvider
         $customFields = $request->customFields;
 
         if ($customFields) {
-            $estimate->addCustomFields($customFields);
+            $this->customFieldValueWriter->attach($estimate, $customFields);
         }
 
         return $estimate;
@@ -108,7 +110,7 @@ class EstimateService implements EstimatePdfDataProvider
         }
 
         if ($request->customFields) {
-            $estimate->updateCustomFields($request->customFields);
+            $this->customFieldValueWriter->update($estimate, $request->customFields);
         }
 
         return Estimate::with([
@@ -289,7 +291,7 @@ class EstimateService implements EstimatePdfDataProvider
                 ];
             }
 
-            $newEstimate->addCustomFields($customFields);
+            $this->customFieldValueWriter->attach($newEstimate, $customFields);
         }
 
         return $newEstimate;
@@ -377,7 +379,7 @@ class EstimateService implements EstimatePdfDataProvider
                 ];
             }
 
-            $invoice->addCustomFields($customFields);
+            $this->customFieldValueWriter->attach($invoice, $customFields);
         }
 
         $estimate->checkForEstimateConvertAction();

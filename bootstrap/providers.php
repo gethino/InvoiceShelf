@@ -1,6 +1,7 @@
 <?php
 
 use App\Domains\Catalog\CatalogServiceProvider;
+use App\Domains\Metadata\MetadataServiceProvider;
 use App\Domains\Money\MoneyServiceProvider;
 use App\Domains\Taxation\TaxationServiceProvider;
 use App\Platform\Ai\AiServiceProvider;
@@ -23,6 +24,7 @@ return [
     ViewServiceProvider::class,
     PdfServiceProvider::class,
     CatalogServiceProvider::class,
+    MetadataServiceProvider::class,
     MoneyServiceProvider::class,
     TaxationServiceProvider::class,
     AiServiceProvider::class,

@@ -1,9 +1,9 @@
 <?php
 
 use App\Domains\Accounts\Models\User;
+use App\Domains\Metadata\Http\Controllers\CustomFieldsController;
+use App\Domains\Metadata\Http\Requests\CustomFieldRequest;
 use App\Domains\Metadata\Models\CustomField;
-use App\Http\Controllers\Company\CustomField\CustomFieldsController;
-use App\Http\Requests\CustomFieldRequest;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Sanctum\Sanctum;
 

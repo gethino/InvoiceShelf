@@ -4,6 +4,7 @@ namespace App\Services\Document;
 
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Metadata\Contracts\CustomFieldValueWriter;
 use App\Domains\Money\Models\ExchangeRateLog;
 use App\Domains\Receivables\Contracts\PaymentPdfDataProvider;
 use App\Domains\Receivables\Models\Payment;
@@ -26,6 +27,7 @@ class PaymentService implements PaymentPdfDataProvider
     public function __construct(
         private readonly PaymentAllocationService $paymentAllocationService,
         private readonly MailConfigurator $mailConfigurator,
+        private readonly CustomFieldValueWriter $customFieldValueWriter,
     ) {}
 
     public function create(Request $request): Payment
@@ -56,7 +58,7 @@ class PaymentService implements PaymentPdfDataProvider
             }
 
             if ($request->customFields) {
-                $payment->addCustomFields($request->customFields);
+                $this->customFieldValueWriter->attach($payment, $request->customFields);
             }
 
             return $payment;
@@ -108,7 +110,7 @@ class PaymentService implements PaymentPdfDataProvider
             }
 
             if ($request->customFields) {
-                $lockedPayment->updateCustomFields($request->customFields);
+                $this->customFieldValueWriter->update($lockedPayment, $request->customFields);
             }
 
             return $lockedPayment;

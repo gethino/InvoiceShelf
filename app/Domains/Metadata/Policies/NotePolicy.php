@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Domains\Metadata\Policies;
 
 use App\Domains\Accounts\Models\User;
 use App\Domains\Metadata\Models\Note;

@@ -3,8 +3,8 @@
 namespace App\Domains\Sales\Models;
 
 use App\Domains\Catalog\Models\Item;
+use App\Domains\Metadata\Concerns\HasCustomFields;
 use App\Domains\Taxation\Models\Tax;
-use App\Traits\HasCustomFieldsTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,7 +17,7 @@ class InvoiceItem extends Model
 {
     protected $table = 'invoice_items';
 
-    use HasCustomFieldsTrait;
+    use HasCustomFields;
     use HasFactory;
 
     protected $guarded = [
