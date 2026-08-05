@@ -1,9 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\CountriesController;
-use App\Http\Controllers\Company\Customer\CustomersController;
-use App\Http\Controllers\Company\Customer\CustomerStatsController;
 use App\Http\Controllers\Company\Dashboard\DashboardController;
 use App\Http\Controllers\Company\Estimate\EstimatesController;
 use App\Http\Controllers\Company\Estimate\EstimateTemplatesController;
@@ -16,13 +13,8 @@ use App\Http\Controllers\Company\Invoice\InvoicesController;
 use App\Http\Controllers\Company\Invoice\InvoiceTemplatesController;
 use App\Http\Controllers\Company\RecurringInvoice\RecurringInvoiceController;
 use App\Http\Controllers\Company\RecurringInvoice\RecurringInvoiceFrequencyController;
-use App\Http\Controllers\CustomerPortal\Auth\ForgotPasswordController as AuthForgotPasswordController;
-use App\Http\Controllers\CustomerPortal\Auth\ResetPasswordController as AuthResetPasswordController;
 use App\Http\Controllers\CustomerPortal\Estimate\AcceptEstimateController as CustomerAcceptEstimateController;
 use App\Http\Controllers\CustomerPortal\Estimate\EstimatesController as CustomerEstimatesController;
-use App\Http\Controllers\CustomerPortal\General\BootstrapController as CustomerBootstrapController;
-use App\Http\Controllers\CustomerPortal\General\DashboardController as CustomerDashboardController;
-use App\Http\Controllers\CustomerPortal\General\ProfileController as CustomerProfileController;
 use App\Http\Controllers\CustomerPortal\Invoice\InvoicesController as CustomerInvoicesController;
 use Illuminate\Support\Facades\Route;
 
@@ -63,7 +55,7 @@ Route::prefix('/v1')->group(function () {
     // Countries
     // ----------------------------------
 
-    Route::get('/countries', CountriesController::class);
+    require app_path('Domains/Contacts/routes/public.php');
 
     // Onboarding
     // ----------------------------------
@@ -132,12 +124,8 @@ Route::prefix('/v1')->group(function () {
             // Customers
             // ----------------------------------
 
-            Route::post('/customers/delete', [CustomersController::class, 'delete']);
-
-            Route::get('customers/{customer}/stats', CustomerStatsController::class);
-
             require app_path('Domains/Reporting/routes/company.php');
-            Route::resource('customers', CustomersController::class);
+            require app_path('Domains/Contacts/routes/company.php');
 
             // Items
             // ----------------------------------
@@ -250,22 +238,13 @@ Route::prefix('/v1')->group(function () {
         // Authentication & Password Reset
         // ----------------------------------
 
-        Route::prefix('auth')->group(function () {
-
-            // Send reset password mail
-            Route::post('password/email', [AuthForgotPasswordController::class, 'sendResetLinkEmail']);
-
-            // handle reset password form process
-            Route::post('reset/password', [AuthResetPasswordController::class, 'reset'])->name('customer.password.reset');
-        });
+        require app_path('Domains/Contacts/routes/customer-public.php');
 
         // Invoices, Estimates, Payments and Expenses endpoints
         // -------------------------------------------------------
 
         Route::middleware(['auth:customer', 'customer-portal'])->group(function () {
-            Route::get('/bootstrap', CustomerBootstrapController::class);
-
-            Route::get('/dashboard', CustomerDashboardController::class);
+            require app_path('Domains/Contacts/routes/customer.php');
 
             Route::get('invoices', [CustomerInvoicesController::class, 'index']);
 
@@ -281,11 +260,6 @@ Route::prefix('/v1')->group(function () {
 
             require app_path('Domains/Purchases/routes/customer.php');
 
-            Route::post('/profile', [CustomerProfileController::class, 'updateProfile']);
-
-            Route::get('/me', [CustomerProfileController::class, 'getUser']);
-
-            Route::get('/countries', CountriesController::class);
         });
     });
 });

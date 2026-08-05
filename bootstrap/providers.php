@@ -2,6 +2,7 @@
 
 use App\Domains\Accounts\AccountsServiceProvider;
 use App\Domains\Catalog\CatalogServiceProvider;
+use App\Domains\Contacts\ContactsServiceProvider;
 use App\Domains\Metadata\MetadataServiceProvider;
 use App\Domains\Money\MoneyServiceProvider;
 use App\Domains\Purchases\PurchasesServiceProvider;
@@ -29,6 +30,7 @@ return [
     PdfServiceProvider::class,
     AccountsServiceProvider::class,
     CatalogServiceProvider::class,
+    ContactsServiceProvider::class,
     MetadataServiceProvider::class,
     MoneyServiceProvider::class,
     PurchasesServiceProvider::class,

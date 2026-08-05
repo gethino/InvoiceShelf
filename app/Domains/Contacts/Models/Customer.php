@@ -4,6 +4,7 @@ namespace App\Domains\Contacts\Models;
 
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Contacts\Notifications\CustomerMailResetPasswordNotification;
 use App\Domains\Metadata\Concerns\HasCustomFields;
 use App\Domains\Money\Models\Currency;
 use App\Domains\Purchases\Models\Expense;
@@ -11,7 +12,6 @@ use App\Domains\Receivables\Models\Payment;
 use App\Domains\Sales\Models\Estimate;
 use App\Domains\Sales\Models\Invoice;
 use App\Domains\Sales\Models\RecurringInvoice;
-use App\Notifications\CustomerMailResetPasswordNotification;
 use App\Platform\Mail\Models\EmailLog;
 use App\Support\SafeOrderBy;
 use Carbon\Carbon;

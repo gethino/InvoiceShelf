@@ -3,6 +3,7 @@
 use App\Domains\Accounts\Application\CompanyService;
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\User;
+use App\Domains\Contacts\Application\CustomerService;
 use App\Domains\Contacts\Models\Customer;
 use App\Domains\Purchases\Models\Expense;
 use App\Domains\Receivables\Models\Payment;
@@ -10,7 +11,6 @@ use App\Domains\Receivables\Models\PaymentAllocation;
 use App\Domains\Sales\Models\Invoice;
 use App\Domains\Taxation\Models\Tax;
 use App\Domains\Taxation\Models\TaxType;
-use App\Services\CustomerService;
 use Illuminate\Support\Facades\Artisan;
 
 beforeEach(function () {

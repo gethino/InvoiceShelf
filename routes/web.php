@@ -1,22 +1,13 @@
 <?php
 
 use App\Domains\Accounts\Models\Company;
-use App\Http\Controllers\CustomerPortal\Auth\LoginController as CustomerLoginController;
 use App\Http\Controllers\CustomerPortal\EstimatePdfController as CustomerEstimatePdfController;
 use App\Http\Controllers\CustomerPortal\InvoicePdfController as CustomerInvoicePdfController;
 use App\Http\Controllers\Pdf\DocumentPdfController;
 use Illuminate\Support\Facades\Route;
 
 require app_path('Domains/Accounts/routes/web.php');
-
-// Customer auth
-// ----------------------------------------------
-
-Route::post('/{company:slug}/customer/login', CustomerLoginController::class);
-
-Route::post('/{company:slug}/customer/logout', function () {
-    Auth::guard('customer')->logout();
-});
+require app_path('Domains/Contacts/routes/web.php');
 
 // Report PDF & Expense Endpoints
 // ----------------------------------------------

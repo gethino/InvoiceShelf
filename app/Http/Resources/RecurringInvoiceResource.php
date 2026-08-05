@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Domains\Accounts\Http\Resources\CompanyResource;
 use App\Domains\Accounts\Http\Resources\UserResource;
+use App\Domains\Contacts\Http\Resources\CustomerResource;
 use App\Domains\Metadata\Http\Resources\CustomFieldValueResource;
 use App\Domains\Money\Http\Resources\CurrencyResource;
 use App\Domains\Taxation\Http\Resources\TaxResource;

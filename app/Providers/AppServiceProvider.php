@@ -7,7 +7,6 @@ use App\Domains\Sales\Contracts\InvoicePdfDataProvider;
 use App\Platform\Operations\Installation\Application\InstallationState;
 use App\Platform\Persistence\ModelIdentityMap;
 use App\Policies\CreditNotePolicy;
-use App\Policies\CustomerPolicy;
 use App\Policies\DashboardPolicy;
 use App\Policies\EstimatePolicy;
 use App\Policies\InvoicePolicy;
@@ -129,7 +128,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('create credit note', [CreditNotePolicy::class, 'create']);
         Gate::define('send estimate', [EstimatePolicy::class, 'send']);
 
-        Gate::define('delete multiple customers', [CustomerPolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple invoices', [InvoicePolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple estimates', [EstimatePolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple recurring invoices', [RecurringInvoicePolicy::class, 'deleteMultiple']);
