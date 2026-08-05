@@ -3,9 +3,7 @@
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\CountriesController;
 use App\Http\Controllers\Company\Customer\CustomersController;
-use App\Http\Controllers\Company\Customer\CustomerStatementController;
 use App\Http\Controllers\Company\Customer\CustomerStatsController;
-use App\Http\Controllers\Company\Customer\SendCustomerStatementController;
 use App\Http\Controllers\Company\Dashboard\DashboardController;
 use App\Http\Controllers\Company\Estimate\EstimatesController;
 use App\Http\Controllers\Company\Estimate\EstimateTemplatesController;
@@ -138,8 +136,7 @@ Route::prefix('/v1')->group(function () {
 
             Route::get('customers/{customer}/stats', CustomerStatsController::class);
 
-            Route::get('customers/{customer}/statement', CustomerStatementController::class);
-            Route::post('customers/{customer}/statement/send', SendCustomerStatementController::class);
+            require app_path('Domains/Reporting/routes/company.php');
             Route::resource('customers', CustomersController::class);
 
             // Items

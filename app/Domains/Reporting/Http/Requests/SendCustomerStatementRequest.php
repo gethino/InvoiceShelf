@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Domains\Reporting\Http\Requests;
 
 use App\Domains\Reporting\Queries\CustomerStatementQuery;
 use Carbon\Carbon;

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Company\Customer;
+namespace App\Domains\Reporting\Http\Controllers\Company;
 
 use App\Domains\Contacts\Models\Customer;
 use App\Domains\Reporting\Http\Requests\CustomerStatementRequest;
+use App\Domains\Reporting\Http\Resources\CustomerStatementResource;
 use App\Domains\Reporting\Queries\CustomerStatementQuery;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\CustomerStatementResource;
+use App\Platform\Http\Controller;
 use Carbon\Carbon;
 
 class CustomerStatementController extends Controller

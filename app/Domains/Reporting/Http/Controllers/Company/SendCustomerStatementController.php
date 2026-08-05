@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Company\Customer;
+namespace App\Domains\Reporting\Http\Controllers\Company;
 
 use App\Domains\Contacts\Models\Customer;
+use App\Domains\Reporting\Http\Requests\SendCustomerStatementRequest;
+use App\Domains\Reporting\Mail\SendCustomerStatementMail;
 use App\Domains\Reporting\Queries\CustomerStatementQuery;
 use App\Domains\Reporting\Rendering\CustomerStatementPdfRenderer;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\SendCustomerStatementRequest;
-use App\Mail\SendCustomerStatementMail;
+use App\Platform\Http\Controller;
 use App\Platform\Mail\Contracts\MailConfigurator;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;

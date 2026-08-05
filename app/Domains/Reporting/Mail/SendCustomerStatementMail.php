@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Domains\Reporting\Mail;
 
 use App\Platform\Mail\Models\EmailLog;
 use Illuminate\Bus\Queueable;
