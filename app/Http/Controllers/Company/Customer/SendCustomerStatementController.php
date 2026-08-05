@@ -6,9 +6,9 @@ use App\Domains\Contacts\Models\Customer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SendCustomerStatementRequest;
 use App\Mail\SendCustomerStatementMail;
+use App\Platform\Mail\Contracts\MailConfigurator;
 use App\Services\CustomerStatementPdfService;
 use App\Services\CustomerStatementService;
-use App\Services\Mail\CompanyMailConfigService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
@@ -18,6 +18,7 @@ class SendCustomerStatementController extends Controller
     public function __construct(
         private readonly CustomerStatementService $customerStatementService,
         private readonly CustomerStatementPdfService $customerStatementPdfService,
+        private readonly MailConfigurator $mailConfigurator,
     ) {}
 
     public function __invoke(SendCustomerStatementRequest $request, Customer $customer): JsonResponse
@@ -36,7 +37,7 @@ class SendCustomerStatementController extends Controller
         );
         $pdf = $this->customerStatementPdfService->render($statement);
 
-        CompanyMailConfigService::apply($customer->company_id);
+        $this->mailConfigurator->applyCompanyConfig($customer->company_id);
 
         $mail = Mail::to($request->validated('to'));
         if ($request->filled('cc')) {

@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\CompaniesController;
 use App\Http\Controllers\Admin\CountriesController;
 use App\Http\Controllers\Admin\CurrenciesController;
 use App\Http\Controllers\Admin\FontController;
-use App\Http\Controllers\Admin\Settings\MailConfigurationController;
 use App\Http\Controllers\Admin\Settings\PDFConfigurationController;
 use App\Http\Controllers\Admin\Settings\SettingsController;
 use App\Http\Controllers\Admin\UpdateController;
@@ -46,7 +45,6 @@ use App\Http\Controllers\Company\RecurringInvoice\RecurringInvoiceFrequencyContr
 use App\Http\Controllers\Company\Role\AbilitiesController;
 use App\Http\Controllers\Company\Role\RolesController;
 use App\Http\Controllers\Company\Settings\CompanyController;
-use App\Http\Controllers\Company\Settings\CompanyMailConfigurationController;
 use App\Http\Controllers\Company\Settings\CompanySettingsController;
 use App\Http\Controllers\Company\Settings\InvitationController;
 use App\Http\Controllers\Company\Settings\TaxTypesController;
@@ -400,19 +398,7 @@ Route::prefix('/v1')->group(function () {
             // Mails
             // ----------------------------------
 
-            Route::get('/mail/drivers', [MailConfigurationController::class, 'getMailDrivers']);
-
-            Route::get('/mail/config', [MailConfigurationController::class, 'getMailEnvironment']);
-
-            Route::post('/mail/config', [MailConfigurationController::class, 'saveMailEnvironment']);
-
-            Route::post('/mail/test', [MailConfigurationController::class, 'testEmailConfig']);
-
-            Route::get('/company/mail/config', [CompanyMailConfigurationController::class, 'getDefaultConfig']);
-
-            Route::get('/company/mail/company-config', [CompanyMailConfigurationController::class, 'getMailConfig']);
-            Route::post('/company/mail/company-config', [CompanyMailConfigurationController::class, 'saveMailConfig']);
-            Route::post('/company/mail/company-test', [CompanyMailConfigurationController::class, 'testMailConfig']);
+            require app_path('Platform/Mail/routes/company.php');
 
             require app_path('Platform/Ai/routes/company.php');
 

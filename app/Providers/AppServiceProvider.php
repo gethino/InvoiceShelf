@@ -154,7 +154,6 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('manage settings', [SettingsPolicy::class, 'manageSettings']);
         Gate::define('manage company', [SettingsPolicy::class, 'manageCompany']);
-        Gate::define('manage email config', [SettingsPolicy::class, 'manageEmailConfig']);
         Gate::define('manage pdf config', [SettingsPolicy::class, 'managePDFConfig']);
         Gate::define('manage notes', [NotePolicy::class, 'manageNotes']);
         Gate::define('view notes', [NotePolicy::class, 'viewNotes']);

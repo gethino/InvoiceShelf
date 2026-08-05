@@ -13,7 +13,7 @@ use App\Domains\Sales\Models\Invoice;
 use App\Facades\Hashids;
 use App\Facades\Pdf;
 use App\Mail\SendEstimateMail;
-use App\Services\Mail\CompanyMailConfigService;
+use App\Platform\Mail\Contracts\MailConfigurator;
 use App\Support\Hashids\HashidConnection;
 use App\Support\Pdf\PdfMetadata;
 use App\Support\Pdf\PdfTemplateUtils;
@@ -25,6 +25,7 @@ class EstimateService implements EstimatePdfDataProvider
 {
     public function __construct(
         private readonly DocumentItemService $documentItemService,
+        private readonly MailConfigurator $mailConfigurator,
     ) {}
 
     public function create(Request $request): Estimate
@@ -134,7 +135,7 @@ class EstimateService implements EstimatePdfDataProvider
     {
         $data = $this->sendEstimateData($estimate, $data);
 
-        CompanyMailConfigService::apply($estimate->company_id);
+        $this->mailConfigurator->applyCompanyConfig($estimate->company_id);
 
         if ($estimate->status == Estimate::STATUS_DRAFT) {
             $estimate->status = Estimate::STATUS_SENT;

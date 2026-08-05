@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
+use App\Platform\Mail\Contracts\MailConfigurator;
 use App\Platform\Operations\Models\Setting;
 use App\Platform\Storage\Application\FileDiskService;
 use App\Platform\Storage\Models\FileDisk;
-use App\Services\Mail\MailConfigurationService;
 use App\Support\Setup\InstallUtils;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
@@ -33,7 +33,7 @@ class AppConfigProvider extends ServiceProvider
     protected function configureMailFromDatabase(): void
     {
         try {
-            app(MailConfigurationService::class)->applyGlobalConfig();
+            app(MailConfigurator::class)->applyGlobalConfig();
         } catch (\Exception $e) {
             // Silently fail if database is not available (during installation, migrations, etc.)
             // This prevents the application from breaking during setup

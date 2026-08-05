@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Services\Mail;
+namespace App\Platform\Mail\Application;
 
 use App\Domains\Accounts\Models\CompanySetting;
+use App\Platform\Mail\Contracts\MailConfigurator;
 use App\Platform\Operations\Models\Setting;
 use Aws\Sdk;
 use Illuminate\Support\Facades\Config;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Mailer\Bridge\Mailgun\Transport\MailgunTransportFactory;
 use Symfony\Component\Mailer\Bridge\Postmark\Transport\PostmarkTransportFactory;
 
-class MailConfigurationService
+class MailConfigurationService implements MailConfigurator
 {
     public const DEFAULT_DRIVER = 'sendmail';
 

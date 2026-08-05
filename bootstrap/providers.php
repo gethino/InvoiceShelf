@@ -1,6 +1,7 @@
 <?php
 
 use App\Platform\Ai\AiServiceProvider;
+use App\Platform\Mail\MailServiceProvider;
 use App\Platform\Modules\ModuleServiceProvider;
 use App\Platform\Storage\StorageServiceProvider;
 use App\Providers\AppConfigProvider;
@@ -21,6 +22,7 @@ return [
     PdfServiceProvider::class,
     DriverRegistryProvider::class,
     AiServiceProvider::class,
+    MailServiceProvider::class,
     AppConfigProvider::class,
     ModuleServiceProvider::class,
     ScrambleServiceProvider::class,

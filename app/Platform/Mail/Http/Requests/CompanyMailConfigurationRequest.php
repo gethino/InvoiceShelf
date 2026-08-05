@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Platform\Mail\Http\Requests;
 
-use App\Services\Mail\MailConfigurationService;
+use App\Platform\Mail\Application\MailConfigurationService;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

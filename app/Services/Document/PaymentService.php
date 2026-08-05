@@ -11,7 +11,7 @@ use App\Domains\Sales\Models\Invoice;
 use App\Facades\Hashids;
 use App\Facades\Pdf;
 use App\Mail\SendPaymentMail;
-use App\Services\Mail\CompanyMailConfigService;
+use App\Platform\Mail\Contracts\MailConfigurator;
 use App\Support\Hashids\HashidConnection;
 use App\Support\Pdf\PdfMetadata;
 use App\Support\Pdf\PdfTemplateUtils;
@@ -25,6 +25,7 @@ class PaymentService implements PaymentPdfDataProvider
 {
     public function __construct(
         private readonly PaymentAllocationService $paymentAllocationService,
+        private readonly MailConfigurator $mailConfigurator,
     ) {}
 
     public function create(Request $request): Payment
@@ -149,7 +150,7 @@ class PaymentService implements PaymentPdfDataProvider
     {
         $data = $this->sendPaymentData($payment, $data);
 
-        CompanyMailConfigService::apply($payment->company_id);
+        $this->mailConfigurator->applyCompanyConfig($payment->company_id);
 
         $mail = \Mail::to($data['to']);
         if (! empty($data['cc'])) {

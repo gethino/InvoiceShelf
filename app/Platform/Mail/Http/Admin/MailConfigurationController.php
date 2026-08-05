@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Settings;
+namespace App\Platform\Mail\Http\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\MailEnvironmentRequest;
-use App\Mail\TestMail;
+use App\Platform\Http\Controller;
+use App\Platform\Mail\Application\MailConfigurationService;
+use App\Platform\Mail\Http\Requests\MailEnvironmentRequest;
+use App\Platform\Mail\Mailables\TestMail;
 use App\Platform\Operations\Models\Setting;
-use App\Services\Mail\MailConfigurationService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

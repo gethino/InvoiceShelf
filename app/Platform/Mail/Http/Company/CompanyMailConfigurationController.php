@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Company\Settings;
+namespace App\Platform\Mail\Http\Company;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\CompanyMailConfigurationRequest;
-use App\Mail\TestMail;
-use App\Services\Mail\CompanyMailConfigService;
-use App\Services\Mail\MailConfigurationService;
+use App\Platform\Http\Controller;
+use App\Platform\Mail\Application\MailConfigurationService;
+use App\Platform\Mail\Http\Requests\CompanyMailConfigurationRequest;
+use App\Platform\Mail\Mailables\TestMail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -49,7 +48,7 @@ class CompanyMailConfigurationController extends Controller
             'message' => 'required',
         ]);
 
-        CompanyMailConfigService::apply($request->header('company'));
+        $this->mailConfigurationService->applyCompanyConfig($request->header('company'));
 
         Mail::to($request->to)->send(new TestMail($request->subject, $request->message));
 

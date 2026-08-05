@@ -14,7 +14,7 @@ use App\Facades\Hashids;
 use App\Facades\Pdf;
 use App\Mail\SendCreditNoteMail;
 use App\Mail\SendInvoiceMail;
-use App\Services\Mail\CompanyMailConfigService;
+use App\Platform\Mail\Contracts\MailConfigurator;
 use App\Support\Hashids\HashidConnection;
 use App\Support\Pdf\PdfMetadata;
 use App\Support\Pdf\PdfTemplateUtils;
@@ -28,6 +28,7 @@ class InvoiceService implements InvoicePdfDataProvider
     public function __construct(
         private readonly DocumentItemService $documentItemService,
         private readonly CreditNoteService $creditNoteService,
+        private readonly MailConfigurator $mailConfigurator,
     ) {}
 
     public function create(Request $request): Invoice
@@ -238,7 +239,7 @@ class InvoiceService implements InvoicePdfDataProvider
     {
         $data = $this->sendInvoiceData($invoice, $data);
 
-        CompanyMailConfigService::apply($invoice->company_id);
+        $this->mailConfigurator->applyCompanyConfig($invoice->company_id);
 
         $mail = \Mail::to($data['to']);
         if (! empty($data['cc'])) {
