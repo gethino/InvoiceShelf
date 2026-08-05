@@ -3,9 +3,9 @@
 namespace App\Domains\Receivables;
 
 use App\Adapters\Receivables\LaravelPaymentEmailSender;
-use App\Adapters\Receivables\LegacyInvoiceBalanceUpdater;
-use App\Adapters\Receivables\LegacyPaymentNumberAssigner;
 use App\Adapters\Receivables\MoneyPaymentExchangeRateRecorder;
+use App\Adapters\Receivables\SalesInvoiceBalanceUpdater;
+use App\Adapters\Receivables\SalesPaymentNumberAssigner;
 use App\Domains\Receivables\Application\PaymentService;
 use App\Domains\Receivables\Contracts\InvoiceBalanceUpdater;
 use App\Domains\Receivables\Contracts\PaymentEmailSender;
@@ -24,8 +24,8 @@ class ReceivablesServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(PaymentPdfDataProvider::class, PaymentService::class);
-        $this->app->bind(InvoiceBalanceUpdater::class, LegacyInvoiceBalanceUpdater::class);
-        $this->app->bind(PaymentNumberAssigner::class, LegacyPaymentNumberAssigner::class);
+        $this->app->bind(InvoiceBalanceUpdater::class, SalesInvoiceBalanceUpdater::class);
+        $this->app->bind(PaymentNumberAssigner::class, SalesPaymentNumberAssigner::class);
         $this->app->bind(PaymentExchangeRateRecorder::class, MoneyPaymentExchangeRateRecorder::class);
         $this->app->bind(PaymentEmailSender::class, LaravelPaymentEmailSender::class);
     }

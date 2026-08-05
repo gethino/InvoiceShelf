@@ -2,17 +2,9 @@
 
 namespace App\Providers;
 
-use App\Domains\Sales\Contracts\EstimatePdfDataProvider;
-use App\Domains\Sales\Contracts\InvoicePdfDataProvider;
 use App\Platform\Operations\Installation\Application\InstallationState;
 use App\Platform\Persistence\ModelIdentityMap;
-use App\Policies\CreditNotePolicy;
 use App\Policies\DashboardPolicy;
-use App\Policies\EstimatePolicy;
-use App\Policies\InvoicePolicy;
-use App\Policies\RecurringInvoicePolicy;
-use App\Services\Document\EstimateService;
-use App\Services\Document\InvoiceService;
 use App\Support\Bouncer\BouncerDefaultScope;
 use Gate;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -71,9 +63,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(EstimatePdfDataProvider::class, EstimateService::class);
-        $this->app->bind(InvoicePdfDataProvider::class, InvoiceService::class);
-
         BouncerModels::scope(new BouncerDefaultScope);
     }
 
@@ -123,14 +112,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function bootAuth()
     {
-
-        Gate::define('send invoice', [InvoicePolicy::class, 'send']);
-        Gate::define('create credit note', [CreditNotePolicy::class, 'create']);
-        Gate::define('send estimate', [EstimatePolicy::class, 'send']);
-
-        Gate::define('delete multiple invoices', [InvoicePolicy::class, 'deleteMultiple']);
-        Gate::define('delete multiple estimates', [EstimatePolicy::class, 'deleteMultiple']);
-        Gate::define('delete multiple recurring invoices', [RecurringInvoicePolicy::class, 'deleteMultiple']);
 
         Gate::define('view dashboard', [DashboardPolicy::class, 'view']);
 

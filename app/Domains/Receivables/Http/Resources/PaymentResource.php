@@ -6,7 +6,7 @@ use App\Domains\Accounts\Http\Resources\CompanyResource;
 use App\Domains\Contacts\Http\Resources\CustomerResource;
 use App\Domains\Metadata\Http\Resources\CustomFieldValueResource;
 use App\Domains\Money\Http\Resources\CurrencyResource;
-use App\Http\Resources\InvoiceResource;
+use App\Domains\Sales\Http\Resources\InvoiceResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

@@ -1,9 +1,9 @@
 <?php
 
 use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Sales\Application\RecurringInvoiceService;
 use App\Domains\Sales\Models\RecurringInvoice;
 use App\Platform\Operations\Installation\Application\InstallationState;
-use App\Services\Document\RecurringInvoiceService;
 use Illuminate\Support\Facades\Schedule;
 
 // Only run in demo environment

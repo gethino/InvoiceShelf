@@ -8,6 +8,7 @@ use App\Domains\Money\MoneyServiceProvider;
 use App\Domains\Purchases\PurchasesServiceProvider;
 use App\Domains\Receivables\ReceivablesServiceProvider;
 use App\Domains\Reporting\ReportingServiceProvider;
+use App\Domains\Sales\SalesServiceProvider;
 use App\Domains\Taxation\TaxationServiceProvider;
 use App\Platform\Ai\AiServiceProvider;
 use App\Platform\Mail\MailServiceProvider;
@@ -35,6 +36,7 @@ return [
     MoneyServiceProvider::class,
     PurchasesServiceProvider::class,
     ReceivablesServiceProvider::class,
+    SalesServiceProvider::class,
     TaxationServiceProvider::class,
     ReportingServiceProvider::class,
     AiServiceProvider::class,

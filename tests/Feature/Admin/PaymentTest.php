@@ -6,8 +6,8 @@ use App\Domains\Receivables\Http\Controllers\Company\PaymentsController;
 use App\Domains\Receivables\Http\Requests\PaymentRequest;
 use App\Domains\Receivables\Mail\SendPaymentMail;
 use App\Domains\Receivables\Models\Payment;
+use App\Domains\Sales\Application\CreditNoteService;
 use App\Domains\Sales\Models\Invoice;
-use App\Services\Document\CreditNoteService;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Sanctum\Sanctum;
 

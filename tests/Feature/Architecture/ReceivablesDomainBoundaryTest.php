@@ -1,9 +1,9 @@
 <?php
 
 use App\Adapters\Receivables\LaravelPaymentEmailSender;
-use App\Adapters\Receivables\LegacyInvoiceBalanceUpdater;
-use App\Adapters\Receivables\LegacyPaymentNumberAssigner;
 use App\Adapters\Receivables\MoneyPaymentExchangeRateRecorder;
+use App\Adapters\Receivables\SalesInvoiceBalanceUpdater;
+use App\Adapters\Receivables\SalesPaymentNumberAssigner;
 use App\Domains\Receivables\Application\PaymentService;
 use App\Domains\Receivables\Contracts\InvoiceBalanceUpdater;
 use App\Domains\Receivables\Contracts\PaymentEmailSender;
@@ -21,8 +21,8 @@ use Illuminate\Support\Facades\Route;
 test('the receivables domain owns payment behavior and authorization', function () {
     expect(app()->getProviders(ReceivablesServiceProvider::class))->toHaveCount(1)
         ->and(app(PaymentPdfDataProvider::class))->toBeInstanceOf(PaymentService::class)
-        ->and(app(InvoiceBalanceUpdater::class))->toBeInstanceOf(LegacyInvoiceBalanceUpdater::class)
-        ->and(app(PaymentNumberAssigner::class))->toBeInstanceOf(LegacyPaymentNumberAssigner::class)
+        ->and(app(InvoiceBalanceUpdater::class))->toBeInstanceOf(SalesInvoiceBalanceUpdater::class)
+        ->and(app(PaymentNumberAssigner::class))->toBeInstanceOf(SalesPaymentNumberAssigner::class)
         ->and(app(PaymentExchangeRateRecorder::class))->toBeInstanceOf(MoneyPaymentExchangeRateRecorder::class)
         ->and(app(PaymentEmailSender::class))->toBeInstanceOf(LaravelPaymentEmailSender::class)
         ->and(Gate::getPolicyFor(Payment::class))->toBeInstanceOf(PaymentPolicy::class)

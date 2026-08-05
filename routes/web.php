@@ -1,9 +1,6 @@
 <?php
 
 use App\Domains\Accounts\Models\Company;
-use App\Http\Controllers\CustomerPortal\EstimatePdfController as CustomerEstimatePdfController;
-use App\Http\Controllers\CustomerPortal\InvoicePdfController as CustomerInvoicePdfController;
-use App\Http\Controllers\Pdf\DocumentPdfController;
 use Illuminate\Support\Facades\Route;
 
 require app_path('Domains/Accounts/routes/web.php');
@@ -22,11 +19,7 @@ Route::middleware('auth:sanctum')->prefix('reports')->group(function () {
 // ----------------------------------------------
 
 Route::middleware('pdf-auth')->group(function () {
-
-    //  invoice pdf
-    // -------------------------------------------------
-    Route::get('/invoices/pdf/{invoice:unique_hash}', [DocumentPdfController::class, 'invoice']);
-    Route::get('/estimates/pdf/{estimate:unique_hash}', [DocumentPdfController::class, 'estimate']);
+    require app_path('Domains/Sales/routes/pdf.php');
     require app_path('Domains/Receivables/routes/pdf.php');
 });
 
@@ -34,12 +27,7 @@ Route::middleware('pdf-auth')->group(function () {
 // -------------------------------------------------
 
 Route::prefix('/customer')->group(function () {
-    Route::get('/invoices/{email_log:token}', [CustomerInvoicePdfController::class, 'getInvoice']);
-    Route::get('/invoices/view/{email_log:token}', [CustomerInvoicePdfController::class, 'getPdf'])->name('invoice');
-
-    Route::get('/estimates/{email_log:token}', [CustomerEstimatePdfController::class, 'getEstimate']);
-    Route::get('/estimates/view/{email_log:token}', [CustomerEstimatePdfController::class, 'getPdf'])->name('estimate');
-
+    require app_path('Domains/Sales/routes/public.php');
     require app_path('Domains/Receivables/routes/public.php');
 });
 

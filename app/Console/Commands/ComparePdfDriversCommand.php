@@ -4,10 +4,10 @@ namespace App\Console\Commands;
 
 use App\Domains\Receivables\Contracts\PaymentPdfDataProvider;
 use App\Domains\Receivables\Models\Payment;
+use App\Domains\Sales\Application\EstimateService;
+use App\Domains\Sales\Application\InvoiceService;
 use App\Domains\Sales\Models\Estimate;
 use App\Domains\Sales\Models\Invoice;
-use App\Services\Document\EstimateService;
-use App\Services\Document\InvoiceService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;

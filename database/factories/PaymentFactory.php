@@ -7,7 +7,7 @@ use App\Domains\Contacts\Models\Customer;
 use App\Domains\Money\Models\Currency;
 use App\Domains\Receivables\Models\Payment;
 use App\Domains\Receivables\Models\PaymentMethod;
-use App\Services\Document\SerialNumberService;
+use App\Domains\Sales\Application\SerialNumberService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PaymentFactory extends Factory

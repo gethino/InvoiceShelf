@@ -1,10 +1,10 @@
 <?php
 
 use App\Domains\Accounts\Models\User;
+use App\Domains\Sales\Http\Controllers\Company\RecurringInvoiceController;
+use App\Domains\Sales\Http\Requests\RecurringInvoiceRequest;
 use App\Domains\Sales\Models\InvoiceItem;
 use App\Domains\Sales\Models\RecurringInvoice;
-use App\Http\Controllers\Company\RecurringInvoice\RecurringInvoiceController;
-use App\Http\Requests\RecurringInvoiceRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Sanctum\Sanctum;

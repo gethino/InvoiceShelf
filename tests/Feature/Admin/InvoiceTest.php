@@ -4,13 +4,13 @@ use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\User;
 use App\Domains\Receivables\Models\Payment;
 use App\Domains\Receivables\Models\PaymentAllocation;
+use App\Domains\Sales\Http\Controllers\Company\InvoicesController;
+use App\Domains\Sales\Http\Requests\ChangeInvoiceStatusRequest;
+use App\Domains\Sales\Http\Requests\InvoicesRequest;
+use App\Domains\Sales\Mail\SendInvoiceMail;
 use App\Domains\Sales\Models\Invoice;
 use App\Domains\Sales\Models\InvoiceItem;
 use App\Domains\Taxation\Models\Tax;
-use App\Http\Controllers\Company\Invoice\InvoicesController;
-use App\Http\Requests\ChangeInvoiceStatusRequest;
-use App\Http\Requests\InvoicesRequest;
-use App\Mail\SendInvoiceMail;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Sanctum\Sanctum;
 

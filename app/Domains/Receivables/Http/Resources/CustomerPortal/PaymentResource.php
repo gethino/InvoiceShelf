@@ -3,10 +3,10 @@
 namespace App\Domains\Receivables\Http\Resources\CustomerPortal;
 
 use App\Domains\Contacts\Http\Resources\CustomerPortal\CustomerResource;
+use App\Domains\Sales\Http\Resources\CustomerPortal\InvoiceResource;
 use App\Http\Resources\Customer\CompanyResource;
 use App\Http\Resources\Customer\CurrencyResource;
 use App\Http\Resources\Customer\CustomFieldValueResource;
-use App\Http\Resources\Customer\InvoiceResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

@@ -2,20 +2,10 @@
 
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Company\Dashboard\DashboardController;
-use App\Http\Controllers\Company\Estimate\EstimatesController;
-use App\Http\Controllers\Company\Estimate\EstimateTemplatesController;
 use App\Http\Controllers\Company\General\BootstrapController;
 use App\Http\Controllers\Company\General\ConfigController;
 use App\Http\Controllers\Company\General\FormatsController;
 use App\Http\Controllers\Company\General\SearchController;
-use App\Http\Controllers\Company\General\SerialNumberController;
-use App\Http\Controllers\Company\Invoice\InvoicesController;
-use App\Http\Controllers\Company\Invoice\InvoiceTemplatesController;
-use App\Http\Controllers\Company\RecurringInvoice\RecurringInvoiceController;
-use App\Http\Controllers\Company\RecurringInvoice\RecurringInvoiceFrequencyController;
-use App\Http\Controllers\CustomerPortal\Estimate\AcceptEstimateController as CustomerAcceptEstimateController;
-use App\Http\Controllers\CustomerPortal\Estimate\EstimatesController as CustomerEstimatesController;
-use App\Http\Controllers\CustomerPortal\Invoice\InvoicesController as CustomerInvoicesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -115,10 +105,6 @@ Route::prefix('/v1')->group(function () {
 
             Route::get('/time/formats', [FormatsController::class, 'timeFormats']);
 
-            Route::get('/next-number', [SerialNumberController::class, 'nextNumber']);
-
-            Route::get('/number-placeholders', [SerialNumberController::class, 'placeholders']);
-
             Route::get('/current-company', [BootstrapController::class, 'currentCompany']);
 
             // Customers
@@ -132,54 +118,10 @@ Route::prefix('/v1')->group(function () {
 
             require app_path('Domains/Catalog/routes/company.php');
 
-            // Invoices
+            // Sales documents
             // -------------------------------------------------
 
-            Route::get('/invoices/{invoice}/send/preview', [InvoicesController::class, 'sendPreview']);
-
-            Route::post('/invoices/{invoice}/send', [InvoicesController::class, 'send']);
-
-            Route::post('/invoices/{invoice}/clone', [InvoicesController::class, 'clone']);
-
-            Route::post('/invoices/{invoice}/convert-to-estimate', [InvoicesController::class, 'convertToEstimate']);
-
-            Route::post('/invoices/{invoice}/credit-note', [InvoicesController::class, 'createCreditNote']);
-
-            Route::post('/invoices/{invoice}/status', [InvoicesController::class, 'changeStatus']);
-
-            Route::post('/invoices/delete', [InvoicesController::class, 'delete']);
-
-            Route::get('/invoices/templates', InvoiceTemplatesController::class);
-
-            Route::apiResource('invoices', InvoicesController::class);
-
-            // Recurring Invoice
-            // -------------------------------------------------
-
-            Route::get('/recurring-invoice-frequency', RecurringInvoiceFrequencyController::class);
-
-            Route::post('/recurring-invoices/delete', [RecurringInvoiceController::class, 'delete']);
-
-            Route::apiResource('recurring-invoices', RecurringInvoiceController::class);
-
-            // Estimates
-            // -------------------------------------------------
-
-            Route::get('/estimates/{estimate}/send/preview', [EstimatesController::class, 'sendPreview']);
-
-            Route::post('/estimates/{estimate}/send', [EstimatesController::class, 'send']);
-
-            Route::post('/estimates/{estimate}/clone', [EstimatesController::class, 'clone']);
-
-            Route::post('/estimates/{estimate}/status', [EstimatesController::class, 'changeStatus']);
-
-            Route::post('/estimates/{estimate}/convert-to-invoice', [EstimatesController::class, 'convertToInvoice']);
-
-            Route::get('/estimates/templates', EstimateTemplatesController::class);
-
-            Route::post('/estimates/delete', [EstimatesController::class, 'delete']);
-
-            Route::apiResource('estimates', EstimatesController::class);
+            require app_path('Domains/Sales/routes/company.php');
 
             // Expenses
             // ----------------------------------
@@ -246,15 +188,7 @@ Route::prefix('/v1')->group(function () {
         Route::middleware(['auth:customer', 'customer-portal'])->group(function () {
             require app_path('Domains/Contacts/routes/customer.php');
 
-            Route::get('invoices', [CustomerInvoicesController::class, 'index']);
-
-            Route::get('invoices/{id}', [CustomerInvoicesController::class, 'show']);
-
-            Route::post('/estimate/{estimate}/status', CustomerAcceptEstimateController::class);
-
-            Route::get('estimates', [CustomerEstimatesController::class, 'index']);
-
-            Route::get('estimates/{id}', [CustomerEstimatesController::class, 'show']);
+            require app_path('Domains/Sales/routes/customer.php');
 
             require app_path('Domains/Receivables/routes/customer.php');
 
