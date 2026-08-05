@@ -337,7 +337,9 @@ import { useModuleStore } from '../store'
 import type { InstallationStep } from '../store'
 import ModuleCard from '../components/ModuleCard.vue'
 import { useDialogStore } from '../../../../stores/dialog.store'
+import { useNotificationStore } from '../../../../stores/notification.store'
 import type { Module, ModuleLink } from '../../../../types/domain/module'
+import { getErrorTranslationKey, handleApiError } from '../../../../utils/error-handling'
 
 interface ModuleLinkItem {
   icon: string
@@ -352,6 +354,7 @@ interface TabItem {
 
 const moduleStore = useModuleStore()
 const dialogStore = useDialogStore()
+const notificationStore = useNotificationStore()
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
@@ -469,42 +472,63 @@ async function handleInstall(): Promise<void> {
   }
 }
 
-function handleDisable(): void {
+async function handleDisable(): Promise<void> {
   if (!moduleData.value) return
 
-  dialogStore
-    .openDialog({
-      title: t('general.are_you_sure'),
-      message: t('modules.disable_warning'),
-      yesLabel: t('general.ok'),
-      noLabel: t('general.cancel'),
-      variant: 'danger',
-      hideNoButton: false,
-      size: 'lg',
-    })
-    .then(async (res: boolean) => {
-      if (res) {
-        isDisabling.value = true
-        const response = await moduleStore.disableModule(moduleData.value!.module_name)
-        isDisabling.value = false
+  const confirmed = await dialogStore.openDialog({
+    title: t('general.are_you_sure'),
+    message: t('modules.disable_warning'),
+    yesLabel: t('general.ok'),
+    noLabel: t('general.cancel'),
+    variant: 'danger',
+    hideNoButton: false,
+    size: 'lg',
+  })
 
-        if (response.success) {
-          setTimeout(() => location.reload(), 1500)
-        }
-      }
-    })
+  if (!confirmed) return
+
+  isDisabling.value = true
+  try {
+    const response = await moduleStore.disableModule(moduleData.value.module_name)
+    if (response.success) {
+      setTimeout(() => location.reload(), 1500)
+    }
+  } catch (error: unknown) {
+    showModuleActionError(error)
+  } finally {
+    isDisabling.value = false
+  }
 }
 
 async function handleEnable(): Promise<void> {
   if (!moduleData.value) return
 
   isEnabling.value = true
-  const res = await moduleStore.enableModule(moduleData.value.module_name)
-  isEnabling.value = false
-
-  if (res.success) {
-    setTimeout(() => location.reload(), 1500)
+  try {
+    const res = await moduleStore.enableModule(moduleData.value.module_name)
+    if (res.success) {
+      setTimeout(() => location.reload(), 1500)
+    }
+  } catch (error: unknown) {
+    showModuleActionError(error)
+  } finally {
+    isEnabling.value = false
   }
+}
+
+function showModuleActionError(error: unknown): void {
+  const normalizedError = handleApiError(error)
+  const translationKey = getErrorTranslationKey(normalizedError.message)
+
+  if (normalizedError.message === 'module_runtime_missing' && moduleData.value) {
+    moduleData.value.installed = false
+    moduleData.value.enabled = false
+  }
+
+  notificationStore.showNotification({
+    type: 'error',
+    message: translationKey ?? normalizedError.message,
+  })
 }
 
 function setDisplayImage(url: string): void {

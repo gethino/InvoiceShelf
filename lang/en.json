@@ -841,6 +841,7 @@
     "no_reviews_found": "There are no reviews for this module yet!",
     "module_not_purchased": "Module Not Purchased",
     "module_not_found": "Module Not Found",
+    "runtime_missing": "The module files are missing. Install the module again before enabling it.",
     "version_not_supported": "The minimum required version for this module does not match. Please upgrade your invoiceshelf app to version: {version} to proceed.",
     "last_updated": "Last Updated On",
     "connect_installation": "Connect your installation",
