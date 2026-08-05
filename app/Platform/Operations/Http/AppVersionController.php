@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Platform\Operations\Http;
 
+use App\Platform\Http\Controller;
 use App\Platform\Operations\Models\Setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

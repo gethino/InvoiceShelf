@@ -3,9 +3,9 @@
 use App\Platform\Ai\AiServiceProvider;
 use App\Platform\Mail\MailServiceProvider;
 use App\Platform\Modules\ModuleServiceProvider;
+use App\Platform\Operations\OperationsServiceProvider;
 use App\Platform\Pdf\PdfServiceProvider;
 use App\Platform\Storage\StorageServiceProvider;
-use App\Providers\AppConfigProvider;
 use App\Providers\AppServiceProvider;
 use App\Providers\DriverRegistryProvider;
 use App\Providers\RouteServiceProvider;
@@ -23,7 +23,7 @@ return [
     DriverRegistryProvider::class,
     AiServiceProvider::class,
     MailServiceProvider::class,
-    AppConfigProvider::class,
+    OperationsServiceProvider::class,
     ModuleServiceProvider::class,
     ScrambleServiceProvider::class,
 ];

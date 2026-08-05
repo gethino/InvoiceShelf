@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Platform\Storage\Http\Middleware;
 
 use App\Platform\Storage\Models\FileDisk;
 use App\Support\Setup\InstallUtils;
@@ -26,7 +26,7 @@ class ConfigMiddleware
                     $file_disk->setConfig();
                 }
             }
-            // Default file disk is now handled by AppConfigProvider during boot
+            // The default file disk is applied during application bootstrap.
         }
 
         return $next($request);

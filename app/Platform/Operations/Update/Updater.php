@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Support\Update;
+namespace App\Platform\Operations\Update;
 
-use App\Events\UpdateFinished;
+use App\Platform\Operations\Events\UpdateFinished;
 use App\Platform\Operations\Models\Setting;
-use App\Traits\SiteApi;
 use Artisan;
 use File;
 use GuzzleHttp\Exception\RequestException;
@@ -13,7 +12,7 @@ use ZipArchive;
 // Implementation taken from Akaunting - https://github.com/akaunting/akaunting
 class Updater
 {
-    use SiteApi;
+    use CallsReleaseServer;
 
     public static function checkForUpdate($installed_version, $updater_channel = 'stable')
     {

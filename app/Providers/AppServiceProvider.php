@@ -149,7 +149,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('transfer company ownership', [CompanyPolicy::class, 'transferOwnership']);
         Gate::define('delete company', [CompanyPolicy::class, 'delete']);
 
-        Gate::define('manage settings', [SettingsPolicy::class, 'manageSettings']);
         Gate::define('manage company', [SettingsPolicy::class, 'manageCompany']);
         Gate::define('manage notes', [NotePolicy::class, 'manageNotes']);
         Gate::define('view notes', [NotePolicy::class, 'viewNotes']);

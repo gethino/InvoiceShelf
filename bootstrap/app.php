@@ -2,13 +2,10 @@
 
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CompanyMiddleware;
-use App\Http\Middleware\ConfigMiddleware;
-use App\Http\Middleware\CronJobMiddleware;
 use App\Http\Middleware\CustomerGuest;
 use App\Http\Middleware\CustomerPortalMiddleware;
 use App\Http\Middleware\CustomerRedirectIfAuthenticated;
 use App\Http\Middleware\EncryptCookies;
-use App\Http\Middleware\EnsureNotContainerized;
 use App\Http\Middleware\InstallationMiddleware;
 use App\Http\Middleware\PreventRequestForgery;
 use App\Http\Middleware\RedirectIfAuthenticated;
@@ -20,7 +17,10 @@ use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\UseInstallWizardTokenAuth;
 use App\Platform\Modules\Runtime\ModuleRuntimeAutoloader;
+use App\Platform\Operations\Http\Middleware\CronJobMiddleware;
+use App\Platform\Operations\Http\Middleware\EnsureNotContainerized;
 use App\Platform\Pdf\Http\Middleware\PdfMiddleware;
+use App\Platform\Storage\Http\Middleware\ConfigMiddleware;
 use App\Providers\AppServiceProvider;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Foundation\Application;

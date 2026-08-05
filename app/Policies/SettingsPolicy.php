@@ -18,13 +18,4 @@ class SettingsPolicy
 
         return false;
     }
-
-    public function manageSettings(User $user)
-    {
-        if ($user->isSuperAdmin()) {
-            return true;
-        }
-
-        return false;
-    }
 }

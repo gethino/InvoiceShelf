@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Platform\Operations\Http\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Support\Update\Updater;
+use App\Platform\Http\Controller;
+use App\Platform\Operations\Update\Updater;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;

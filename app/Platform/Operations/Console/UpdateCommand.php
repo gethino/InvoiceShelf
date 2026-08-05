@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Platform\Operations\Console;
 
-use App\Support\Update\Updater;
+use App\Platform\Operations\Update\Updater;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 

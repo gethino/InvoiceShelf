@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Platform\Operations\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UnzipUpdateRequest extends FormRequest
+class SettingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,17 +20,8 @@ class UnzipUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'path' => [
+            'settings' => [
                 'required',
-                'regex:/^[\.\/\w\-]+$/',
-            ],
-            'module' => [
-                'nullable',
-                'string',
-            ],
-            'module_name' => [
-                'required_without:module',
-                'string',
             ],
         ];
     }

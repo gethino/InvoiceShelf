@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Traits;
+namespace App\Platform\Operations\Update;
 
 use App\Platform\Operations\Models\Setting;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
 // Implementation taken from Akaunting - https://github.com/akaunting/akaunting
-trait SiteApi
+trait CallsReleaseServer
 {
     protected static function getRemote($url, $data = [], $token = null)
     {

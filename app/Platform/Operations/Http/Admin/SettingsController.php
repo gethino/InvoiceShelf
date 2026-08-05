@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Settings;
+namespace App\Platform\Operations\Http\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\GetSettingRequest;
-use App\Http\Requests\SettingRequest;
+use App\Platform\Http\Controller;
+use App\Platform\Operations\Http\Requests\GetSettingRequest;
+use App\Platform\Operations\Http\Requests\SettingRequest;
 use App\Platform\Operations\Models\Setting;
 use Illuminate\Http\JsonResponse;
 

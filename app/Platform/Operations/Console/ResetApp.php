@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Platform\Operations\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;

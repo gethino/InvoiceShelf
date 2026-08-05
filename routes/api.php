@@ -4,10 +4,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\CompaniesController;
 use App\Http\Controllers\Admin\CountriesController;
 use App\Http\Controllers\Admin\CurrenciesController;
-use App\Http\Controllers\Admin\Settings\SettingsController;
-use App\Http\Controllers\Admin\UpdateController;
 use App\Http\Controllers\Admin\UsersController;
-use App\Http\Controllers\AppVersionController;
 use App\Http\Controllers\Company\Auth\AuthController;
 use App\Http\Controllers\Company\Auth\ForgotPasswordController;
 use App\Http\Controllers\Company\Auth\InvitationRegistrationController;
@@ -66,7 +63,6 @@ use App\Http\Controllers\Setup\LanguagesController;
 use App\Http\Controllers\Setup\LoginController;
 use App\Http\Controllers\Setup\OnboardingWizardController;
 use App\Http\Controllers\Setup\RequirementsController;
-use App\Http\Controllers\Webhook\CronJobController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -96,7 +92,7 @@ Route::prefix('/v1')->group(function () {
     // App version
     // ----------------------------------
 
-    Route::get('/app/version', AppVersionController::class);
+    require app_path('Platform/Operations/routes/version.php');
 
     // Authentication & Password Reset
     // ----------------------------------
@@ -386,9 +382,7 @@ Route::prefix('/v1')->group(function () {
 
             Route::post('/company/settings', [CompanySettingsController::class, 'update']);
 
-            Route::get('/settings', [SettingsController::class, 'show']);
-
-            Route::post('/settings', [SettingsController::class, 'update']);
+            require app_path('Platform/Operations/routes/settings.php');
 
             Route::get('/company/has-transactions', [CompanySettingsController::class, 'checkTransactions']);
 
@@ -419,16 +413,7 @@ Route::prefix('/v1')->group(function () {
         // Disabled inside the official Docker image — containers upgrade via
         // `docker compose pull`, not the in-app updater (see EnsureNotContainerized).
 
-        Route::middleware('not-containerized')->group(function () {
-            Route::get('/check/update', [UpdateController::class, 'checkVersion']);
-            Route::post('/update/download', [UpdateController::class, 'download']);
-            Route::post('/update/unzip', [UpdateController::class, 'unzip']);
-            Route::post('/update/copy', [UpdateController::class, 'copy']);
-            Route::post('/update/delete', [UpdateController::class, 'delete']);
-            Route::post('/update/clean', [UpdateController::class, 'clean']);
-            Route::post('/update/migrate', [UpdateController::class, 'migrate']);
-            Route::post('/update/finish', [UpdateController::class, 'finish']);
-        });
+        require app_path('Platform/Operations/routes/updater.php');
 
         // Companies
         // -------------------------------------------------
@@ -501,4 +486,4 @@ Route::prefix('/v1')->group(function () {
     });
 });
 
-Route::get('/cron', CronJobController::class)->middleware('cron-job');
+require app_path('Platform/Operations/routes/webhooks.php');

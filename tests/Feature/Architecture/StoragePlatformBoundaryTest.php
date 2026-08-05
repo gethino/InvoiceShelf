@@ -1,5 +1,7 @@
 <?php
 
+use App\Platform\Storage\Application\FileDiskService;
+use App\Platform\Storage\Contracts\StorageConfigurator;
 use App\Platform\Storage\Http\BackupsController;
 use App\Platform\Storage\Http\DiskController;
 use App\Platform\Storage\StorageServiceProvider;
@@ -9,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 test('the storage platform owns its provider extensions and authorization', function () {
     expect(app()->getProviders(StorageServiceProvider::class))->toHaveCount(1)
+        ->and(app(StorageConfigurator::class))->toBeInstanceOf(FileDiskService::class)
         ->and(Gate::has('manage backups'))->toBeTrue()
         ->and(Gate::has('manage file disk'))->toBeTrue()
         ->and(Artisan::all())->toHaveKey('media:secure');

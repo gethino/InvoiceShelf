@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Webhook;
+namespace App\Platform\Operations\Http\Webhooks;
 
-use App\Http\Controllers\Controller;
+use App\Platform\Http\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;

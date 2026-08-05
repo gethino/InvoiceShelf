@@ -2,12 +2,26 @@
 
 namespace App\Platform\Storage\Application;
 
+use App\Platform\Storage\Contracts\StorageConfigurator;
 use App\Platform\Storage\Models\FileDisk;
 use App\Support\Net\PrivateNetworkGuard;
 use Illuminate\Http\Request;
 
-class FileDiskService
+class FileDiskService implements StorageConfigurator
 {
+    public function applyGlobalConfig(): void
+    {
+        $fileDisk = FileDisk::whereSetAsDefault(true)->first();
+
+        if (! $fileDisk) {
+            return;
+        }
+
+        $diskName = $this->registerDisk($fileDisk);
+
+        config(['media-library.disk_name' => $diskName]);
+    }
+
     public function create(Request $request): FileDisk
     {
         if ($request->set_as_default) {
