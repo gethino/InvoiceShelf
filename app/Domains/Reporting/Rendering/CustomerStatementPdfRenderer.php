@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Domains\Reporting\Rendering;
 
 use App\Domains\Accounts\Models\CompanySetting;
 use App\Platform\Pdf\Facades\Pdf;
 use App\Platform\Pdf\Rendering\PdfPageSetup;
 use Illuminate\Support\Facades\App;
 
-class CustomerStatementPdfService
+class CustomerStatementPdfRenderer
 {
     public function render(array $statement)
     {

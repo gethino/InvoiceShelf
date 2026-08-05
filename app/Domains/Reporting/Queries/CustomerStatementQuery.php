@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Domains\Reporting\Queries;
 
 use App\Domains\Contacts\Models\Customer;
 use App\Domains\Receivables\Models\Payment;
@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-class CustomerStatementService
+class CustomerStatementQuery
 {
     public const TYPE_ACTIVITY = 'activity';
 

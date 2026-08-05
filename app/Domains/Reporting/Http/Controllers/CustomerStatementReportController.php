@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Company\Report;
+namespace App\Domains\Reporting\Http\Controllers;
 
 use App\Domains\Contacts\Models\Customer;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\CustomerStatementRequest;
-use App\Services\CustomerStatementPdfService;
-use App\Services\CustomerStatementService;
+use App\Domains\Reporting\Http\Requests\CustomerStatementRequest;
+use App\Domains\Reporting\Queries\CustomerStatementQuery;
+use App\Domains\Reporting\Rendering\CustomerStatementPdfRenderer;
+use App\Platform\Http\Controller;
 use Carbon\Carbon;
 use Silber\Bouncer\BouncerFacade;
 
 class CustomerStatementReportController extends Controller
 {
     public function __construct(
-        private readonly CustomerStatementService $customerStatementService,
-        private readonly CustomerStatementPdfService $customerStatementPdfService,
+        private readonly CustomerStatementQuery $customerStatementQuery,
+        private readonly CustomerStatementPdfRenderer $customerStatementPdfRenderer,
     ) {}
 
     public function __invoke(CustomerStatementRequest $request, Customer $customer)
@@ -26,14 +26,14 @@ class CustomerStatementReportController extends Controller
 
         $type = $request->validated('type');
 
-        $statement = $this->customerStatementService->statement(
+        $statement = $this->customerStatementQuery->statement(
             $customer,
             $type,
             Carbon::createFromFormat('Y-m-d', $request->validated('from_date')),
-            Carbon::createFromFormat('Y-m-d', $request->validated($type === CustomerStatementService::TYPE_OUTSTANDING ? 'as_of' : 'to_date')),
+            Carbon::createFromFormat('Y-m-d', $request->validated($type === CustomerStatementQuery::TYPE_OUTSTANDING ? 'as_of' : 'to_date')),
             PHP_INT_MAX,
         );
-        $pdf = $this->customerStatementPdfService->render($statement);
+        $pdf = $this->customerStatementPdfRenderer->render($statement);
 
         if ($request->boolean('preview')) {
             return view('app.pdf.reports.customer-statement', [

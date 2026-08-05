@@ -17,7 +17,6 @@ use App\Policies\InvoicePolicy;
 use App\Policies\OwnerPolicy;
 use App\Policies\PaymentPolicy;
 use App\Policies\RecurringInvoicePolicy;
-use App\Policies\ReportPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SettingsPolicy;
 use App\Policies\UserPolicy;
@@ -157,8 +156,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('delete multiple recurring invoices', [RecurringInvoicePolicy::class, 'deleteMultiple']);
 
         Gate::define('view dashboard', [DashboardPolicy::class, 'view']);
-
-        Gate::define('view report', [ReportPolicy::class, 'viewReport']);
 
         Gate::define('owner only', [OwnerPolicy::class, 'managedByOwner']);
     }

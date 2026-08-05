@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Company\Report;
+namespace App\Domains\Reporting\Http\Controllers;
 
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Contacts\Models\Customer;
 use App\Domains\Money\Models\Currency;
-use App\Domains\Taxation\Models\Tax;
-use App\Http\Controllers\Controller;
+use App\Platform\Http\Controller;
 use App\Platform\Pdf\Facades\Pdf;
 use App\Platform\Pdf\Rendering\PdfPageSetup;
 use App\Platform\Pdf\Rendering\PdfTemplateUtils;
@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Silber\Bouncer\BouncerFacade;
 
-class TaxSummaryReportController extends Controller
+class CustomerSalesReportController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -41,22 +41,28 @@ class TaxSummaryReportController extends Controller
 
         App::setLocale($locale);
 
-        $taxTypes = Tax::with('taxType')
-            ->whereCompany($company->id)
-            ->whereInvoicesFilters($request->only(['from_date', 'to_date']))
-            ->taxAttributes()
+        $start = Carbon::createFromFormat('Y-m-d', $request->from_date);
+        $end = Carbon::createFromFormat('Y-m-d', $request->to_date);
+
+        $customers = Customer::with(['invoices' => function ($query) use ($start, $end) {
+            $query->whereBetween(
+                'invoice_date',
+                [$start->format('Y-m-d'), $end->format('Y-m-d')]
+            );
+        }])
+            ->where('company_id', $company->id)
+            ->applyInvoiceFilters($request->only(['from_date', 'to_date']))
             ->get();
 
-        $totalAmount = (int) $taxTypes->sum('total_tax_amount');
-
-        $expenseTaxTypes = Tax::with('taxType')
-            ->whereCompany($company->id)
-            ->whereExpensesFilters($request->only(['from_date', 'to_date']))
-            ->taxAttributes()
-            ->get();
-
-        $totalExpenseTaxAmount = (int) $expenseTaxTypes->sum('total_tax_amount');
-        $netTaxAmount = $totalAmount - $totalExpenseTaxAmount;
+        $totalAmount = 0;
+        foreach ($customers as $customer) {
+            $customerTotalAmount = 0;
+            foreach ($customer->invoices as $invoice) {
+                $customerTotalAmount += $invoice->base_total;
+            }
+            $customer->totalAmount = $customerTotalAmount;
+            $totalAmount += $customerTotalAmount;
+        }
 
         $dateFormat = CompanySetting::getSetting('carbon_date_format', $company->id);
         $from_date = Carbon::createFromFormat('Y-m-d', $request->from_date)->translatedFormat($dateFormat);
@@ -64,11 +70,8 @@ class TaxSummaryReportController extends Controller
         $currency = Currency::findOrFail(CompanySetting::getSetting('currency', $company->id));
 
         view()->share([
-            'taxTypes' => $taxTypes,
-            'totalTaxAmount' => $totalAmount,
-            'expenseTaxTypes' => $expenseTaxTypes,
-            'totalExpenseTaxAmount' => $totalExpenseTaxAmount,
-            'netTaxAmount' => $netTaxAmount,
+            'customers' => $customers,
+            'totalAmount' => $totalAmount,
             'company' => $company,
             'logo' => $company->logo_path,
             'from_date' => $from_date,
@@ -79,7 +82,7 @@ class TaxSummaryReportController extends Controller
         // Renders a same-named file from storage/app/templates/pdf/reports/
         // when one exists, so a report can be overridden without a
         // template picker it has no concept of.
-        $templatePath = PdfTemplateUtils::resolveView('reports', 'tax-summary');
+        $templatePath = PdfTemplateUtils::resolveView('reports', 'sales-customers');
 
         $pdf = Pdf::loadView($templatePath, [], PdfPageSetup::forReports());
 

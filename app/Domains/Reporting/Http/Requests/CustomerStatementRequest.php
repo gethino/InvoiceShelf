@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Domains\Reporting\Http\Requests;
 
-use App\Services\CustomerStatementService;
+use App\Domains\Reporting\Queries\CustomerStatementQuery;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -25,7 +25,7 @@ class CustomerStatementRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['required', Rule::in([CustomerStatementService::TYPE_ACTIVITY, CustomerStatementService::TYPE_OUTSTANDING])],
+            'type' => ['required', Rule::in([CustomerStatementQuery::TYPE_ACTIVITY, CustomerStatementQuery::TYPE_OUTSTANDING])],
             'from_date' => ['nullable', 'date_format:Y-m-d', 'required_if:type,activity'],
             'to_date' => ['nullable', 'date_format:Y-m-d', 'required_if:type,activity', 'after_or_equal:from_date'],
             'as_of' => ['nullable', 'date_format:Y-m-d', 'required_if:type,outstanding'],
@@ -36,7 +36,7 @@ class CustomerStatementRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $type = $this->input('type', CustomerStatementService::TYPE_ACTIVITY);
+        $type = $this->input('type', CustomerStatementQuery::TYPE_ACTIVITY);
         $today = Carbon::today();
 
         $this->merge([

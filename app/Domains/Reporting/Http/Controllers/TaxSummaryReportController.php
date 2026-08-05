@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Company\Report;
+namespace App\Domains\Reporting\Http\Controllers;
 
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
 use App\Domains\Money\Models\Currency;
-use App\Domains\Purchases\Models\Expense;
-use App\Domains\Receivables\Models\Payment;
-use App\Http\Controllers\Controller;
+use App\Domains\Taxation\Models\Tax;
+use App\Platform\Http\Controller;
 use App\Platform\Pdf\Facades\Pdf;
 use App\Platform\Pdf\Rendering\PdfPageSetup;
 use App\Platform\Pdf\Rendering\PdfTemplateUtils;
@@ -17,7 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Silber\Bouncer\BouncerFacade;
 
-class ProfitLossReportController extends Controller
+class TaxSummaryReportController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -42,20 +41,22 @@ class ProfitLossReportController extends Controller
 
         App::setLocale($locale);
 
-        $paymentsAmount = Payment::whereCompanyId($company->id)
-            ->applyFilters($request->only(['from_date', 'to_date']))
-            ->sum('base_amount');
-
-        $expenseCategories = Expense::with('category')
-            ->whereCompanyId($company->id)
-            ->applyFilters($request->only(['from_date', 'to_date']))
-            ->expensesAttributes()
+        $taxTypes = Tax::with('taxType')
+            ->whereCompany($company->id)
+            ->whereInvoicesFilters($request->only(['from_date', 'to_date']))
+            ->taxAttributes()
             ->get();
 
-        $totalAmount = 0;
-        foreach ($expenseCategories as $category) {
-            $totalAmount += $category->total_amount;
-        }
+        $totalAmount = (int) $taxTypes->sum('total_tax_amount');
+
+        $expenseTaxTypes = Tax::with('taxType')
+            ->whereCompany($company->id)
+            ->whereExpensesFilters($request->only(['from_date', 'to_date']))
+            ->taxAttributes()
+            ->get();
+
+        $totalExpenseTaxAmount = (int) $expenseTaxTypes->sum('total_tax_amount');
+        $netTaxAmount = $totalAmount - $totalExpenseTaxAmount;
 
         $dateFormat = CompanySetting::getSetting('carbon_date_format', $company->id);
         $from_date = Carbon::createFromFormat('Y-m-d', $request->from_date)->translatedFormat($dateFormat);
@@ -63,19 +64,22 @@ class ProfitLossReportController extends Controller
         $currency = Currency::findOrFail(CompanySetting::getSetting('currency', $company->id));
 
         view()->share([
-            'income' => $paymentsAmount,
-            'expenseCategories' => $expenseCategories,
-            'totalExpense' => $totalAmount,
+            'taxTypes' => $taxTypes,
+            'totalTaxAmount' => $totalAmount,
+            'expenseTaxTypes' => $expenseTaxTypes,
+            'totalExpenseTaxAmount' => $totalExpenseTaxAmount,
+            'netTaxAmount' => $netTaxAmount,
             'company' => $company,
             'logo' => $company->logo_path,
             'from_date' => $from_date,
             'to_date' => $to_date,
             'currency' => $currency,
         ]);
+
         // Renders a same-named file from storage/app/templates/pdf/reports/
         // when one exists, so a report can be overridden without a
         // template picker it has no concept of.
-        $templatePath = PdfTemplateUtils::resolveView('reports', 'profit-loss');
+        $templatePath = PdfTemplateUtils::resolveView('reports', 'tax-summary');
 
         $pdf = Pdf::loadView($templatePath, [], PdfPageSetup::forReports());
 

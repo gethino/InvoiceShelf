@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Company\Report;
+namespace App\Domains\Reporting\Http\Controllers;
 
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
 use App\Domains\Money\Models\Currency;
 use App\Domains\Purchases\Models\Expense;
-use App\Http\Controllers\Controller;
+use App\Domains\Receivables\Models\Payment;
+use App\Platform\Http\Controller;
 use App\Platform\Pdf\Facades\Pdf;
 use App\Platform\Pdf\Rendering\PdfPageSetup;
 use App\Platform\Pdf\Rendering\PdfTemplateUtils;
 use Carbon\Carbon;
-use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
 use Silber\Bouncer\BouncerFacade;
 
-class ExpensesReportController extends Controller
+class ProfitLossReportController extends Controller
 {
     /**
      * Handle the incoming request.
      *
      * @param  string  $hash
-     * @return View|Response
+     * @return JsonResponse
      */
     public function __invoke(Request $request, $hash)
     {
@@ -42,26 +42,19 @@ class ExpensesReportController extends Controller
 
         App::setLocale($locale);
 
-        // Fetch individual expenses (filtered and ordered by date), then group by category
-        $expenses = Expense::with('category')
+        $paymentsAmount = Payment::whereCompanyId($company->id)
+            ->applyFilters($request->only(['from_date', 'to_date']))
+            ->sum('base_amount');
+
+        $expenseCategories = Expense::with('category')
             ->whereCompanyId($company->id)
-            ->applyFilters($request->only(['from_date', 'to_date', 'expense_category_id']))
-            ->orderBy('expense_date', 'asc')
+            ->applyFilters($request->only(['from_date', 'to_date']))
+            ->expensesAttributes()
             ->get();
 
-        $totalAmount = $expenses->sum('base_amount');
-
-        $grouped = $expenses->groupBy(function ($item) {
-            return $item->category ? $item->category->name : trans('expenses.uncategorized');
-        });
-
-        $expenseGroups = collect();
-        foreach ($grouped as $categoryName => $group) {
-            $expenseGroups->push([
-                'name' => $categoryName,
-                'expenses' => $group,
-                'total' => $group->sum('base_amount'),
-            ]);
+        $totalAmount = 0;
+        foreach ($expenseCategories as $category) {
+            $totalAmount += $category->total_amount;
         }
 
         $dateFormat = CompanySetting::getSetting('carbon_date_format', $company->id);
@@ -70,7 +63,8 @@ class ExpensesReportController extends Controller
         $currency = Currency::findOrFail(CompanySetting::getSetting('currency', $company->id));
 
         view()->share([
-            'expenseGroups' => $expenseGroups,
+            'income' => $paymentsAmount,
+            'expenseCategories' => $expenseCategories,
             'totalExpense' => $totalAmount,
             'company' => $company,
             'logo' => $company->logo_path,
@@ -81,7 +75,7 @@ class ExpensesReportController extends Controller
         // Renders a same-named file from storage/app/templates/pdf/reports/
         // when one exists, so a report can be overridden without a
         // template picker it has no concept of.
-        $templatePath = PdfTemplateUtils::resolveView('reports', 'expenses');
+        $templatePath = PdfTemplateUtils::resolveView('reports', 'profit-loss');
 
         $pdf = Pdf::loadView($templatePath, [], PdfPageSetup::forReports());
 

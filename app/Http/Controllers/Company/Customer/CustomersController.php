@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Company\Customer;
 
 use App\Domains\Contacts\Models\Customer;
+use App\Domains\Reporting\Queries\CustomerStatementQuery;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Http\Requests\DeleteCustomersRequest;
 use App\Http\Resources\CustomerResource;
 use App\Services\CustomerService;
-use App\Services\CustomerStatementService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -17,7 +17,7 @@ class CustomersController extends Controller
 {
     public function __construct(
         private readonly CustomerService $customerService,
-        private readonly CustomerStatementService $customerStatementService,
+        private readonly CustomerStatementQuery $customerStatementQuery,
     ) {}
 
     /**
@@ -36,7 +36,7 @@ class CustomersController extends Controller
             ->applyFilters($request->all())
             ->paginateData($limit);
 
-        $this->customerStatementService->hydrateAccountSummaries(
+        $this->customerStatementQuery->hydrateAccountSummaries(
             $customers instanceof LengthAwarePaginator ? $customers->getCollection() : $customers
         );
 
@@ -57,7 +57,7 @@ class CustomersController extends Controller
         $this->authorize('create', Customer::class);
 
         $customer = $this->customerService->create($request);
-        $this->customerStatementService->hydrateAccountSummaries([$customer]);
+        $this->customerStatementQuery->hydrateAccountSummaries([$customer]);
 
         return new CustomerResource($customer);
     }
@@ -71,7 +71,7 @@ class CustomersController extends Controller
     {
         $this->authorize('view', $customer);
 
-        $this->customerStatementService->hydrateAccountSummaries([$customer]);
+        $this->customerStatementQuery->hydrateAccountSummaries([$customer]);
 
         return new CustomerResource($customer);
     }
@@ -87,7 +87,7 @@ class CustomersController extends Controller
         $this->authorize('update', $customer);
 
         $customer = $this->customerService->update($request, $customer);
-        $this->customerStatementService->hydrateAccountSummaries([$customer]);
+        $this->customerStatementQuery->hydrateAccountSummaries([$customer]);
 
         return new CustomerResource($customer);
     }

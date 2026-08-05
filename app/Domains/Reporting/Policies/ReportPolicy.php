@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Domains\Reporting\Policies;
 
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\User;

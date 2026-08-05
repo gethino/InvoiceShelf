@@ -4,12 +4,6 @@ use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanyInvitation;
 use App\Http\Controllers\Company\Auth\LoginController;
 use App\Http\Controllers\Company\Expense\ExpensesController;
-use App\Http\Controllers\Company\Report\CustomerSalesReportController;
-use App\Http\Controllers\Company\Report\CustomerStatementReportController;
-use App\Http\Controllers\Company\Report\ExpensesReportController;
-use App\Http\Controllers\Company\Report\ItemSalesReportController;
-use App\Http\Controllers\Company\Report\ProfitLossReportController;
-use App\Http\Controllers\Company\Report\TaxSummaryReportController;
 use App\Http\Controllers\CustomerPortal\Auth\LoginController as CustomerLoginController;
 use App\Http\Controllers\CustomerPortal\EstimatePdfController as CustomerEstimatePdfController;
 use App\Http\Controllers\CustomerPortal\InvoicePdfController as CustomerInvoicePdfController;
@@ -42,28 +36,7 @@ Route::post('/{company:slug}/customer/logout', function () {
 // ----------------------------------------------
 
 Route::middleware('auth:sanctum')->prefix('reports')->group(function () {
-
-    Route::get('/customers/{customer}/statement', CustomerStatementReportController::class);
-
-    // sales report by customer
-    // ----------------------------------
-    Route::get('/sales/customers/{hash}', CustomerSalesReportController::class);
-
-    // sales report by items
-    // ----------------------------------
-    Route::get('/sales/items/{hash}', ItemSalesReportController::class);
-
-    // report for expenses
-    // ----------------------------------
-    Route::get('/expenses/{hash}', ExpensesReportController::class);
-
-    // report for tax summary
-    // ----------------------------------
-    Route::get('/tax-summary/{hash}', TaxSummaryReportController::class);
-
-    // report for profit and loss
-    // ----------------------------------
-    Route::get('/profit-loss/{hash}', ProfitLossReportController::class);
+    require app_path('Domains/Reporting/routes/web.php');
 
     // download expense receipt
     // -------------------------------------------------

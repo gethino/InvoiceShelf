@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Company\Report;
+namespace App\Domains\Reporting\Http\Controllers;
 
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
-use App\Domains\Contacts\Models\Customer;
 use App\Domains\Money\Models\Currency;
-use App\Http\Controllers\Controller;
+use App\Domains\Sales\Models\InvoiceItem;
+use App\Platform\Http\Controller;
 use App\Platform\Pdf\Facades\Pdf;
 use App\Platform\Pdf\Rendering\PdfPageSetup;
 use App\Platform\Pdf\Rendering\PdfTemplateUtils;
@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Silber\Bouncer\BouncerFacade;
 
-class CustomerSalesReportController extends Controller
+class ItemSalesReportController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -41,27 +41,14 @@ class CustomerSalesReportController extends Controller
 
         App::setLocale($locale);
 
-        $start = Carbon::createFromFormat('Y-m-d', $request->from_date);
-        $end = Carbon::createFromFormat('Y-m-d', $request->to_date);
-
-        $customers = Customer::with(['invoices' => function ($query) use ($start, $end) {
-            $query->whereBetween(
-                'invoice_date',
-                [$start->format('Y-m-d'), $end->format('Y-m-d')]
-            );
-        }])
-            ->where('company_id', $company->id)
+        $items = InvoiceItem::whereCompany($company->id)
             ->applyInvoiceFilters($request->only(['from_date', 'to_date']))
+            ->itemAttributes()
             ->get();
 
         $totalAmount = 0;
-        foreach ($customers as $customer) {
-            $customerTotalAmount = 0;
-            foreach ($customer->invoices as $invoice) {
-                $customerTotalAmount += $invoice->base_total;
-            }
-            $customer->totalAmount = $customerTotalAmount;
-            $totalAmount += $customerTotalAmount;
+        foreach ($items as $item) {
+            $totalAmount += $item->total_amount;
         }
 
         $dateFormat = CompanySetting::getSetting('carbon_date_format', $company->id);
@@ -70,7 +57,7 @@ class CustomerSalesReportController extends Controller
         $currency = Currency::findOrFail(CompanySetting::getSetting('currency', $company->id));
 
         view()->share([
-            'customers' => $customers,
+            'items' => $items,
             'totalAmount' => $totalAmount,
             'company' => $company,
             'logo' => $company->logo_path,
@@ -78,11 +65,10 @@ class CustomerSalesReportController extends Controller
             'to_date' => $to_date,
             'currency' => $currency,
         ]);
-
         // Renders a same-named file from storage/app/templates/pdf/reports/
         // when one exists, so a report can be overridden without a
         // template picker it has no concept of.
-        $templatePath = PdfTemplateUtils::resolveView('reports', 'sales-customers');
+        $templatePath = PdfTemplateUtils::resolveView('reports', 'sales-items');
 
         $pdf = Pdf::loadView($templatePath, [], PdfPageSetup::forReports());
 

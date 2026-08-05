@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Company\Customer;
 
 use App\Domains\Contacts\Models\Customer;
+use App\Domains\Reporting\Http\Requests\CustomerStatementRequest;
+use App\Domains\Reporting\Queries\CustomerStatementQuery;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CustomerStatementRequest;
 use App\Http\Resources\CustomerStatementResource;
-use App\Services\CustomerStatementService;
 use Carbon\Carbon;
 
 class CustomerStatementController extends Controller
 {
     public function __construct(
-        private readonly CustomerStatementService $customerStatementService,
+        private readonly CustomerStatementQuery $customerStatementQuery,
     ) {}
 
     public function __invoke(CustomerStatementRequest $request, Customer $customer): CustomerStatementResource
@@ -22,11 +22,11 @@ class CustomerStatementController extends Controller
 
         $type = $request->validated('type');
 
-        $statement = $this->customerStatementService->statement(
+        $statement = $this->customerStatementQuery->statement(
             $customer,
             $type,
             Carbon::createFromFormat('Y-m-d', $request->validated('from_date')),
-            Carbon::createFromFormat('Y-m-d', $request->validated($type === CustomerStatementService::TYPE_OUTSTANDING ? 'as_of' : 'to_date')),
+            Carbon::createFromFormat('Y-m-d', $request->validated($type === CustomerStatementQuery::TYPE_OUTSTANDING ? 'as_of' : 'to_date')),
             (int) $request->validated('per_page', 50),
             (int) $request->validated('page', 1),
         );
