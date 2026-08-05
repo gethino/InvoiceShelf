@@ -4,6 +4,9 @@ use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\User;
+use App\Platform\Modules\Models\MarketplaceCredential;
+use App\Platform\Modules\Models\MarketplaceOperation;
+use App\Platform\Modules\Models\Module;
 use App\Platform\Persistence\ModelIdentityMap;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Silber\Bouncer\Database\Ability;
@@ -14,6 +17,9 @@ test('first-party and bouncer models use stable morph aliases', function () {
         ->toHaveKey('company', Company::class)
         ->toHaveKey('customer', Customer::class)
         ->toHaveKey('invoice', Invoice::class)
+        ->toHaveKey('marketplace_credential', MarketplaceCredential::class)
+        ->toHaveKey('marketplace_operation', MarketplaceOperation::class)
+        ->toHaveKey('module', Module::class)
         ->toHaveKey('user', User::class)
         ->toHaveKey('bouncer_ability', Ability::class)
         ->toHaveKey('bouncer_role', Role::class);
@@ -25,12 +31,32 @@ test('first-party and bouncer models use stable morph aliases', function () {
 });
 
 test('every first-party model has a stable identity', function () {
-    $models = collect(glob(app_path('Models/*.php')))
-        ->map(fn (string $path): string => 'App\\Models\\'.pathinfo($path, PATHINFO_FILENAME));
+    $models = collect([app_path('Models'), app_path('Domains'), app_path('Platform')])
+        ->filter(fn (string $directory): bool => is_dir($directory))
+        ->flatMap(function (string $directory): array {
+            $files = [];
+            $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
 
-    $mappedModels = collect(ModelIdentityMap::aliases())->values();
+            foreach ($iterator as $file) {
+                $path = str_replace('\\', '/', $file->getPathname());
 
-    expect($models->diff($mappedModels)->values()->all())->toBe([]);
+                if ($file->isFile() && $file->getExtension() === 'php' && str_contains($path, '/Models/')) {
+                    $relative = substr($path, strlen(str_replace('\\', '/', app_path())) + 1);
+                    $files[] = 'App\\'.str_replace('/', '\\', substr($relative, 0, -4));
+                }
+            }
+
+            return $files;
+        })
+        ->values();
+
+    $mappedModels = collect(ModelIdentityMap::aliases())
+        ->values()
+        ->filter(fn (string $model): bool => str_starts_with($model, 'App\\'))
+        ->values();
+
+    expect($models->diff($mappedModels)->values()->all())->toBe([])
+        ->and($mappedModels->diff($models)->values()->all())->toBe([]);
 });
 
 test('database aliases do not leak through the existing v1 discriminator', function () {

@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Models\AiConversation;
-use App\Models\User;
 use App\Platform\Persistence\ModelIdentityMap;
 use App\Policies\AiConversationPolicy;
 use App\Policies\CompanyPolicy;
@@ -14,7 +13,6 @@ use App\Policies\EstimatePolicy;
 use App\Policies\ExpensePolicy;
 use App\Policies\InvoicePolicy;
 use App\Policies\ItemPolicy;
-use App\Policies\ModulesPolicy;
 use App\Policies\NotePolicy;
 use App\Policies\OwnerPolicy;
 use App\Policies\PaymentPolicy;
@@ -76,8 +74,6 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(AiConversation::class, AiConversationPolicy::class);
-        Gate::define('manage module settings', fn (User $user): bool => $user->isSuperAdmin() || $user->isOwner());
-
         View::addNamespace('pdf_templates', storage_path('app/templates/pdf'));
 
         $this->bootAuth();
@@ -148,8 +144,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('create company', [CompanyPolicy::class, 'create']);
         Gate::define('transfer company ownership', [CompanyPolicy::class, 'transferOwnership']);
         Gate::define('delete company', [CompanyPolicy::class, 'delete']);
-
-        Gate::define('manage modules', [ModulesPolicy::class, 'manageModules']);
 
         Gate::define('manage settings', [SettingsPolicy::class, 'manageSettings']);
         Gate::define('manage company', [SettingsPolicy::class, 'manageCompany']);

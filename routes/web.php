@@ -12,20 +12,11 @@ use App\Http\Controllers\CustomerPortal\Auth\LoginController as CustomerLoginCon
 use App\Http\Controllers\CustomerPortal\EstimatePdfController as CustomerEstimatePdfController;
 use App\Http\Controllers\CustomerPortal\InvoicePdfController as CustomerInvoicePdfController;
 use App\Http\Controllers\CustomerPortal\PaymentPdfController as CustomerPaymentPdfController;
-use App\Http\Controllers\Modules\ScriptController;
-use App\Http\Controllers\Modules\StyleController;
 use App\Http\Controllers\Pdf\DocumentPdfController;
 use App\Http\Controllers\Setup\SessionLoginController;
 use App\Models\Company;
 use App\Models\CompanyInvitation;
 use Illuminate\Support\Facades\Route;
-
-// Module Asset Includes
-// ----------------------------------------------
-
-Route::get('/modules/styles/{style}', StyleController::class);
-
-Route::get('/modules/scripts/{script}', ScriptController::class);
 
 // Admin Auth
 // ----------------------------------------------

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Customer\CustomerResource;
 use App\Models\CompanySetting;
 use App\Models\Currency;
-use App\Models\Module;
+use App\Platform\Modules\Models\Module;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;

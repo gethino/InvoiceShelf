@@ -1,5 +1,6 @@
 <?php
 
+use App\Platform\Modules\ModuleServiceProvider;
 use App\Providers\AiServiceProvider;
 use App\Providers\AppConfigProvider;
 use App\Providers\AppServiceProvider;
@@ -21,5 +22,6 @@ return [
     DriverRegistryProvider::class,
     AiServiceProvider::class,
     AppConfigProvider::class,
+    ModuleServiceProvider::class,
     ScrambleServiceProvider::class,
 ];
