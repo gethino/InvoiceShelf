@@ -1,11 +1,11 @@
 <?php
 
 use App\Domains\Accounts\Models\User;
+use App\Domains\Catalog\Http\Controllers\ItemsController;
+use App\Domains\Catalog\Http\Requests\ItemsRequest;
 use App\Domains\Catalog\Models\Item;
 use App\Domains\Taxation\Models\Tax;
 use App\Domains\Taxation\Models\TaxType;
-use App\Http\Controllers\Company\Item\ItemsController;
-use App\Http\Requests\ItemsRequest;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Sanctum\Sanctum;
 

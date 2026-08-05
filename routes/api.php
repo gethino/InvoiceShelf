@@ -27,8 +27,6 @@ use App\Http\Controllers\Company\General\SearchController;
 use App\Http\Controllers\Company\General\SerialNumberController;
 use App\Http\Controllers\Company\Invoice\InvoicesController;
 use App\Http\Controllers\Company\Invoice\InvoiceTemplatesController;
-use App\Http\Controllers\Company\Item\ItemsController;
-use App\Http\Controllers\Company\Item\UnitsController;
 use App\Http\Controllers\Company\Members\MembersController;
 use App\Http\Controllers\Company\Payment\CreditAllocationsController;
 use App\Http\Controllers\Company\Payment\PaymentMethodsController;
@@ -212,11 +210,7 @@ Route::prefix('/v1')->group(function () {
             // Items
             // ----------------------------------
 
-            Route::post('/items/delete', [ItemsController::class, 'delete']);
-
-            Route::resource('items', ItemsController::class);
-
-            Route::resource('units', UnitsController::class);
+            require app_path('Domains/Catalog/routes/company.php');
 
             // Invoices
             // -------------------------------------------------

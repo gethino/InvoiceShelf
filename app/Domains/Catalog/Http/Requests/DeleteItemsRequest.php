@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Domains\Catalog\Http\Requests;
 
 use App\Domains\Catalog\Models\Item;
 use App\Rules\RelationNotExist;

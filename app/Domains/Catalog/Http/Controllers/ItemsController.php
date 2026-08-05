@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Company\Item;
+namespace App\Domains\Catalog\Http\Controllers;
 
+use App\Domains\Catalog\Application\ItemService;
+use App\Domains\Catalog\Http\Requests\DeleteItemsRequest;
+use App\Domains\Catalog\Http\Requests\ItemsRequest;
+use App\Domains\Catalog\Http\Resources\ItemResource;
 use App\Domains\Catalog\Models\Item;
 use App\Domains\Taxation\Models\TaxType;
-use App\Http\Controllers\Controller;
-use App\Http\Requests;
-use App\Http\Requests\DeleteItemsRequest;
-use App\Http\Resources\ItemResource;
-use App\Services\ItemService;
+use App\Platform\Http\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -49,14 +49,18 @@ class ItemsController extends Controller
     /**
      * Create Item.
      *
-     * @param  App\Http\Requests\ItemsRequest  $request
      * @return JsonResponse
      */
-    public function store(Requests\ItemsRequest $request)
+    public function store(ItemsRequest $request)
     {
         $this->authorize('create', Item::class);
 
-        $item = $this->itemService->create($request);
+        $item = $this->itemService->create(
+            $request->validated(),
+            $request->input('taxes', []),
+            (int) $request->header('company'),
+            (int) $request->user()->getAuthIdentifier(),
+        );
 
         return new ItemResource($item);
     }
@@ -76,14 +80,18 @@ class ItemsController extends Controller
     /**
      * Update an existing Item.
      *
-     * @param  App\Http\Requests\ItemsRequest  $request
      * @return JsonResponse
      */
-    public function update(Requests\ItemsRequest $request, Item $item)
+    public function update(ItemsRequest $request, Item $item)
     {
         $this->authorize('update', $item);
 
-        $item = $this->itemService->update($item, $request);
+        $item = $this->itemService->update(
+            $item,
+            $request->validated(),
+            $request->input('taxes', []),
+            (int) $request->header('company'),
+        );
 
         return new ItemResource($item);
     }

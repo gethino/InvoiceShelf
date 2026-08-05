@@ -14,7 +14,6 @@ use App\Policies\DashboardPolicy;
 use App\Policies\EstimatePolicy;
 use App\Policies\ExpensePolicy;
 use App\Policies\InvoicePolicy;
-use App\Policies\ItemPolicy;
 use App\Policies\NotePolicy;
 use App\Policies\OwnerPolicy;
 use App\Policies\PaymentPolicy;
@@ -153,7 +152,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('send estimate', [EstimatePolicy::class, 'send']);
         Gate::define('send payment', [PaymentPolicy::class, 'send']);
 
-        Gate::define('delete multiple items', [ItemPolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple customers', [CustomerPolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple users', [UserPolicy::class, 'deleteMultiple']);
         Gate::define('delete multiple invoices', [InvoicePolicy::class, 'deleteMultiple']);

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Domains\Catalog\Policies;
 
 use App\Domains\Accounts\Models\User;
 use App\Domains\Catalog\Models\Item;

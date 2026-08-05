@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Company\Item;
+namespace App\Domains\Catalog\Http\Controllers;
 
+use App\Domains\Catalog\Http\Requests\UnitRequest;
+use App\Domains\Catalog\Http\Resources\UnitResource;
 use App\Domains\Catalog\Models\Unit;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\UnitRequest;
-use App\Http\Resources\UnitResource;
+use App\Platform\Http\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
