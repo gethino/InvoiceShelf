@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Customer;
 
-use App\Models\Address;
+use App\Domains\Contacts\Models\Address;
 use App\Rules\IdnEmail;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;

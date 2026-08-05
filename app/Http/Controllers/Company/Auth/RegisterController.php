@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Company\Auth;
 
+use App\Domains\Accounts\Models\User;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Providers\AppServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Validator;

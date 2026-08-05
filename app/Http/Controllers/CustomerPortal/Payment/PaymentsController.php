@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\CustomerPortal\Payment;
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Receivables\Models\Payment;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Customer\PaymentResource;
-use App\Models\Company;
-use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;

@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Company;
-use App\Models\Customer;
-use App\Models\Invoice;
-use App\Models\User;
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Sales\Models\Invoice;
 use App\Platform\Modules\Models\MarketplaceCredential;
 use App\Platform\Modules\Models\MarketplaceOperation;
 use App\Platform\Modules\Models\Module;
@@ -57,6 +57,20 @@ test('every first-party model has a stable identity', function () {
 
     expect($models->diff($mappedModels)->values()->all())->toBe([])
         ->and($mappedModels->diff($models)->values()->all())->toBe([]);
+});
+
+test('first-party models have canonical owners and explicit table contracts', function () {
+    expect(is_dir(app_path('Models')))->toBeFalse();
+
+    collect(ModelIdentityMap::aliases())
+        ->values()
+        ->filter(fn (string $model): bool => str_starts_with($model, 'App\\'))
+        ->each(function (string $model): void {
+            $table = new ReflectionProperty($model, 'table');
+
+            expect($table->getDeclaringClass()->getName())->toBe($model)
+                ->and((new $model)->getTable())->not->toBeEmpty();
+        });
 });
 
 test('database aliases do not leak through the existing v1 discriminator', function () {

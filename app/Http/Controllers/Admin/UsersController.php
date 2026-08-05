@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Domains\Accounts\Models\ImpersonationLog;
+use App\Domains\Accounts\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminUserUpdateRequest;
 use App\Http\Resources\UserResource;
-use App\Models\ImpersonationLog;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 

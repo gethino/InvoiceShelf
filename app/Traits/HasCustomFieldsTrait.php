@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use App\Models\CustomField;
-use App\Models\CustomFieldValue;
+use App\Domains\Metadata\Models\CustomField;
+use App\Domains\Metadata\Models\CustomFieldValue;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait HasCustomFieldsTrait

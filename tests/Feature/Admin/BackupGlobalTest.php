@@ -1,8 +1,8 @@
 <?php
 
+use App\Domains\Accounts\Models\User;
 use App\Jobs\CreateBackupJob;
-use App\Models\FileDisk;
-use App\Models\User;
+use App\Platform\Storage\Models\FileDisk;
 use App\Services\Storage\BackupConfigurationFactory;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Queue;

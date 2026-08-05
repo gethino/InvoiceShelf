@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\FileDisk;
-use App\Models\Setting;
+use App\Platform\Operations\Models\Setting;
+use App\Platform\Storage\Models\FileDisk;
 use App\Services\Storage\FileDiskService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;

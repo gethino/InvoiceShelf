@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\CompanyInvitation;
+use App\Domains\Accounts\Models\CompanyInvitation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;

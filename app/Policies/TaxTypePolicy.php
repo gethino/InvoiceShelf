@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\TaxType;
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Taxation\Models\TaxType;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Silber\Bouncer\BouncerFacade;
 

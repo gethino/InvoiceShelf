@@ -2,12 +2,12 @@
 
 namespace App\Services\Company;
 
-use App\Models\Company;
-use App\Models\CompanySetting;
-use App\Models\PaymentAllocation;
-use App\Models\PaymentMethod;
-use App\Models\Unit;
-use App\Models\User;
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Catalog\Models\Unit;
+use App\Domains\Receivables\Models\PaymentAllocation;
+use App\Domains\Receivables\Models\PaymentMethod;
 use Silber\Bouncer\BouncerFacade;
 use Silber\Bouncer\Database\Role;
 

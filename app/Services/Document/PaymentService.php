@@ -2,14 +2,15 @@
 
 namespace App\Services\Document;
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Money\Models\ExchangeRateLog;
+use App\Domains\Receivables\Contracts\PaymentPdfDataProvider;
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Sales\Models\Invoice;
 use App\Facades\Hashids;
 use App\Facades\Pdf;
 use App\Mail\SendPaymentMail;
-use App\Models\Company;
-use App\Models\CompanySetting;
-use App\Models\ExchangeRateLog;
-use App\Models\Invoice;
-use App\Models\Payment;
 use App\Services\Mail\CompanyMailConfigService;
 use App\Support\Hashids\HashidConnection;
 use App\Support\Pdf\PdfMetadata;
@@ -20,7 +21,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
-class PaymentService
+class PaymentService implements PaymentPdfDataProvider
 {
     public function __construct(
         private readonly PaymentAllocationService $paymentAllocationService,
@@ -164,7 +165,7 @@ class PaymentService
         ];
     }
 
-    public function getPdfData(Payment $payment)
+    public function getPdfData(Payment $payment): mixed
     {
         $payment->loadMissing('allocations.invoice.currency');
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Setup;
 
 use App\Http\Controllers\Controller;
-use App\Models\Setting;
+use App\Platform\Operations\Models\Setting;
 use App\Rules\PublicHttpUrl;
 use App\Services\AiConfigurationService;
 use Illuminate\Http\JsonResponse;

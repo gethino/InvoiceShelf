@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\AiMessage;
-use App\Models\Customer;
-use App\Models\Invoice;
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Sales\Models\Invoice;
+use App\Platform\Ai\Models\AiMessage;
 use App\Services\AiConfigurationService;
 use App\Support\Ai\AiChatResponse;
 use App\Support\Ai\AiDriverFactory;

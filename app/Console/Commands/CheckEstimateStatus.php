@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Estimate;
+use App\Domains\Sales\Models\Estimate;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 

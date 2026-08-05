@@ -2,7 +2,7 @@
 
 namespace App\Services\Ai\Tools;
 
-use App\Models\Customer;
+use App\Domains\Contacts\Models\Customer;
 
 class SearchCustomersTool extends AiTool
 {

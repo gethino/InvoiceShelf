@@ -3,7 +3,7 @@
 namespace App\Support\Update;
 
 use App\Events\UpdateFinished;
-use App\Models\Setting;
+use App\Platform\Operations\Models\Setting;
 use App\Traits\SiteApi;
 use Artisan;
 use File;

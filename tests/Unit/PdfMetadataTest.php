@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Company;
+use App\Domains\Accounts\Models\Company;
 use App\Support\Pdf\DompdfDriver;
 use App\Support\Pdf\GotenbergPdfDriver;
 use App\Support\Pdf\PdfMetadata;

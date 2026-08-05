@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Company\Ai;
 
 use App\Http\Controllers\Controller;
-use App\Models\AiConversation;
+use App\Platform\Ai\Models\AiConversation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;

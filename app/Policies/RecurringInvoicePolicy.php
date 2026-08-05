@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\RecurringInvoice;
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Sales\Models\RecurringInvoice;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 use Silber\Bouncer\BouncerFacade;

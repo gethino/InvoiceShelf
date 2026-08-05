@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
 use App\Platform\Modules\Events\ModuleDisabledEvent;
 use App\Platform\Modules\Events\ModuleEnabledEvent;
 use App\Platform\Modules\Models\Module;

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Company\Role;
 
+use App\Domains\Accounts\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
 use App\Http\Resources\RoleResource;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Silber\Bouncer\BouncerFacade;

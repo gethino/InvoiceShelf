@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\CustomerPortal;
 
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Sales\Models\Estimate;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EstimateResource;
 use App\Mail\EstimateViewedMail;
-use App\Models\CompanySetting;
-use App\Models\Customer;
-use App\Models\EmailLog;
-use App\Models\Estimate;
+use App\Platform\Mail\Models\EmailLog;
 use Illuminate\Http\Request;
 
 class EstimatePdfController extends Controller

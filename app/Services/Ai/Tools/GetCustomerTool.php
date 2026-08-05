@@ -2,8 +2,8 @@
 
 namespace App\Services\Ai\Tools;
 
-use App\Models\Customer;
-use App\Models\Invoice;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Sales\Models\Invoice;
 
 class GetCustomerTool extends AiTool
 {

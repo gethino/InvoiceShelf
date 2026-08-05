@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Customer;
-use App\Models\Invoice;
-use App\Models\Payment;
-use App\Models\PaymentAllocation;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Receivables\Models\PaymentAllocation;
+use App\Domains\Sales\Models\Invoice;
 use App\Services\Document\PaymentService;
 use Illuminate\Support\Facades\Artisan;
 

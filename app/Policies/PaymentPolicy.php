@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Payment;
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Receivables\Models\Payment;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Silber\Bouncer\BouncerFacade;
 

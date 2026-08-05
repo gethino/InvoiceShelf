@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Domains\Contacts\Models\Country;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CountryResource;
-use App\Models\Country;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

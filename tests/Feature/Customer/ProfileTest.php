@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Customer;
 
+use App\Domains\Contacts\Models\Customer;
 use App\Http\Controllers\CustomerPortal\General\ProfileController;
 use App\Http\Requests\Customer\CustomerProfileRequest;
-use App\Models\Customer;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\Sanctum;

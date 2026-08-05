@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\CompanySetting;
-use App\Models\Setting;
-use App\Models\User;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Accounts\Models\User;
+use App\Platform\Operations\Models\Setting;
 use App\Services\Mail\CompanyMailConfigService;
 use App\Services\Mail\MailConfigurationService;
 use Illuminate\Support\Facades\Artisan;

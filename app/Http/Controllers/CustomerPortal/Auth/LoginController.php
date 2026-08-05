@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\CustomerPortal\Auth;
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Contacts\Models\Customer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\CustomerLoginRequest;
-use App\Models\Company;
-use App\Models\Customer;
 use Hash;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;

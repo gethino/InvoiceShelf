@@ -1,9 +1,9 @@
 <?php
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\User;
 use App\Http\Controllers\Admin\CompaniesController;
 use App\Http\Requests\CompaniesRequest;
-use App\Models\Company;
-use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Sanctum\Sanctum;
 

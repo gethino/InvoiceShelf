@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\Company;
-use App\Models\Customer;
-use App\Models\Invoice;
-use App\Models\InvoiceItem;
-use App\Models\Item;
-use App\Models\Unit;
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Catalog\Models\Item;
+use App\Domains\Catalog\Models\Unit;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Sales\Models\Invoice;
+use App\Domains\Sales\Models\InvoiceItem;
 use App\Services\Ai\Tools\RankTopItemsTool;
 use Illuminate\Support\Facades\Artisan;
 

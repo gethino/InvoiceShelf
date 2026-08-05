@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\CompanySetting;
-use App\Models\Customer;
-use App\Models\Expense;
-use App\Models\Invoice;
-use App\Models\Payment;
-use App\Models\PaymentAllocation;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Purchases\Models\Expense;
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Receivables\Models\PaymentAllocation;
+use App\Domains\Sales\Models\Invoice;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;

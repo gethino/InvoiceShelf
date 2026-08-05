@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Expense;
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Purchases\Models\Expense;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Silber\Bouncer\BouncerFacade;
 

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\CustomerPortal\Expense;
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Purchases\Models\Expense;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Customer\ExpenseResource;
-use App\Models\Company;
-use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;

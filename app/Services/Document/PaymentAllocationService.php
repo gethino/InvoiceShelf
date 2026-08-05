@@ -2,9 +2,9 @@
 
 namespace App\Services\Document;
 
-use App\Models\Invoice;
-use App\Models\Payment;
-use App\Models\PaymentAllocation;
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Receivables\Models\PaymentAllocation;
+use App\Domains\Sales\Models\Invoice;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;

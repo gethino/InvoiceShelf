@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Company\Expense;
 
+use App\Domains\Purchases\Models\Expense;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DeleteExpensesRequest;
 use App\Http\Requests\ExpenseRequest;
 use App\Http\Requests\UploadExpenseReceiptRequest;
 use App\Http\Resources\ExpenseResource;
-use App\Models\Expense;
 use App\Services\Document\ExpenseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

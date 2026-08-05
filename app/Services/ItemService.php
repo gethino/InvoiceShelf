@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\CompanySetting;
-use App\Models\Item;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Catalog\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

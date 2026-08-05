@@ -2,10 +2,10 @@
 
 namespace App\Services\Document;
 
-use App\Models\CompanySetting;
-use App\Models\ExchangeRateLog;
-use App\Models\Expense;
-use App\Models\TaxType;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Money\Models\ExchangeRateLog;
+use App\Domains\Purchases\Models\Expense;
+use App\Domains\Taxation\Models\TaxType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

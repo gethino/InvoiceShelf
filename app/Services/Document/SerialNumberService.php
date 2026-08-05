@@ -2,8 +2,8 @@
 
 namespace App\Services\Document;
 
-use App\Models\CompanySetting;
-use App\Models\Customer;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Contacts\Models\Customer;
 
 class SerialNumberService
 {

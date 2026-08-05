@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Setup;
 
+use App\Domains\Accounts\Models\User;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Support\Setup\InstallWizardAuth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

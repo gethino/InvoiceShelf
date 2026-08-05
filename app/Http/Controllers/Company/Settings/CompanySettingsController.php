@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Company\Settings;
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Accounts\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetSettingsRequest;
 use App\Http\Requests\UpdateSettingsRequest;
-use App\Models\Company;
-use App\Models\CompanySetting;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;

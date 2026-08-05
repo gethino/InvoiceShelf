@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Payment;
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Receivables\Models\Payment;
 use App\Support\Pdf\PdfTemplateUtils;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;

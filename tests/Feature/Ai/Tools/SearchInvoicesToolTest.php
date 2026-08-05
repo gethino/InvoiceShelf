@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Company;
-use App\Models\Customer;
-use App\Models\Invoice;
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Sales\Models\Invoice;
 use App\Services\Ai\Tools\SearchInvoicesTool;
 use Illuminate\Support\Facades\Artisan;
 

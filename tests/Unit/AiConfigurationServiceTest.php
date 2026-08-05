@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\CompanySetting;
-use App\Models\Setting;
-use App\Models\User;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Accounts\Models\User;
+use App\Platform\Operations\Models\Setting;
 use App\Services\AiConfigurationService;
 use App\Support\Ai\OpenRouterDriver;
 use Illuminate\Support\Facades\Artisan;

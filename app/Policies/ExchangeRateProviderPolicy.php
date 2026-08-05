@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\ExchangeRateProvider;
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Money\Models\ExchangeRateProvider;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 use Silber\Bouncer\BouncerFacade;

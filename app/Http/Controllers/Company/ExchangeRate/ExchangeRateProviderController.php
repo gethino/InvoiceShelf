@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Company\ExchangeRate;
 
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Money\Models\Currency;
+use App\Domains\Money\Models\ExchangeRateLog;
+use App\Domains\Money\Models\ExchangeRateProvider;
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Sales\Models\Estimate;
+use App\Domains\Sales\Models\Invoice;
+use App\Domains\Taxation\Models\Tax;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BulkExchangeRateRequest;
 use App\Http\Requests\ExchangeRateProviderRequest;
 use App\Http\Resources\ExchangeRateProviderResource;
-use App\Models\CompanySetting;
-use App\Models\Currency;
-use App\Models\Estimate;
-use App\Models\ExchangeRateLog;
-use App\Models\ExchangeRateProvider;
-use App\Models\Invoice;
-use App\Models\Payment;
-use App\Models\Tax;
 use App\Services\ExchangeRateProviderService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

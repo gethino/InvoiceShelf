@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Company\Invoice;
 
+use App\Domains\Sales\Models\Estimate;
+use App\Domains\Sales\Models\Invoice;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Http\Requests\ChangeInvoiceStatusRequest;
@@ -12,8 +14,6 @@ use App\Http\Resources\CreditNoteResource;
 use App\Http\Resources\EstimateResource;
 use App\Http\Resources\InvoiceResource;
 use App\Jobs\GenerateInvoicePdfJob;
-use App\Models\Estimate;
-use App\Models\Invoice;
 use App\Services\Document\CreditNoteService;
 use App\Services\Document\InvoiceService;
 use Illuminate\Http\JsonResponse;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\FileDisk;
+use App\Platform\Storage\Models\FileDisk;
 use App\Support\Setup\InstallUtils;
 use Closure;
 use Illuminate\Http\Request;

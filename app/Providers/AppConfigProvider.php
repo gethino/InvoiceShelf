@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\FileDisk;
-use App\Models\Setting;
+use App\Platform\Operations\Models\Setting;
+use App\Platform\Storage\Models\FileDisk;
 use App\Services\Mail\MailConfigurationService;
 use App\Services\Storage\FileDiskService;
 use App\Support\Setup\InstallUtils;

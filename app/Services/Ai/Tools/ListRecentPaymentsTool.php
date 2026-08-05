@@ -2,7 +2,7 @@
 
 namespace App\Services\Ai\Tools;
 
-use App\Models\Payment;
+use App\Domains\Receivables\Models\Payment;
 use Carbon\Carbon;
 
 class ListRecentPaymentsTool extends AiTool

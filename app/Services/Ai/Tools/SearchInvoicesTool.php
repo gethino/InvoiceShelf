@@ -2,7 +2,7 @@
 
 namespace App\Services\Ai\Tools;
 
-use App\Models\Invoice;
+use App\Domains\Sales\Models\Invoice;
 
 /**
  * Search invoices by free text, status, and/or customer, scoped to the current company.

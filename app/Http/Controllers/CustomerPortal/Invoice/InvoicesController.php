@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\CustomerPortal\Invoice;
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Sales\Models\Invoice;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Customer\InvoiceResource;
-use App\Models\Company;
-use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;

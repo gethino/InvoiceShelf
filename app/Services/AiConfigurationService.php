@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\CompanySetting;
-use App\Models\Setting;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Platform\Operations\Models\Setting;
 use App\Rules\PublicHttpUrl;
 use App\Support\Ai\AiDriver;
 use App\Support\Ai\AiDriverFactory;

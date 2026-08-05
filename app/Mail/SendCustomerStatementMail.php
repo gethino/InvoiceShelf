@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\EmailLog;
+use App\Platform\Mail\Models\EmailLog;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;

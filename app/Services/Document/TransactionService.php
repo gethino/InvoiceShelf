@@ -2,8 +2,8 @@
 
 namespace App\Services\Document;
 
+use App\Domains\Receivables\Models\Transaction;
 use App\Facades\Hashids;
-use App\Models\Transaction;
 use App\Support\Hashids\HashidConnection;
 
 class TransactionService

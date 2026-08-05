@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Company\Report;
 
+use App\Domains\Contacts\Models\Customer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomerStatementRequest;
-use App\Models\Customer;
 use App\Services\CustomerStatementPdfService;
 use App\Services\CustomerStatementService;
 use Carbon\Carbon;

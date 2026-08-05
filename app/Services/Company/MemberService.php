@@ -2,8 +2,8 @@
 
 namespace App\Services\Company;
 
+use App\Domains\Accounts\Models\User;
 use App\Http\Requests\MemberRequest;
-use App\Models\User;
 use Silber\Bouncer\BouncerFacade;
 
 class MemberService

@@ -2,10 +2,10 @@
 
 namespace App\Traits;
 
-use App\Models\Address;
-use App\Models\CompanySetting;
-use App\Models\FileDisk;
-use App\Models\Setting;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Contacts\Models\Address;
+use App\Platform\Operations\Models\Setting;
+use App\Platform\Storage\Models\FileDisk;
 use App\Services\FontService;
 use App\Support\Pdf\PdfHtmlSanitizer;
 use Carbon\Carbon;

@@ -2,8 +2,8 @@
 
 namespace App\Services\Ai\Tools;
 
-use App\Models\InvoiceItem;
-use App\Models\Item;
+use App\Domains\Catalog\Models\Item;
+use App\Domains\Sales\Models\InvoiceItem;
 use App\Services\Ai\Tools\Concerns\ResolvesPeriod;
 use Illuminate\Support\Facades\DB;
 

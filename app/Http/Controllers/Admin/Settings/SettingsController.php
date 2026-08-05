@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetSettingRequest;
 use App\Http\Requests\SettingRequest;
-use App\Models\Setting;
+use App\Platform\Operations\Models\Setting;
 use Illuminate\Http\JsonResponse;
 
 class SettingsController extends Controller

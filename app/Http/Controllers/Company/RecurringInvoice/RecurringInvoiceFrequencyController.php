@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Company\RecurringInvoice;
 
+use App\Domains\Sales\Models\RecurringInvoice;
 use App\Http\Controllers\Controller;
-use App\Models\RecurringInvoice;
 use Illuminate\Http\Request;
 
 class RecurringInvoiceFrequencyController extends Controller

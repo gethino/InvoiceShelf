@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Models\Setting;
+use App\Platform\Operations\Models\Setting;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Item;
+use App\Domains\Catalog\Models\Item;
 use App\Rules\RelationNotExist;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;

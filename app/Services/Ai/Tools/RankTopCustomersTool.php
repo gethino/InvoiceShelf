@@ -2,9 +2,9 @@
 
 namespace App\Services\Ai\Tools;
 
-use App\Models\Customer;
-use App\Models\Invoice;
-use App\Models\Payment;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Sales\Models\Invoice;
 use App\Services\Ai\Tools\Concerns\ResolvesPeriod;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;

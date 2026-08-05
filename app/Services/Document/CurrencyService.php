@@ -2,7 +2,7 @@
 
 namespace App\Services\Document;
 
-use App\Models\Currency;
+use App\Domains\Money\Models\Currency;
 use Illuminate\Database\Eloquent\Collection;
 
 class CurrencyService

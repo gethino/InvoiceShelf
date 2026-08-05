@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Company\Customer;
 
+use App\Domains\Contacts\Models\Customer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomerStatementRequest;
 use App\Http\Resources\CustomerStatementResource;
-use App\Models\Customer;
 use App\Services\CustomerStatementService;
 use Carbon\Carbon;
 

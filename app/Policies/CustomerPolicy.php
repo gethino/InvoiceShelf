@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Customer;
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Contacts\Models\Customer;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Silber\Bouncer\BouncerFacade;
 

@@ -1,15 +1,15 @@
 <?php
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Receivables\Models\PaymentAllocation;
+use App\Domains\Sales\Models\Invoice;
+use App\Domains\Sales\Models\InvoiceItem;
+use App\Domains\Taxation\Models\Tax;
 use App\Mail\SendCreditNoteMail;
 use App\Mail\SendInvoiceMail;
-use App\Models\Company;
-use App\Models\CompanySetting;
-use App\Models\Invoice;
-use App\Models\InvoiceItem;
-use App\Models\Payment;
-use App\Models\PaymentAllocation;
-use App\Models\Tax;
-use App\Models\User;
 use App\Services\Document\CreditNoteService;
 use App\Services\Document\InvoiceService;
 use Illuminate\Support\Facades\Artisan;

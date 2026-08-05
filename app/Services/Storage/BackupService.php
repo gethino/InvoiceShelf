@@ -2,8 +2,8 @@
 
 namespace App\Services\Storage;
 
-use App\Models\FileDisk;
-use App\Models\Setting;
+use App\Platform\Operations\Models\Setting;
+use App\Platform\Storage\Models\FileDisk;
 use Spatie\Backup\BackupDestination\BackupDestination;
 
 class BackupService

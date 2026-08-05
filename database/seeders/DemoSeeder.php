@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Contacts\Models\Country;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Money\Models\Currency;
 use App\Facades\Hashids;
-use App\Models\Company;
-use App\Models\CompanySetting;
-use App\Models\Country;
-use App\Models\Currency;
-use App\Models\Customer;
-use App\Models\Setting;
-use App\Models\User;
+use App\Platform\Operations\Models\Setting;
 use App\Services\Company\CompanyService;
 use App\Support\Hashids\HashidConnection;
 use Illuminate\Database\Seeder;

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\CustomerPortal\General;
 
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Sales\Models\Estimate;
+use App\Domains\Sales\Models\Invoice;
 use App\Http\Controllers\Controller;
-use App\Models\Estimate;
-use App\Models\Invoice;
-use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;

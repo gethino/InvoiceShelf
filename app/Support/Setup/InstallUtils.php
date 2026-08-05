@@ -2,7 +2,7 @@
 
 namespace App\Support\Setup;
 
-use App\Models\Setting;
+use App\Platform\Operations\Models\Setting;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\File;
 

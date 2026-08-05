@@ -2,8 +2,8 @@
 
 namespace App\Platform\Modules\Marketplace;
 
-use App\Models\Setting;
 use App\Platform\Modules\Models\MarketplaceCredential;
+use App\Platform\Operations\Models\Setting;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Crypt;

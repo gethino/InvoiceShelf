@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Company\Payment;
 
+use App\Domains\Receivables\Models\Payment;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DeletePaymentsRequest;
 use App\Http\Requests\PaymentRequest;
 use App\Http\Requests\ReplacePaymentAllocationsRequest;
 use App\Http\Requests\SendPaymentRequest;
 use App\Http\Resources\PaymentResource;
-use App\Models\Payment;
 use App\Services\Document\PaymentAllocationService;
 use App\Services\Document\PaymentService;
 use Illuminate\Http\Request;

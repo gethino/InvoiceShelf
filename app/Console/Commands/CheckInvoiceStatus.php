@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Invoice;
+use App\Domains\Sales\Models\Invoice;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 

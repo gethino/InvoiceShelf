@@ -1,12 +1,12 @@
 <?php
 
+use App\Domains\Accounts\Models\User;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Money\Models\Currency;
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Receivables\Models\PaymentAllocation;
+use App\Domains\Sales\Models\Invoice;
 use App\Jobs\GeneratePaymentPdfJob;
-use App\Models\Currency;
-use App\Models\Customer;
-use App\Models\Invoice;
-use App\Models\Payment;
-use App\Models\PaymentAllocation;
-use App\Models\User;
 use App\Services\Document\PaymentAllocationService;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;

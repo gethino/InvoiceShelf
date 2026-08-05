@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Domains\Accounts\Models\Company;
 use App\Facades\Hashids;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminCompanyUpdateRequest;
 use App\Http\Requests\CompaniesRequest;
 use App\Http\Resources\CompanyResource;
-use App\Models\Company;
 use App\Services\Company\CompanyService;
 use App\Support\Hashids\HashidConnection;
 use Illuminate\Http\Request;

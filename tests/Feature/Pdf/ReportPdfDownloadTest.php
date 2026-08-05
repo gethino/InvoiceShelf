@@ -1,7 +1,7 @@
 <?php
 
+use App\Domains\Accounts\Models\User;
 use App\Facades\Pdf;
-use App\Models\User;
 use App\Support\Pdf\PdfPageSetup;
 use App\Support\Pdf\ResponseStream;
 use Illuminate\Http\Response;

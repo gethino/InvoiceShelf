@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\CustomerPortal;
 
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Sales\Models\Invoice;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Customer\InvoiceResource as CustomerInvoiceResource;
 use App\Mail\InvoiceViewedMail;
-use App\Models\CompanySetting;
-use App\Models\Customer;
-use App\Models\EmailLog;
-use App\Models\Invoice;
+use App\Platform\Mail\Models\EmailLog;
 use Illuminate\Http\Request;
 
 class InvoicePdfController extends Controller

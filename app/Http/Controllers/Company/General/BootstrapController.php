@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Company\General;
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\CompanyInvitation;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Money\Models\Currency;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CompanyInvitationResource;
 use App\Http\Resources\CompanyResource;
 use App\Http\Resources\UserResource;
-use App\Models\Company;
-use App\Models\CompanyInvitation;
-use App\Models\CompanySetting;
-use App\Models\Currency;
-use App\Models\Setting;
 use App\Platform\Modules\Models\Module;
+use App\Platform\Operations\Models\Setting;
 use App\Services\AiConfigurationService;
 use App\Traits\GeneratesMenuTrait;
 use Illuminate\Http\JsonResponse;

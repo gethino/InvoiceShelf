@@ -2,11 +2,11 @@
 
 namespace App\Platform\Modules\Marketplace;
 
-use App\Models\Setting;
 use App\Platform\Modules\Events\ModuleEnabledEvent;
 use App\Platform\Modules\Events\ModuleInstalledEvent;
 use App\Platform\Modules\Models\Module as InstalledModule;
 use App\Platform\Modules\Runtime\ModuleRuntimeAutoloader;
+use App\Platform\Operations\Models\Setting;
 use Composer\Semver\Semver;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\CustomerPortal\General;
 
+use App\Domains\Accounts\Models\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\CustomerProfileRequest;
 use App\Http\Resources\Customer\CustomerResource;
-use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

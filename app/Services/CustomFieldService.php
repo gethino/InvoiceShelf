@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\CustomField;
+use App\Domains\Metadata\Models\CustomField;
 use Illuminate\Http\Request;
 
 class CustomFieldService

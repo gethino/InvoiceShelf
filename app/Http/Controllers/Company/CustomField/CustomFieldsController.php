@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Company\CustomField;
 
+use App\Domains\Metadata\Models\CustomField;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomFieldRequest;
 use App\Http\Resources\CustomFieldResource;
-use App\Models\CustomField;
 use App\Services\CustomFieldService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

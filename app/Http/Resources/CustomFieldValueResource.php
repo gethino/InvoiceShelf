@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Models\CompanySetting;
+use App\Domains\Accounts\Models\CompanySetting;
 use App\Platform\Persistence\ModelIdentityMap;
 use Carbon\Carbon;
 use Illuminate\Http\Request;

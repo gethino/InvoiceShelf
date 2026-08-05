@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Company\Item;
 
+use App\Domains\Catalog\Models\Item;
+use App\Domains\Taxation\Models\TaxType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Http\Requests\DeleteItemsRequest;
 use App\Http\Resources\ItemResource;
-use App\Models\Item;
-use App\Models\TaxType;
 use App\Services\ItemService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

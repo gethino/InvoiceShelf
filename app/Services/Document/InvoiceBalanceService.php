@@ -2,7 +2,7 @@
 
 namespace App\Services\Document;
 
-use App\Models\Invoice;
+use App\Domains\Sales\Models\Invoice;
 
 class InvoiceBalanceService
 {

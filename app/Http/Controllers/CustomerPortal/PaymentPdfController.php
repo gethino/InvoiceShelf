@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\CustomerPortal;
 
+use App\Domains\Receivables\Models\Payment;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PaymentResource;
-use App\Models\EmailLog;
-use App\Models\Payment;
+use App\Platform\Mail\Models\EmailLog;
 use Illuminate\Http\Request;
 
 class PaymentPdfController extends Controller

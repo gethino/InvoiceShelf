@@ -2,10 +2,10 @@
 
 namespace App\Services\Ai;
 
-use App\Models\AiConversation;
-use App\Models\AiMessage;
-use App\Models\Company;
-use App\Models\User;
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\User;
+use App\Platform\Ai\Models\AiConversation;
+use App\Platform\Ai\Models\AiMessage;
 use App\Services\AiConfigurationService;
 use App\Support\Ai\AiChatResponse;
 use App\Support\Ai\AiException;

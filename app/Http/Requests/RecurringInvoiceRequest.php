@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\CompanySetting;
-use App\Models\Customer;
-use App\Models\RecurringInvoice;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Sales\Models\RecurringInvoice;
 use App\Support\DocumentTotals;
 use Illuminate\Foundation\Http\FormRequest;
 

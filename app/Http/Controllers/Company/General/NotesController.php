@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Company\General;
 
+use App\Domains\Metadata\Models\Note;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NotesRequest;
 use App\Http\Resources\NoteResource;
-use App\Models\Note;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 

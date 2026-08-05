@@ -2,9 +2,9 @@
 
 namespace App\Services\Document;
 
+use App\Domains\Sales\Models\Invoice;
+use App\Domains\Sales\Models\InvoiceItem;
 use App\Facades\Hashids;
-use App\Models\Invoice;
-use App\Models\InvoiceItem;
 use App\Support\CreditNoteAmounts;
 use App\Support\Hashids\HashidConnection;
 use Carbon\Carbon;

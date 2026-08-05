@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\CustomField;
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Metadata\Models\CustomField;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Silber\Bouncer\BouncerFacade;
 

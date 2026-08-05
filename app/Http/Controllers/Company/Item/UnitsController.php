@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Company\Item;
 
+use App\Domains\Catalog\Models\Unit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UnitRequest;
 use App\Http\Resources\UnitResource;
-use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 

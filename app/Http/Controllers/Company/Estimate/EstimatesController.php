@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Company\Estimate;
 
+use App\Domains\Sales\Models\Estimate;
+use App\Domains\Sales\Models\Invoice;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DeleteEstimatesRequest;
 use App\Http\Requests\EstimatesRequest;
@@ -9,8 +11,6 @@ use App\Http\Requests\SendEstimatesRequest;
 use App\Http\Resources\EstimateResource;
 use App\Http\Resources\InvoiceResource;
 use App\Jobs\GenerateEstimatePdfJob;
-use App\Models\Estimate;
-use App\Models\Invoice;
 use App\Services\Document\EstimateService;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Markdown;

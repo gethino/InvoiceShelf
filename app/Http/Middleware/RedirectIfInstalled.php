@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Setting;
+use App\Platform\Operations\Models\Setting;
 use App\Support\Setup\InstallUtils;
 use Closure;
 use Illuminate\Http\Request;

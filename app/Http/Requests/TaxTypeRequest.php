@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\TaxType;
+use App\Domains\Taxation\Models\TaxType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

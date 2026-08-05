@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\EmailLog;
-use App\Models\Estimate;
-use App\Models\Invoice;
-use App\Models\Payment;
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Sales\Models\Estimate;
+use App\Domains\Sales\Models\Invoice;
+use App\Platform\Mail\Models\EmailLog;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class EmailLogFactory extends Factory

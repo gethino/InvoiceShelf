@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\Domains\Accounts\Models\CompanySetting;
 use App\Facades\Pdf;
-use App\Models\CompanySetting;
 use App\Support\Pdf\PdfPageSetup;
 use Illuminate\Support\Facades\App;
 

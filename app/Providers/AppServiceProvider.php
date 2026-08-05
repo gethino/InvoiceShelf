@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\AiConversation;
+use App\Domains\Receivables\Contracts\PaymentPdfDataProvider;
+use App\Domains\Sales\Contracts\EstimatePdfDataProvider;
+use App\Domains\Sales\Contracts\InvoicePdfDataProvider;
+use App\Platform\Ai\Models\AiConversation;
 use App\Platform\Persistence\ModelIdentityMap;
 use App\Policies\AiConversationPolicy;
 use App\Policies\CompanyPolicy;
@@ -21,6 +24,9 @@ use App\Policies\ReportPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SettingsPolicy;
 use App\Policies\UserPolicy;
+use App\Services\Document\EstimateService;
+use App\Services\Document\InvoiceService;
+use App\Services\Document\PaymentService;
 use App\Support\Bouncer\BouncerDefaultScope;
 use App\Support\Setup\InstallUtils;
 use App\Support\Setup\InstallWizardAuth;
@@ -91,6 +97,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->bind(EstimatePdfDataProvider::class, EstimateService::class);
+        $this->app->bind(InvoicePdfDataProvider::class, InvoiceService::class);
+        $this->app->bind(PaymentPdfDataProvider::class, PaymentService::class);
+
         BouncerModels::scope(new BouncerDefaultScope);
     }
 

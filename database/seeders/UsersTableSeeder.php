@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\User;
 use App\Facades\Hashids;
-use App\Models\Company;
-use App\Models\Setting;
-use App\Models\User;
+use App\Platform\Operations\Models\Setting;
 use App\Services\Company\CompanyService;
 use App\Support\Hashids\HashidConnection;
 use App\Support\Setup\InstallUtils;

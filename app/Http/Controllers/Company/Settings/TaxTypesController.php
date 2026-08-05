@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Company\Settings;
 
+use App\Domains\Taxation\Models\TaxType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaxTypeRequest;
 use App\Http\Resources\TaxTypeResource;
-use App\Models\TaxType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 

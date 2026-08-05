@@ -2,7 +2,7 @@
 
 namespace App\Services\Ai;
 
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
 use App\Services\Ai\Tools\AiTool;
 use InvalidArgumentException;
 

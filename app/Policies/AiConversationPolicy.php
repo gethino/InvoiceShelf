@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\AiConversation;
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
+use App\Platform\Ai\Models\AiConversation;
 
 /**
  * Conversation visibility is strictly per-user per-company.

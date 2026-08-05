@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Invoice;
+use App\Domains\Sales\Models\Invoice;
 use App\Rules\CreditNoteDeletedTogether;
 use App\Rules\RelationNotExist;
 use Illuminate\Foundation\Http\FormRequest;

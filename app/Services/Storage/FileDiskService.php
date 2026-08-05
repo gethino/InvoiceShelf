@@ -2,7 +2,7 @@
 
 namespace App\Services\Storage;
 
-use App\Models\FileDisk;
+use App\Platform\Storage\Models\FileDisk;
 use App\Support\Net\PrivateNetworkGuard;
 use Illuminate\Http\Request;
 

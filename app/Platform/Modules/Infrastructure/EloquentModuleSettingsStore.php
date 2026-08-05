@@ -2,7 +2,7 @@
 
 namespace App\Platform\Modules\Infrastructure;
 
-use App\Models\CompanySetting;
+use App\Domains\Accounts\Models\CompanySetting;
 use App\Platform\Modules\Contracts\ModuleSettingsStore;
 
 class EloquentModuleSettingsStore implements ModuleSettingsStore

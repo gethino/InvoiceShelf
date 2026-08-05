@@ -2,8 +2,8 @@
 
 namespace App\Services\Mail;
 
-use App\Models\CompanySetting;
-use App\Models\Setting;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Platform\Operations\Models\Setting;
 use Aws\Sdk;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;

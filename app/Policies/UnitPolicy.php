@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Item;
-use App\Models\Unit;
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Catalog\Models\Item;
+use App\Domains\Catalog\Models\Unit;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Silber\Bouncer\BouncerFacade;
 

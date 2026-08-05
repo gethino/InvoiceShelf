@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Company;
-use App\Models\User;
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\User;
 use App\Platform\Modules\Events\ModuleUninstalledEvent;
 use App\Platform\Modules\Http\Resources\ModuleResource;
 use App\Platform\Modules\Models\MarketplaceOperation;

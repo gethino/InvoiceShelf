@@ -4,44 +4,44 @@ declare(strict_types=1);
 
 namespace App\Platform\Persistence;
 
-use App\Models\Address;
-use App\Models\AiConversation;
-use App\Models\AiMessage;
-use App\Models\Company;
-use App\Models\CompanyInvitation;
-use App\Models\CompanySetting;
-use App\Models\Country;
-use App\Models\Currency;
-use App\Models\Customer;
-use App\Models\CustomField;
-use App\Models\CustomFieldValue;
-use App\Models\EmailLog;
-use App\Models\Estimate;
-use App\Models\EstimateItem;
-use App\Models\ExchangeRateLog;
-use App\Models\ExchangeRateProvider;
-use App\Models\Expense;
-use App\Models\ExpenseCategory;
-use App\Models\FileDisk;
-use App\Models\ImpersonationLog;
-use App\Models\Invoice;
-use App\Models\InvoiceItem;
-use App\Models\Item;
-use App\Models\Note;
-use App\Models\Payment;
-use App\Models\PaymentAllocation;
-use App\Models\PaymentMethod;
-use App\Models\RecurringInvoice;
-use App\Models\Setting;
-use App\Models\Tax;
-use App\Models\TaxType;
-use App\Models\Transaction;
-use App\Models\Unit;
-use App\Models\User;
-use App\Models\UserSetting;
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\CompanyInvitation;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Accounts\Models\ImpersonationLog;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Accounts\Models\UserSetting;
+use App\Domains\Catalog\Models\Item;
+use App\Domains\Catalog\Models\Unit;
+use App\Domains\Contacts\Models\Address;
+use App\Domains\Contacts\Models\Country;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Metadata\Models\CustomField;
+use App\Domains\Metadata\Models\CustomFieldValue;
+use App\Domains\Metadata\Models\Note;
+use App\Domains\Money\Models\Currency;
+use App\Domains\Money\Models\ExchangeRateLog;
+use App\Domains\Money\Models\ExchangeRateProvider;
+use App\Domains\Purchases\Models\Expense;
+use App\Domains\Purchases\Models\ExpenseCategory;
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Receivables\Models\PaymentAllocation;
+use App\Domains\Receivables\Models\PaymentMethod;
+use App\Domains\Receivables\Models\Transaction;
+use App\Domains\Sales\Models\Estimate;
+use App\Domains\Sales\Models\EstimateItem;
+use App\Domains\Sales\Models\Invoice;
+use App\Domains\Sales\Models\InvoiceItem;
+use App\Domains\Sales\Models\RecurringInvoice;
+use App\Domains\Taxation\Models\Tax;
+use App\Domains\Taxation\Models\TaxType;
+use App\Platform\Ai\Models\AiConversation;
+use App\Platform\Ai\Models\AiMessage;
+use App\Platform\Mail\Models\EmailLog;
 use App\Platform\Modules\Models\MarketplaceCredential;
 use App\Platform\Modules\Models\MarketplaceOperation;
 use App\Platform\Modules\Models\Module;
+use App\Platform\Operations\Models\Setting;
+use App\Platform\Storage\Models\FileDisk;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use InvalidArgumentException;
@@ -57,6 +57,12 @@ use Silber\Bouncer\Database\Role;
  */
 final class ModelIdentityMap
 {
+    public const ESTIMATE_ALIAS = 'estimate';
+
+    public const INVOICE_ALIAS = 'invoice';
+
+    public const PAYMENT_ALIAS = 'payment';
+
     /**
      * @return array<string, class-string<Model>>
      */
@@ -75,7 +81,7 @@ final class ModelIdentityMap
             'custom_field_value' => CustomFieldValue::class,
             'customer' => Customer::class,
             'email_log' => EmailLog::class,
-            'estimate' => Estimate::class,
+            self::ESTIMATE_ALIAS => Estimate::class,
             'estimate_item' => EstimateItem::class,
             'exchange_rate_log' => ExchangeRateLog::class,
             'exchange_rate_provider' => ExchangeRateProvider::class,
@@ -83,14 +89,14 @@ final class ModelIdentityMap
             'expense_category' => ExpenseCategory::class,
             'file_disk' => FileDisk::class,
             'impersonation_log' => ImpersonationLog::class,
-            'invoice' => Invoice::class,
+            self::INVOICE_ALIAS => Invoice::class,
             'invoice_item' => InvoiceItem::class,
             'item' => Item::class,
             'marketplace_credential' => MarketplaceCredential::class,
             'marketplace_operation' => MarketplaceOperation::class,
             'module' => Module::class,
             'note' => Note::class,
-            'payment' => Payment::class,
+            self::PAYMENT_ALIAS => Payment::class,
             'payment_allocation' => PaymentAllocation::class,
             'payment_method' => PaymentMethod::class,
             'recurring_invoice' => RecurringInvoice::class,

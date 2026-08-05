@@ -2,9 +2,9 @@
 
 namespace App\Mail;
 
+use App\Domains\Sales\Models\Invoice;
 use App\Facades\Hashids;
-use App\Models\EmailLog;
-use App\Models\Invoice;
+use App\Platform\Mail\Models\EmailLog;
 use App\Platform\Persistence\ModelIdentityMap;
 use App\Support\Hashids\HashidConnection;
 use Illuminate\Bus\Queueable;

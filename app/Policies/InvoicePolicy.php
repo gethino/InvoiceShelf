@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Invoice;
-use App\Models\Payment;
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Sales\Models\Invoice;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Silber\Bouncer\BouncerFacade;
 

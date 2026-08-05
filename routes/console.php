@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\CompanySetting;
-use App\Models\RecurringInvoice;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Sales\Models\RecurringInvoice;
 use App\Services\Document\RecurringInvoiceService;
 use App\Support\Setup\InstallUtils;
 use Illuminate\Support\Facades\Schedule;

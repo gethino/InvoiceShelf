@@ -3,16 +3,17 @@
 namespace App\Services\Document;
 
 use App;
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Metadata\Models\CustomField;
+use App\Domains\Money\Models\ExchangeRateLog;
+use App\Domains\Sales\Contracts\InvoicePdfDataProvider;
+use App\Domains\Sales\Models\Estimate;
+use App\Domains\Sales\Models\Invoice;
 use App\Facades\Hashids;
 use App\Facades\Pdf;
 use App\Mail\SendCreditNoteMail;
 use App\Mail\SendInvoiceMail;
-use App\Models\Company;
-use App\Models\CompanySetting;
-use App\Models\CustomField;
-use App\Models\Estimate;
-use App\Models\ExchangeRateLog;
-use App\Models\Invoice;
 use App\Services\Mail\CompanyMailConfigService;
 use App\Support\Hashids\HashidConnection;
 use App\Support\Pdf\PdfMetadata;
@@ -22,7 +23,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 
-class InvoiceService
+class InvoiceService implements InvoicePdfDataProvider
 {
     public function __construct(
         private readonly DocumentItemService $documentItemService,
@@ -264,7 +265,7 @@ class InvoiceService
         ];
     }
 
-    public function getPdfData(Invoice $invoice)
+    public function getPdfData(Invoice $invoice): mixed
     {
         $taxes = collect();
 

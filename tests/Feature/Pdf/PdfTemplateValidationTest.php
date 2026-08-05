@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
 use App\Rules\PdfTemplateExists;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Validator;

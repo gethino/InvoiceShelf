@@ -2,7 +2,7 @@
 
 namespace App\Services\Ai\Tools;
 
-use App\Models\Item;
+use App\Domains\Catalog\Models\Item;
 
 class SearchItemsTool extends AiTool
 {

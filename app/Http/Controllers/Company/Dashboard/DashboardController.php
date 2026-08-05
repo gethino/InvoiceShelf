@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Company\Dashboard;
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Purchases\Models\Expense;
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Sales\Models\Estimate;
+use App\Domains\Sales\Models\Invoice;
 use App\Http\Controllers\Controller;
-use App\Models\Company;
-use App\Models\CompanySetting;
-use App\Models\Customer;
-use App\Models\Estimate;
-use App\Models\Expense;
-use App\Models\Invoice;
-use App\Models\Payment;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Models\CompanySetting;
-use App\Models\Customer;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Contacts\Models\Customer;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;

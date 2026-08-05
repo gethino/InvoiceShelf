@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\PaymentMethod;
+use App\Domains\Receivables\Models\PaymentMethod;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

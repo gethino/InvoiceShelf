@@ -2,7 +2,7 @@
 
 namespace App\Services\Storage;
 
-use App\Models\FileDisk;
+use App\Platform\Storage\Models\FileDisk;
 use Exception;
 use Spatie\Backup\Config\Config;
 

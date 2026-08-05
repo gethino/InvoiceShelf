@@ -2,8 +2,8 @@
 
 namespace App\Services\Ai\Tools;
 
-use App\Models\Expense;
-use App\Models\ExpenseCategory;
+use App\Domains\Purchases\Models\Expense;
+use App\Domains\Purchases\Models\ExpenseCategory;
 use App\Services\Ai\Tools\Concerns\ResolvesPeriod;
 use Illuminate\Support\Facades\DB;
 

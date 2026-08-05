@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\User;
 use App\Http\Controllers\Controller;
-use App\Models\Company;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Company\Report;
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Money\Models\Currency;
+use App\Domains\Taxation\Models\Tax;
 use App\Facades\Pdf;
 use App\Http\Controllers\Controller;
-use App\Models\Company;
-use App\Models\CompanySetting;
-use App\Models\Currency;
-use App\Models\Tax;
 use App\Support\Pdf\PdfPageSetup;
 use App\Support\Pdf\PdfTemplateUtils;
 use Carbon\Carbon;

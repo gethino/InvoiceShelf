@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Company\General;
 
+use App\Domains\Accounts\Models\CompanyInvitation;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CompanyInvitationResource;
-use App\Models\CompanyInvitation;
 use App\Services\Company\InvitationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

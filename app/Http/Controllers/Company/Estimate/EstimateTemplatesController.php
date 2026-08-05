@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Company\Estimate;
 
+use App\Domains\Sales\Models\Estimate;
 use App\Http\Controllers\Controller;
-use App\Models\Estimate;
 use App\Support\Pdf\PdfTemplateUtils;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

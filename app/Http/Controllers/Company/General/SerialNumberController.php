@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Company\General;
 
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Sales\Models\Estimate;
+use App\Domains\Sales\Models\Invoice;
 use App\Http\Controllers\Controller;
-use App\Models\Estimate;
-use App\Models\Invoice;
-use App\Models\Payment;
 use App\Services\Document\SerialNumberService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

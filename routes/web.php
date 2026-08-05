@@ -1,5 +1,7 @@
 <?php
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\CompanyInvitation;
 use App\Http\Controllers\Company\Auth\LoginController;
 use App\Http\Controllers\Company\Expense\ExpensesController;
 use App\Http\Controllers\Company\Report\CustomerSalesReportController;
@@ -14,8 +16,6 @@ use App\Http\Controllers\CustomerPortal\InvoicePdfController as CustomerInvoiceP
 use App\Http\Controllers\CustomerPortal\PaymentPdfController as CustomerPaymentPdfController;
 use App\Http\Controllers\Pdf\DocumentPdfController;
 use App\Http\Controllers\Setup\SessionLoginController;
-use App\Models\Company;
-use App\Models\CompanyInvitation;
 use Illuminate\Support\Facades\Route;
 
 // Admin Auth

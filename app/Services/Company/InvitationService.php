@@ -2,10 +2,10 @@
 
 namespace App\Services\Company;
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\CompanyInvitation;
+use App\Domains\Accounts\Models\User;
 use App\Mail\CompanyInvitationMail;
-use App\Models\Company;
-use App\Models\CompanyInvitation;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;

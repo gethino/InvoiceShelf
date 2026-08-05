@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Invoice;
+use App\Domains\Sales\Models\Invoice;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

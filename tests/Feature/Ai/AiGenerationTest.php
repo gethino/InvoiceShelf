@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Domains\Accounts\Models\User;
 use App\Services\AiConfigurationService;
 use App\Support\Ai\AiChatResponse;
 use App\Support\Ai\AiDriver;

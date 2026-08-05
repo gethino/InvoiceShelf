@@ -1,9 +1,9 @@
 <?php
 
+use App\Domains\Sales\Models\Estimate;
+use App\Domains\Sales\Models\EstimateItem;
+use App\Domains\Taxation\Models\Tax;
 use App\Http\Requests\EstimatesRequest;
-use App\Models\Estimate;
-use App\Models\EstimateItem;
-use App\Models\Tax;
 use App\Services\Document\DocumentItemService;
 use App\Services\Document\EstimateService;
 use Illuminate\Support\Facades\Artisan;

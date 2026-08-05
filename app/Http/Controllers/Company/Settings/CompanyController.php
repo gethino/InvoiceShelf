@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Company\Settings;
 
+use App\Domains\Accounts\Models\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyLogoRequest;
 use App\Http\Requests\CompanyRequest;
 use App\Http\Resources\CompanyResource;
-use App\Models\Company;
 
 class CompanyController extends Controller
 {

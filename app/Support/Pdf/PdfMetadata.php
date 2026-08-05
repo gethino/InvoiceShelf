@@ -2,8 +2,6 @@
 
 namespace App\Support\Pdf;
 
-use App\Models\Company;
-
 /**
  * Document properties written into the PDF itself.
  *
@@ -19,7 +17,7 @@ final class PdfMetadata
     /**
      * @return array<string, string>
      */
-    public static function forDocument(string $subject, ?string $number, ?Company $company): array
+    public static function forDocument(string $subject, ?string $number, ?object $company): array
     {
         $title = trim($subject.' '.($number ?? ''));
 

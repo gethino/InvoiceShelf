@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Company\General;
 
+use App\Domains\Accounts\Models\User;
+use App\Domains\Contacts\Models\Customer;
 use App\Http\Controllers\Controller;
-use App\Models\Customer;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 

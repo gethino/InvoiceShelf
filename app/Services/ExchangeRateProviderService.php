@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Money\Models\ExchangeRateLog;
+use App\Domains\Money\Models\ExchangeRateProvider;
 use App\Http\Requests\ExchangeRateProviderRequest;
-use App\Models\CompanySetting;
-use App\Models\ExchangeRateLog;
-use App\Models\ExchangeRateProvider;
 use App\Support\ExchangeRate\ExchangeRateDriverFactory;
 use App\Support\ExchangeRate\ExchangeRateException;
 

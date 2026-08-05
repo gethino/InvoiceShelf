@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Company\Payment;
 
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Receivables\Models\Payment;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreditAllocationRequest;
-use App\Models\Customer;
-use App\Models\Payment;
 use App\Services\Document\PaymentAllocationService;
 
 class CreditAllocationsController extends Controller

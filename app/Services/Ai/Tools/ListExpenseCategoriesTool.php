@@ -2,8 +2,8 @@
 
 namespace App\Services\Ai\Tools;
 
-use App\Models\Expense;
-use App\Models\ExpenseCategory;
+use App\Domains\Purchases\Models\Expense;
+use App\Domains\Purchases\Models\ExpenseCategory;
 
 class ListExpenseCategoriesTool extends AiTool
 {

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Company\Members;
 
+use App\Domains\Accounts\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DeleteMemberRequest;
 use App\Http\Requests\MemberRequest;
 use App\Http\Resources\UserResource;
-use App\Models\User;
 use App\Services\Company\MemberService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

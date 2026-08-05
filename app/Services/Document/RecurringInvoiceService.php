@@ -2,14 +2,14 @@
 
 namespace App\Services\Document;
 
+use App\Domains\Accounts\Models\Company;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Contacts\Models\Customer;
+use App\Domains\Money\Models\ExchangeRateLog;
+use App\Domains\Sales\Models\Invoice;
+use App\Domains\Sales\Models\RecurringInvoice;
 use App\Facades\Hashids;
 use App\Http\Requests\RecurringInvoiceRequest;
-use App\Models\Company;
-use App\Models\CompanySetting;
-use App\Models\Customer;
-use App\Models\ExchangeRateLog;
-use App\Models\Invoice;
-use App\Models\RecurringInvoice;
 use App\Support\Hashids\HashidConnection;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;

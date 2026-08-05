@@ -2,9 +2,9 @@
 
 namespace App\Services\Ai\Tools;
 
-use App\Models\Expense;
-use App\Models\Invoice;
-use App\Models\Payment;
+use App\Domains\Purchases\Models\Expense;
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Sales\Models\Invoice;
 use App\Services\Ai\Tools\Concerns\ResolvesPeriod;
 
 /**

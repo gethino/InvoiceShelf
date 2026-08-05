@@ -2,7 +2,7 @@
 
 namespace App\Services\Ai\Tools;
 
-use App\Models\Invoice;
+use App\Domains\Sales\Models\Invoice;
 
 /**
  * Fetch one invoice's full details by invoice_number, including items and taxes.

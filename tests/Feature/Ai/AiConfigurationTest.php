@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\CompanySetting;
-use App\Models\User;
+use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Accounts\Models\User;
 use App\Services\AiConfigurationService;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Sanctum\Sanctum;

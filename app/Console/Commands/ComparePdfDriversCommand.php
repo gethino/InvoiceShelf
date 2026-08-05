@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Estimate;
-use App\Models\Invoice;
-use App\Models\Payment;
+use App\Domains\Receivables\Models\Payment;
+use App\Domains\Sales\Models\Estimate;
+use App\Domains\Sales\Models\Invoice;
 use App\Services\Document\EstimateService;
 use App\Services\Document\InvoiceService;
 use App\Services\Document\PaymentService;
