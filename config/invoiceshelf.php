@@ -318,16 +318,6 @@ return [
             'model' => '',
         ],
         [
-            'title' => 'settings.menu_title.ai_configuration',
-            'group' => '',
-            'name' => 'AI Configuration',
-            'link' => '/admin/settings/ai-config',
-            'icon' => 'SparklesIcon',
-            'owner_only' => true,
-            'ability' => '',
-            'model' => '',
-        ],
-        [
             'title' => 'settings.menu_title.module_configuration',
             'group' => '',
             'name' => 'Module Configuration',
