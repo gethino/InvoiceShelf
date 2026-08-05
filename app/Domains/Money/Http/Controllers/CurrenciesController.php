@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Domains\Money\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\CurrencyResource;
-use App\Services\Document\CurrencyService;
+use App\Domains\Money\Application\CurrencyService;
+use App\Domains\Money\Http\Resources\CurrencyResource;
+use App\Platform\Http\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 

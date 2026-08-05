@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Document;
+namespace App\Domains\Money\Application;
 
 use App\Domains\Money\Models\Currency;
 use Illuminate\Database\Eloquent\Collection;

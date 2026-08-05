@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Domains\Money\Policies;
 
 use App\Domains\Accounts\Models\User;
 use App\Domains\Money\Models\ExchangeRateProvider;

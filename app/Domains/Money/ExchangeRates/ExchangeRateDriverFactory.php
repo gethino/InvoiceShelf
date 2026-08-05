@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support\ExchangeRate;
+namespace App\Domains\Money\ExchangeRates;
 
 use InvalidArgumentException;
 use InvoiceShelf\Modules\Registry;
@@ -12,7 +12,7 @@ class ExchangeRateDriverFactory
      *
      * Kept as a backstop so that direct calls to register() (without going through
      * the module Registry) continue to work. Built-in drivers are also registered
-     * via the Registry by DriverRegistryProvider — that registration is the
+     * via the Registry by MoneyServiceProvider — that registration is the
      * canonical source for driver metadata (label, website, config_fields).
      *
      * @var array<string, class-string<ExchangeRateDriver>>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support\ExchangeRate;
+namespace App\Domains\Money\ExchangeRates;
 
 use App\Support\Net\BlockedUrlException;
 use App\Support\Net\PrivateNetworkGuard;

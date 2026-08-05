@@ -1,18 +1,30 @@
 <?php
 
-namespace App\Providers;
+namespace App\Domains\Money;
 
-use App\Support\ExchangeRate\CurrencyConverterDriver;
-use App\Support\ExchangeRate\CurrencyFreakDriver;
-use App\Support\ExchangeRate\CurrencyLayerDriver;
-use App\Support\ExchangeRate\OpenExchangeRateDriver;
+use App\Adapters\Money\LegacyExchangeRateBackfill;
+use App\Domains\Money\Contracts\ExchangeRateBackfill;
+use App\Domains\Money\ExchangeRates\CurrencyConverterDriver;
+use App\Domains\Money\ExchangeRates\CurrencyFreakDriver;
+use App\Domains\Money\ExchangeRates\CurrencyLayerDriver;
+use App\Domains\Money\ExchangeRates\OpenExchangeRateDriver;
+use App\Domains\Money\Models\ExchangeRateProvider;
+use App\Domains\Money\Policies\ExchangeRateProviderPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use InvoiceShelf\Modules\Registry;
 
-class DriverRegistryProvider extends ServiceProvider
+class MoneyServiceProvider extends ServiceProvider
 {
+    public function register(): void
+    {
+        $this->app->bind(ExchangeRateBackfill::class, LegacyExchangeRateBackfill::class);
+    }
+
     public function boot(): void
     {
+        Gate::policy(ExchangeRateProvider::class, ExchangeRateProviderPolicy::class);
+
         $this->registerExchangeRateDrivers();
     }
 

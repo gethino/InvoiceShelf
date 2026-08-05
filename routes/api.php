@@ -3,7 +3,6 @@
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\CompaniesController;
 use App\Http\Controllers\Admin\CountriesController;
-use App\Http\Controllers\Admin\CurrenciesController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Company\Auth\AuthController;
 use App\Http\Controllers\Company\Auth\ForgotPasswordController;
@@ -17,7 +16,6 @@ use App\Http\Controllers\Company\CustomField\CustomFieldsController;
 use App\Http\Controllers\Company\Dashboard\DashboardController;
 use App\Http\Controllers\Company\Estimate\EstimatesController;
 use App\Http\Controllers\Company\Estimate\EstimateTemplatesController;
-use App\Http\Controllers\Company\ExchangeRate\ExchangeRateProviderController;
 use App\Http\Controllers\Company\Expense\ExpenseCategoriesController;
 use App\Http\Controllers\Company\Expense\ExpensesController;
 use App\Http\Controllers\Company\General\BootstrapController;
@@ -158,11 +156,7 @@ Route::prefix('/v1')->group(function () {
             // Currencies
             // ----------------------------------
 
-            Route::prefix('/currencies')->group(function () {
-                Route::get('/used', [ExchangeRateProviderController::class, 'usedCurrenciesWithoutRate']);
-
-                Route::post('/bulk-update-exchange-rate', [ExchangeRateProviderController::class, 'bulkUpdate']);
-            });
+            require app_path('Domains/Money/routes/company.php');
 
             // Dashboard
             // ----------------------------------
@@ -185,8 +179,6 @@ Route::prefix('/v1')->group(function () {
             // ----------------------------------
 
             Route::get('/config', ConfigController::class);
-
-            Route::get('/currencies', CurrenciesController::class);
 
             Route::get('/timezones', [FormatsController::class, 'timezones']);
 
@@ -318,19 +310,6 @@ Route::prefix('/v1')->group(function () {
             // ----------------------------------
 
             require app_path('Platform/Pdf/routes/admin.php');
-
-            // Exchange Rate
-            // ----------------------------------
-
-            Route::get('/currencies/{currency}/exchange-rate', [ExchangeRateProviderController::class, 'getRate']);
-
-            Route::get('/currencies/{currency}/active-provider', [ExchangeRateProviderController::class, 'activeProvider']);
-
-            Route::get('/used-currencies', [ExchangeRateProviderController::class, 'usedCurrencies']);
-
-            Route::get('/supported-currencies', [ExchangeRateProviderController::class, 'supportedCurrencies']);
-
-            Route::apiResource('exchange-rate-providers', ExchangeRateProviderController::class);
 
             // Settings
             // ----------------------------------

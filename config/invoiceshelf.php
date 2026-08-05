@@ -600,7 +600,7 @@ return [
     /*
     * Exchange rate drivers and Currency Converter server options used to live here as
     * static arrays. Both have moved into the module Registry — built-in drivers are
-    * registered by App\Providers\DriverRegistryProvider, and custom drivers can be
+    * registered by App\Domains\Money\MoneyServiceProvider, and custom drivers can be
     * registered by modules via Registry::registerExchangeRateDriver(). The driver
     * list is served to the frontend by ConfigController via the same
     * /api/v1/config?key=exchange_rate_drivers endpoint.
