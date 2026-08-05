@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Company\Settings;
+namespace App\Domains\Taxation\Http\Controllers;
 
+use App\Domains\Taxation\Http\Requests\TaxTypeRequest;
+use App\Domains\Taxation\Http\Resources\TaxTypeResource;
 use App\Domains\Taxation\Models\TaxType;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\TaxTypeRequest;
-use App\Http\Resources\TaxTypeResource;
+use App\Platform\Http\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 

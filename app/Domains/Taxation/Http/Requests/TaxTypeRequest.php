@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Domains\Taxation\Http\Requests;
 
 use App\Domains\Taxation\Models\TaxType;
 use Illuminate\Foundation\Http\FormRequest;

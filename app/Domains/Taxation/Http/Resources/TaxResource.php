@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Domains\Taxation\Http\Resources;
 
 use App\Domains\Money\Http\Resources\CurrencyResource;
 use Illuminate\Http\Request;

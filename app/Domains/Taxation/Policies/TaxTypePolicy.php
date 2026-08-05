@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Domains\Taxation\Policies;
 
 use App\Domains\Accounts\Models\User;
 use App\Domains\Taxation\Models\TaxType;

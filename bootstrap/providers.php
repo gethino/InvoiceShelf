@@ -1,6 +1,7 @@
 <?php
 
 use App\Domains\Money\MoneyServiceProvider;
+use App\Domains\Taxation\TaxationServiceProvider;
 use App\Platform\Ai\AiServiceProvider;
 use App\Platform\Mail\MailServiceProvider;
 use App\Platform\Modules\ModuleServiceProvider;
@@ -21,6 +22,7 @@ return [
     ViewServiceProvider::class,
     PdfServiceProvider::class,
     MoneyServiceProvider::class,
+    TaxationServiceProvider::class,
     AiServiceProvider::class,
     MailServiceProvider::class,
     OperationsServiceProvider::class,

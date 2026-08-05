@@ -40,7 +40,6 @@ use App\Http\Controllers\Company\Role\RolesController;
 use App\Http\Controllers\Company\Settings\CompanyController;
 use App\Http\Controllers\Company\Settings\CompanySettingsController;
 use App\Http\Controllers\Company\Settings\InvitationController;
-use App\Http\Controllers\Company\Settings\TaxTypesController;
 use App\Http\Controllers\Company\Settings\UserProfileController;
 use App\Http\Controllers\CustomerPortal\Auth\ForgotPasswordController as AuthForgotPasswordController;
 use App\Http\Controllers\CustomerPortal\Auth\ResetPasswordController as AuthResetPasswordController;
@@ -348,7 +347,7 @@ Route::prefix('/v1')->group(function () {
             // Tax Types
             // ----------------------------------
 
-            Route::apiResource('tax-types', TaxTypesController::class);
+            require app_path('Domains/Taxation/routes/company.php');
 
             // Roles
             // ----------------------------------
