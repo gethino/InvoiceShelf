@@ -1416,6 +1416,7 @@
       "tax_per_item": "Porez po Stavki",
       "tax_name": "Naziv Poreza",
       "compound_tax": "Složen Porez",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Amount",
       "percent": "Procenat",
       "fixed_amount": "Fixed Amount",
