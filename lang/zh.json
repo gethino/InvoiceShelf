@@ -1416,6 +1416,7 @@
       "tax_per_item": "商品稅項",
       "tax_name": "稅項名稱",
       "compound_tax": "複合稅",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Amount",
       "percent": "百分比",
       "fixed_amount": "Fixed Amount",
