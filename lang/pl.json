@@ -1416,6 +1416,7 @@
       "tax_per_item": "Podatek na produkt",
       "tax_name": "Nazwa podatku",
       "compound_tax": "Podatek złożony",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Amount",
       "percent": "Procent",
       "fixed_amount": "Fixed Amount",
