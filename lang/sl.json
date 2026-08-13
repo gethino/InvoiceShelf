@@ -1416,6 +1416,7 @@
       "tax_per_item": "Davek na postavko",
       "tax_name": "Davčno ime",
       "compound_tax": "Sestavljeni davek",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Amount",
       "percent": "Odstotek",
       "fixed_amount": "Fixed Amount",
