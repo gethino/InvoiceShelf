@@ -1416,6 +1416,7 @@
       "tax_per_item": "Taxe par article",
       "tax_name": "Nom",
       "compound_tax": "Taxe empilée",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Montant",
       "percent": "Pourcentage",
       "fixed_amount": "Montant fixe",
