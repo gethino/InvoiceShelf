@@ -1416,6 +1416,7 @@
       "tax_per_item": "ضريبة على الصنف",
       "tax_name": "اسم الضريبة",
       "compound_tax": "ضريبة مجمعة",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Amount",
       "percent": "نسبة مؤوية",
       "fixed_amount": "Fixed Amount",
