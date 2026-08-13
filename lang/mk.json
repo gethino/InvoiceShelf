@@ -1416,6 +1416,7 @@
       "tax_per_item": "Данок по ставка",
       "tax_name": "Име на данок",
       "compound_tax": "Сложен данок",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Износ",
       "percent": "Процент",
       "fixed_amount": "Фиксен износ",
