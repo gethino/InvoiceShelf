@@ -1416,6 +1416,7 @@
       "tax_per_item": "Belasting per item",
       "tax_name": "Belastingnaam",
       "compound_tax": "Samengestelde belasting",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Bedrag",
       "percent": "Procent",
       "fixed_amount": "Vast bedrag",
