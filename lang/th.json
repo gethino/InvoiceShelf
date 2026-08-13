@@ -1416,6 +1416,7 @@
       "tax_per_item": "ภาษีต่อรายการ",
       "tax_name": "ชื่อภาษี",
       "compound_tax": "ภาษีมูลค่าเพิ่ม",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Amount",
       "percent": "เปอร์เซ็นต์",
       "fixed_amount": "Fixed Amount",
