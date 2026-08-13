@@ -1416,6 +1416,7 @@
       "tax_per_item": "Pajak Per-Barang",
       "tax_name": "Nama Pajak",
       "compound_tax": "Pajak Majemuk",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Jumlah",
       "percent": "Persen",
       "fixed_amount": "Fixed Amount",
