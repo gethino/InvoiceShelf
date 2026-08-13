@@ -1416,6 +1416,7 @@
       "tax_per_item": "Tax Per Item",
       "tax_name": "Mokesčio pavadinimas",
       "compound_tax": "Sudėtinis mokestis",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Amount",
       "percent": "Procentai",
       "fixed_amount": "Fixed Amount",
