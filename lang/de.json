@@ -1416,6 +1416,7 @@
       "tax_per_item": "Steuersatz pro Artikel",
       "tax_name": "Name des Steuersatzes",
       "compound_tax": "zusammengesetzte Steuer",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Summe",
       "percent": "Prozent",
       "fixed_amount": "Festbetrag",
