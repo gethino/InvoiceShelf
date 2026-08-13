@@ -1416,6 +1416,7 @@
       "tax_per_item": "Imposto por Item",
       "tax_name": "Nome do Imposto",
       "compound_tax": "Imposto Composto",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Valor",
       "percent": "Porcentagem",
       "fixed_amount": "Valor fixo",
