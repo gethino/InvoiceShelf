@@ -1416,6 +1416,7 @@
       "tax_per_item": "ALV per tuote",
       "tax_name": "ALV Verokannan nimi",
       "compound_tax": "Yhdistetty vero",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Amount",
       "percent": "Prosentti",
       "fixed_amount": "Fixed Amount",
