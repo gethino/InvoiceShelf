@@ -1416,6 +1416,7 @@
       "tax_per_item": "Thuế mỗi mặt hàng",
       "tax_name": "Tên thuế",
       "compound_tax": "Thuế tổng hợp",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Amount",
       "percent": "Phần trăm",
       "fixed_amount": "Fixed Amount",
