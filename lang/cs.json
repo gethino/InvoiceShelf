@@ -1416,6 +1416,7 @@
       "tax_per_item": "Daň za položku",
       "tax_name": "Název daně",
       "compound_tax": "Složená daň",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Amount",
       "percent": "Procento",
       "fixed_amount": "Fixed Amount",
