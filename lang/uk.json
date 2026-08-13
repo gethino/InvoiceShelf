@@ -1416,6 +1416,7 @@
       "tax_per_item": "Податок на одиницю",
       "tax_name": "Назва податку",
       "compound_tax": "Складний податок",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Amount",
       "percent": "Відсоток",
       "fixed_amount": "Fixed Amount",
