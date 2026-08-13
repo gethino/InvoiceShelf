@@ -1416,6 +1416,7 @@
       "tax_per_item": "Στοιχείο Φόντου Υπομενού",
       "tax_name": "Όνομα Φόρου",
       "compound_tax": "Σύνθετος Φόρος",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Amount",
       "percent": "Ποσοστό",
       "fixed_amount": "Fixed Amount",
