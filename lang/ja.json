@@ -1416,6 +1416,7 @@
       "tax_per_item": "商品ごとの税",
       "tax_name": "税の名称",
       "compound_tax": "複合税",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Amount",
       "percent": "パーセント",
       "fixed_amount": "Fixed Amount",
