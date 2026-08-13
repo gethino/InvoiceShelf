@@ -1416,6 +1416,7 @@
       "tax_per_item": "Moms per artikel",
       "tax_name": "Namn",
       "compound_tax": "Sammansatt moms",
+      "compound_tax_description": "Calculated on the subtotal after discount plus all non-compound taxes.",
       "amount": "Amount",
       "percent": "Procent",
       "fixed_amount": "Fixed Amount",
