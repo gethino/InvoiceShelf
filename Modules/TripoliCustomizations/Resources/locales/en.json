@@ -1,0 +1,44 @@
+{
+  "tripoli_customizations": {
+    "settings": {
+      "menu": "Other Settings",
+      "title": "Other Settings",
+      "description": "Brand this company and control whether tax features are available.",
+      "brand_color": "Brand color",
+      "logo": "Company logo",
+      "login_default": "Use this company's brand on the login page",
+      "login_default_help": "Selecting another company later will replace this login default.",
+      "taxes": "Enable taxes",
+      "taxes_help": "When disabled, tax screens are hidden and tax-bearing API requests are rejected.",
+      "saved": "Settings saved. Reloading the interface…",
+      "save": "Save settings"
+    },
+    "organizations": {
+      "menu": "Customer organizations",
+      "title": "Customer organizations",
+      "description": "Group customer people under one optional organization. Invoices still belong to each person.",
+      "name": "Organization name",
+      "notes": "Notes",
+      "members": "Members",
+      "add": "Add organization",
+      "save": "Save",
+      "delete": "Delete",
+      "empty": "No organizations yet.",
+      "confirm_delete": "Delete this organization? Its customers will remain and become unassigned."
+    },
+    "customer_organization": {
+      "label": "Customer company (optional)",
+      "placeholder": "Select a company",
+      "create": "Create new company",
+      "create_title": "Create customer company",
+      "name": "Company name",
+      "notes": "Notes (optional)",
+      "cancel": "Cancel",
+      "save": "Create company"
+    },
+    "common": {
+      "loading": "Loading…",
+      "error": "Something went wrong. Please try again."
+    }
+  }
+}

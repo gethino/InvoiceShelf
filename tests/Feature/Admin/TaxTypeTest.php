@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\V1\Admin\Settings\TaxTypesController;
 use App\Http\Requests\TaxTypeRequest;
+use App\Models\CompanySetting;
 use App\Models\TaxType;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
@@ -21,6 +22,7 @@ beforeEach(function () {
     $this->withHeaders([
         'company' => $user->companies()->first()->id,
     ]);
+    CompanySetting::setSettings(['taxes_enabled' => 'YES'], $user->companies()->first()->id);
     Sanctum::actingAs(
         $user,
         ['*']

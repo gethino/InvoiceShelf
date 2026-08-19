@@ -40,6 +40,11 @@ class CustomerRequest extends FormRequest
             'company_name' => [
                 'nullable',
             ],
+            'customer_organization_id' => [
+                'nullable',
+                Rule::exists('customer_organizations', 'id')
+                    ->where('company_id', $this->header('company')),
+            ],
             'contact_name' => [
                 'nullable',
             ],
@@ -137,6 +142,7 @@ class CustomerRequest extends FormRequest
                 'prefix',
                 'tax_id',
                 'company_name',
+                'customer_organization_id',
                 'contact_name',
                 'website',
                 'enable_portal',

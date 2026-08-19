@@ -4,6 +4,7 @@ export default function () {
   return {
     name: '',
     contact_name: '',
+    customer_organization_id: null,
     email: '',
     phone: null,
     password: '',

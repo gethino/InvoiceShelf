@@ -50,6 +50,8 @@ export const useGlobalStore = (useWindow = false) => {
           http
             .get('/api/v1/bootstrap')
             .then(async (response) => {
+              window.TripoliCustomizations?.transformBootstrapData(response.data)
+
               const companyStore = useCompanyStore()
               const userStore = useUserStore()
               const moduleStore = useModuleStore()

@@ -68,6 +68,8 @@
             window.demo_mode = true
         @endif
 
+        window.tripoli_branding = @json($tripoli_branding ?? null)
+
         window.InvoiceShelf.start()
     </script>
 </body>

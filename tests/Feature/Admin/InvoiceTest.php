@@ -3,6 +3,7 @@
 use App\Http\Controllers\V1\Admin\Invoice\InvoicesController;
 use App\Http\Requests\InvoicesRequest;
 use App\Mail\SendInvoiceMail;
+use App\Models\CompanySetting;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Tax;
@@ -22,6 +23,7 @@ beforeEach(function () {
     $this->withHeaders([
         'company' => $user->companies()->first()->id,
     ]);
+    CompanySetting::setSettings(['taxes_enabled' => 'YES'], $user->companies()->first()->id);
     Sanctum::actingAs(
         $user,
         ['*']

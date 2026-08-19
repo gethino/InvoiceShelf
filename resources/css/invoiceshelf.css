@@ -11,6 +11,7 @@
 @source "../scripts/**/*.vue";
 @source "../scripts/**/*.js";
 @source "../../resources/views/**/*.php";
+@source "../../Modules/TripoliCustomizations/Resources/scripts/**/*.vue";
 
 @theme inline {
   --color-primary-50: var(--color-primary-50);
