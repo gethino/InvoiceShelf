@@ -1,0 +1,134 @@
+x-invoiceshelf-image: &invoiceshelf-image
+  image: tripolicenter-invoiceshelf:staging
+  build:
+    context: .
+    dockerfile: docker/production/Dockerfile
+
+x-invoiceshelf-environment: &invoiceshelf-environment
+  APP_NAME: "${INVOICESHELF_APP_NAME:-InvoiceShelf}"
+  APP_ENV: production
+  APP_DEBUG: "false"
+  APP_KEY: "${INVOICESHELF_APP_KEY:?INVOICESHELF_APP_KEY is required}"
+  APP_URL: "${INVOICESHELF_APP_URL:-https://invoice.tripolicenter.com}"
+  APP_TIMEZONE: "${INVOICESHELF_TIMEZONE:-Africa/Tripoli}"
+  PHP_DATE_TIMEZONE: "${INVOICESHELF_TIMEZONE:-Africa/Tripoli}"
+  TRUSTED_PROXIES: "*"
+  SESSION_DOMAIN: "${INVOICESHELF_SESSION_DOMAIN:-invoice.tripolicenter.com}"
+  SANCTUM_STATEFUL_DOMAINS: "${INVOICESHELF_SANCTUM_STATEFUL_DOMAINS:-invoice.tripolicenter.com}"
+  DB_CONNECTION: mariadb
+  DB_HOST: database
+  DB_PORT: "3306"
+  DB_DATABASE: invoiceshelf
+  DB_USERNAME: invoiceshelf
+  DB_PASSWORD: "${INVOICESHELF_DB_PASSWORD:?INVOICESHELF_DB_PASSWORD is required}"
+  DB_PASSWORD_FILE: ""
+  CACHE_STORE: file
+  SESSION_DRIVER: file
+  SESSION_LIFETIME: "240"
+  QUEUE_CONNECTION: sync
+
+services:
+  permissions:
+    image: alpine:3.22
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        set -eu
+        mkdir -p \
+          /storage/app/public \
+          /storage/app/templates/pdf \
+          /storage/fonts \
+          /storage/framework/cache/data \
+          /storage/framework/sessions \
+          /storage/framework/views \
+          /storage/logs
+        chown -R 82:82 /storage
+        chmod -R 775 /storage
+    volumes:
+      - invoiceshelf_storage:/storage
+    restart: "no"
+
+  database:
+    image: mariadb:10.11
+    environment:
+      MYSQL_DATABASE: invoiceshelf
+      MYSQL_USER: invoiceshelf
+      MYSQL_PASSWORD: "${INVOICESHELF_DB_PASSWORD:?INVOICESHELF_DB_PASSWORD is required}"
+      MYSQL_ROOT_PASSWORD: "${INVOICESHELF_DB_ROOT_PASSWORD:?INVOICESHELF_DB_ROOT_PASSWORD is required}"
+      MARIADB_AUTO_UPGRADE: "1"
+      TZ: "${INVOICESHELF_TIMEZONE:-Africa/Tripoli}"
+    volumes:
+      - invoiceshelf_mariadb:/var/lib/mysql
+    expose:
+      - "3306"
+    networks:
+      - invoiceshelf
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 20s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  webapp:
+    <<: *invoiceshelf-image
+    environment:
+      <<: *invoiceshelf-environment
+      AUTORUN_ENABLED: "true"
+      AUTORUN_LARAVEL_MIGRATION: "true"
+      AUTORUN_LARAVEL_MIGRATION_FORCE: "true"
+      AUTORUN_LARAVEL_MIGRATION_MODE: default
+      AUTORUN_LARAVEL_MIGRATION_SEED: "false"
+      AUTORUN_LARAVEL_MIGRATION_TIMEOUT: "60"
+      AUTORUN_LARAVEL_OPTIMIZE: "true"
+      HEALTHCHECK_PATH: /up
+      PHP_OPCACHE_ENABLE: "1"
+    volumes:
+      - invoiceshelf_storage:/var/www/html/storage
+    expose:
+      - "8080"
+    networks:
+      - invoiceshelf
+    depends_on:
+      permissions:
+        condition: service_completed_successfully
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "--show-error", "http://localhost:8080/up"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  scheduler:
+    <<: *invoiceshelf-image
+    command: ["php", "/var/www/html/artisan", "schedule:work"]
+    stop_signal: SIGTERM
+    environment:
+      <<: *invoiceshelf-environment
+      AUTORUN_ENABLED: "false"
+    volumes:
+      - invoiceshelf_storage:/var/www/html/storage
+    networks:
+      - invoiceshelf
+    depends_on:
+      webapp:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "healthcheck-schedule"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+networks:
+  invoiceshelf:
+
+volumes:
+  invoiceshelf_mariadb:
+  invoiceshelf_storage:
