@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\V1\Admin\Item\ItemsController;
 use App\Http\Requests\ItemsRequest;
+use App\Models\CompanySetting;
 use App\Models\Item;
 use App\Models\Tax;
 use App\Models\User;
@@ -20,6 +21,7 @@ beforeEach(function () {
     $this->withHeaders([
         'company' => $user->companies()->first()->id,
     ]);
+    CompanySetting::setSettings(['taxes_enabled' => 'YES'], $user->companies()->first()->id);
     Sanctum::actingAs(
         $user,
         ['*']

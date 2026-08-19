@@ -1,0 +1,22 @@
+{
+    "name": "tripoli-center/invoiceshelf-customizations",
+    "description": "Tripoli Center customizations for InvoiceShelf.",
+    "authors": [
+        {
+            "name": "Tripoli Center"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\TripoliCustomizations\\": ""
+        }
+    }
+}

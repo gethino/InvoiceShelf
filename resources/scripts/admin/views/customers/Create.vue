@@ -170,6 +170,12 @@
               />
             </BaseInputGroup>
 
+            <component
+              :is="customerOrganizationField"
+              v-if="customerOrganizationField"
+              v-model="customerStore.currentCustomer.customer_organization_id"
+              :content-loading="isFetchingInitialData"
+            />
           </BaseInputGrid>
         </div>
 
@@ -582,6 +588,8 @@
 </template>
 
 <script setup>
+defineOptions({ name: 'CustomerCreate' })
+
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -607,6 +615,8 @@ const customerStore = useCustomerStore()
 const customFieldStore = useCustomFieldStore()
 const globalStore = useGlobalStore()
 const companyStore = useCompanyStore()
+const customerOrganizationField =
+  window.TripoliCustomizations?.customerOrganizationField || null
 
 const customFieldValidationScope = 'customFields'
 

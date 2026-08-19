@@ -1,0 +1,13 @@
+{
+    "name": "TripoliCustomizations",
+    "alias": "tripolicustomizations",
+    "description": "Update-safe Tripoli Center branding, tax controls, and customer organizations.",
+    "keywords": ["branding", "customers", "taxes"],
+    "priority": 0,
+    "providers": [
+        "Modules\\TripoliCustomizations\\Providers\\TripoliCustomizationsServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

@@ -39,7 +39,7 @@
     </div>
 
     <div
-      v-if="store[storeProp].tax_per_item === 'YES'"
+      v-if="taxesEnabled && store[storeProp].tax_per_item === 'YES'"
     >
       <NetTotal
         :currency="currency"
@@ -163,8 +163,9 @@
 
     <div
       v-if="
-        store[storeProp].tax_per_item === 'NO' ||
-        store[storeProp].tax_per_item === null
+        taxesEnabled &&
+        (store[storeProp].tax_per_item === 'NO' ||
+        store[storeProp].tax_per_item === null)
       "
     >
       <Tax
@@ -183,8 +184,9 @@
 
     <div
       v-if="
-        store[storeProp].tax_per_item === 'NO' ||
-        store[storeProp].tax_per_item === null
+        taxesEnabled &&
+        (store[storeProp].tax_per_item === 'NO' ||
+        store[storeProp].tax_per_item === null)
       "
       ref="taxModal"
       class="float-right pt-2 pb-4"
@@ -260,6 +262,10 @@ const utils = inject('$utils')
 
 const companyStore = useCompanyStore()
 
+const taxesEnabled = computed(
+  () => companyStore.selectedCompanySettings.taxes_enabled !== 'NO',
+)
+
 watch(
   () => props.store[props.storeProp].items,
   (val) => {
@@ -287,6 +293,10 @@ const taxes = computed({
 })
 
 const itemWiseTaxes = computed(() => {
+  if (!taxesEnabled.value) {
+    return []
+  }
+
   let taxes = []
   props.store[props.storeProp].items.forEach((item) => {
     if (item.taxes) {

@@ -40,6 +40,7 @@
         <ExpenseReport ref="report" />
       </BaseTab>
       <BaseTab
+        v-if="taxesEnabled"
         :title="$t('reports.taxes.taxes')"
         tab-panel-container="px-0 py-0"
       >
@@ -50,14 +51,21 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import SalesReport from '../SalesReports.vue'
 import ExpenseReport from '../ExpensesReport.vue'
 import ProfitLossReport from '../ProfitLossReport.vue'
 import TaxReport from '../TaxReport.vue'
 import { useGlobalStore } from '@/scripts/admin/stores/global'
+import { useCompanyStore } from '@/scripts/admin/stores/company'
+
+defineOptions({ name: 'ReportsIndex' })
 
 const globalStore = useGlobalStore()
+const companyStore = useCompanyStore()
+const taxesEnabled = computed(
+  () => companyStore.selectedCompanySettings.taxes_enabled !== 'NO',
+)
 
 function onDownload() {
   globalStore.downloadReport()

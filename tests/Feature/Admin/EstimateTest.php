@@ -7,6 +7,7 @@ use App\Http\Requests\EstimatesRequest;
 use App\Http\Requests\SendEstimatesRequest;
 use App\Mail\SendEstimateMail;
 use App\Models\Company;
+use App\Models\CompanySetting;
 use App\Models\Estimate;
 use App\Models\EstimateItem;
 use App\Models\Tax;
@@ -26,6 +27,7 @@ beforeEach(function () {
     $this->withHeaders([
         'company' => $user->companies()->first()->id,
     ]);
+    CompanySetting::setSettings(['taxes_enabled' => 'YES'], $user->companies()->first()->id);
     Sanctum::actingAs(
         $user,
         ['*']

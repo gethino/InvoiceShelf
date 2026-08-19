@@ -111,6 +111,8 @@ use App\Http\Controllers\V1\Installation\OnboardingWizardController;
 use App\Http\Controllers\V1\Installation\RequirementsController;
 use App\Http\Controllers\V1\Webhook\CronJobController;
 use Illuminate\Support\Facades\Route;
+use Modules\TripoliCustomizations\Http\Middleware\RejectDisabledTaxes;
+use Modules\TripoliCustomizations\Http\Middleware\RequireTaxesEnabled;
 
 /*
 |--------------------------------------------------------------------------
@@ -255,7 +257,7 @@ Route::prefix('/v1')->group(function () {
 
             Route::post('/items/delete', [ItemsController::class, 'delete']);
 
-            Route::resource('items', ItemsController::class);
+            Route::resource('items', ItemsController::class)->middleware(RejectDisabledTaxes::class);
 
             Route::resource('units', UnitsController::class);
 
@@ -274,7 +276,7 @@ Route::prefix('/v1')->group(function () {
 
             Route::get('/invoices/templates', InvoiceTemplatesController::class);
 
-            Route::apiResource('invoices', InvoicesController::class);
+            Route::apiResource('invoices', InvoicesController::class)->middleware(RejectDisabledTaxes::class);
 
             // Recurring Invoice
             // -------------------------------------------------
@@ -283,7 +285,7 @@ Route::prefix('/v1')->group(function () {
 
             Route::post('/recurring-invoices/delete', [RecurringInvoiceController::class, 'delete']);
 
-            Route::apiResource('recurring-invoices', RecurringInvoiceController::class);
+            Route::apiResource('recurring-invoices', RecurringInvoiceController::class)->middleware(RejectDisabledTaxes::class);
 
             // Estimates
             // -------------------------------------------------
@@ -302,7 +304,7 @@ Route::prefix('/v1')->group(function () {
 
             Route::post('/estimates/delete', [EstimatesController::class, 'delete']);
 
-            Route::apiResource('estimates', EstimatesController::class);
+            Route::apiResource('estimates', EstimatesController::class)->middleware(RejectDisabledTaxes::class);
 
             // Expenses
             // ----------------------------------
@@ -380,7 +382,8 @@ Route::prefix('/v1')->group(function () {
 
             Route::get('/company/settings', GetCompanySettingsController::class);
 
-            Route::post('/company/settings', UpdateCompanySettingsController::class);
+            Route::post('/company/settings', UpdateCompanySettingsController::class)
+                ->middleware(RejectDisabledTaxes::class);
 
             Route::get('/settings', GetSettingsController::class);
 
@@ -415,7 +418,7 @@ Route::prefix('/v1')->group(function () {
             // Tax Types
             // ----------------------------------
 
-            Route::apiResource('tax-types', TaxTypesController::class);
+            Route::apiResource('tax-types', TaxTypesController::class)->middleware(RequireTaxesEnabled::class);
 
             // Roles
             // ----------------------------------

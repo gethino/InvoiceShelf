@@ -62,7 +62,8 @@ export async function setI18nLanguage(i18n, locale) {
   // Load the language if not already loaded
   if (!loadedLanguages.has(locale)) {
     const messages = await loadLanguage(locale)
-    i18n.global.setLocaleMessage(locale, messages)
+    const moduleMessages = window.InvoiceShelf?.messages?.[locale] || {}
+    i18n.global.setLocaleMessage(locale, { ...messages, ...moduleMessages })
   }
 
   // Set the locale
