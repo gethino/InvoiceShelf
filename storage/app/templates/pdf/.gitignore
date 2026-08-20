@@ -1,2 +1,16 @@
 *
 !.gitignore
+!invoice/
+invoice/*
+!invoice/tripoli-center-en.blade.php
+!invoice/tripoli-center-ar.blade.php
+!invoice/tripoli-center-en.png
+!invoice/tripoli-center-ar.png
+!invoice/assets/
+invoice/assets/*
+!invoice/assets/tripoli-center-logo.png
+!invoice/assets/tripoli-center-watermark.jpeg
+!invoice/partials/
+invoice/partials/*
+!invoice/partials/tripoli-center-layout.blade.php
+!invoice/partials/tripoli-center-item-description.blade.php

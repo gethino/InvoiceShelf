@@ -1,0 +1,4 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+[mcp_servers.dokploy-mcp.env]
+DOKPLOY_TOOL_PRESET = "deploy"
