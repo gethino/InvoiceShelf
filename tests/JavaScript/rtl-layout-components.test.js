@@ -153,6 +153,15 @@ test('aligns shared text fields with the active writing direction', () => {
   assert.doesNotMatch(timePicker, /font-base pl-8 py-2/)
 })
 
+test('aligns shared table headers with the active writing direction', () => {
+  const baseTable = readProjectFile(
+    'resources/scripts/components/base/base-table/BaseTable.vue',
+  )
+
+  assert.match(baseTable, /px-6 py-3 text-start text-xs/)
+  assert.doesNotMatch(baseTable, /px-6 py-3 text-left text-xs/)
+})
+
 test('uses logical spacing between dropdown action icons and text', () => {
   const dropdownDirectory = new URL(
     '../../resources/scripts/admin/components/dropdowns/',
