@@ -3,6 +3,7 @@
 use App\Models\Currency;
 use App\Models\Invoice;
 use App\Services\PDFService;
+use App\Space\ImageUtils;
 use App\Space\PdfTemplateUtils;
 use App\Support\ArabicPdfHtmlProcessor;
 use Illuminate\Support\Facades\File;
@@ -85,6 +86,8 @@ function tripoliCenterInvoiceTemplateData(): array
 
     return [
         'invoice' => $invoice,
+        'brandColor' => '#123abc',
+        'faviconPath' => public_path('apple-touch-icon.png'),
         'customFields' => collect(),
         'company_address' => 'Tripoli, Libya<br>Printing & media services',
         'shipping_address' => 'Al Dahra<br>Tripoli, Libya',
@@ -168,7 +171,7 @@ it('keeps the modern template physically RTL with visible margins and a right-al
         ->toString();
 
     expect($html)
-        ->toContain('<body class="browser-preview" data-document-type="final_invoice">')
+        ->toContain('<body class="browser-preview" data-document-type="final_invoice" data-brand-color="#123abc">')
         ->toContain('data-column-order="rtl"')
         ->and(strpos($itemsMarkup, 'المجموع<br>Total'))->toBeLessThan(strpos($itemsMarkup, 'الرقم<br>No.'))
         ->and(strpos($html, 'التاريخ / Issue Date:'))->toBeLessThan(strpos($html, 'رقم الفاتورة / Invoice No:'))
@@ -178,7 +181,9 @@ it('keeps the modern template physically RTL with visible margins and a right-al
         ->toContain('body.pdf-render')
         ->toContain('padding: 10mm 12mm;')
         ->toContain('body.browser-preview')
-        ->toContain('padding: 12mm;')
+        ->toContain('padding: 12mm;');
+
+    expect($html)
         ->toMatch('/\.header-table\s*\{[^}]*direction:\s*ltr;/s')
         ->toMatch('/\.logo-block\s*\{[^}]*text-align:\s*right;/s');
 });
@@ -246,7 +251,7 @@ it('uses the correct Arabic title for final, initial, and receipt documents', fu
     'payment receipt' => ['payment_receipt', 'إيصال استلام', 'Payment Receipt'],
 ]);
 
-it('uses the initial invoice title for draft invoices and includes the faded watermark', function () {
+it('uses the initial invoice title with the company brand color and faded favicon watermark', function () {
     $data = tripoliCenterInvoiceTemplateData();
     $data['invoice']->status = Invoice::STATUS_DRAFT;
 
@@ -255,8 +260,20 @@ it('uses the initial invoice title for draft invoices and includes the faded wat
     expect($html)
         ->toContain('data-document-type="initial_invoice"')
         ->toContain('فاتورة مبدئية')
+        ->toContain('data-brand-color="#123abc"')
+        ->toContain('background: #123abc;')
         ->toContain('class="watermark"')
-        ->toContain('data:image/jpeg;base64,');
+        ->toContain('data:image/png;base64,')
+        ->toContain(ImageUtils::toBase64Src(public_path('apple-touch-icon.png')))
+        ->not->toContain(ImageUtils::toBase64Src(public_path('favicon-96x96.png')))
+        ->not->toContain('tripoli-center-watermark.jpeg');
+
+    $source = File::get(storage_path('app/templates/pdf/invoice/tripoli-center-modern-ar.blade.php'));
+
+    expect($source)
+        ->toContain("public_path('favicon-96x96.png')")
+        ->toMatch('/\.watermark\s*\{[^}]*opacity:\s*0\.08;[^}]*z-index:\s*0;/s')
+        ->toMatch('/\.items-table\s*\{[^}]*position:\s*relative;[^}]*z-index:\s*1;/s');
 });
 
 it('uses the receipt title for fully paid invoices', function () {
