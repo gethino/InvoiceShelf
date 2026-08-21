@@ -70,15 +70,26 @@
         </BaseInputGroup>
 
         <BaseInputGroup :label="$t('settings.language')">
-          <BaseMultiselect
-            v-model="userForm.language"
-            :options="globalStore.config.languages"
-            label="name"
-            value-prop="code"
-            track-by="name"
-            :searchable="true"
-            open-direction="top"
-          />
+          <div class="flex flex-wrap gap-3">
+            <BaseButton
+              v-for="language in languages"
+              :key="language.code"
+              type="button"
+              :variant="
+                userForm.language === language.code
+                  ? 'primary'
+                  : 'primary-outline'
+              "
+              :loading="
+                isSavingLanguage && userForm.language === language.code
+              "
+              :disabled="isSavingLanguage"
+              :aria-pressed="userForm.language === language.code"
+              @click="selectLanguage(language.code)"
+            >
+              {{ $t(language.label) }}
+            </BaseButton>
+          </div>
         </BaseInputGroup>
       </BaseInputGrid>
 
@@ -98,7 +109,6 @@
 
 <script setup>
 import { ref, computed, reactive } from 'vue'
-import { useGlobalStore } from '@/scripts/admin/stores/global'
 import { useUserStore } from '@/scripts/admin/stores/user'
 import { useI18n } from 'vue-i18n'
 import {
@@ -112,14 +122,24 @@ import { useVuelidate } from '@vuelidate/core'
 import { useCompanyStore } from '@/scripts/admin/stores/company'
 
 const userStore = useUserStore()
-const globalStore = useGlobalStore()
 const companyStore = useCompanyStore()
 const { t } = useI18n()
 
 let isSaving = ref(false)
+const isSavingLanguage = ref(false)
 let avatarFileBlob = ref(null)
 let imgFiles = ref([])
 const isAdminAvatarRemoved = ref(false)
+const languages = [
+  {
+    code: 'en',
+    label: 'settings.account_settings.languages.english',
+  },
+  {
+    code: 'ar',
+    label: 'settings.account_settings.languages.arabic',
+  },
+]
 
 if (userStore.currentUser.avatar) {
   imgFiles.value.push({
@@ -175,6 +195,28 @@ function onFileInputRemove() {
   isAdminAvatarRemoved.value = true
 }
 
+async function selectLanguage(language) {
+  if (isSavingLanguage.value || userForm.language === language) {
+    return
+  }
+
+  const previousLanguage = userForm.language
+  userForm.language = language
+  isSavingLanguage.value = true
+
+  try {
+    await window.loadLanguage(language)
+    await userStore.updateUserSettings({
+      settings: { language },
+    })
+  } catch {
+    userForm.language = previousLanguage
+    await window.loadLanguage(previousLanguage)
+  } finally {
+    isSavingLanguage.value = false
+  }
+}
+
 async function updateUserData() {
   v$.value.$touch()
 
@@ -197,19 +239,6 @@ async function updateUserData() {
     ) {
       data = { ...data, password: userForm.password }
     }
-    // Update Language if changed
-
-    if (userStore.currentUserSettings.language !== userForm.language) {
-      // Load the new language dynamically before updating settings
-      await window.loadLanguage(userForm.language)
-
-      await userStore.updateUserSettings({
-        settings: {
-          language: userForm.language,
-        },
-      })
-    }
-
     let response = await userStore.updateCurrentUser(data)
 
     if (response.data.data) {
