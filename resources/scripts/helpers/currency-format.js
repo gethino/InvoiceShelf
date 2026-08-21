@@ -35,6 +35,10 @@ export function getCurrencyPresentation(currency, locale = getCurrentLocale()) {
   }
 }
 
+export function isCurrencySymbolOnRight(presentation, locale) {
+  return Boolean(presentation?.symbolAfterAmount) !== isArabicLocale(locale)
+}
+
 export function formatMoney(amount, currency, locale = getCurrentLocale()) {
   const numericAmount = (Number(amount) || 0) / 100
   const formattedAmount = formatNumericValue(numericAmount, currency)

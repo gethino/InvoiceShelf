@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import test from 'node:test'
 import {
   formatMoney,
   formatMoneyInputDisplay,
   getCurrencyPresentation,
+  isCurrencySymbolOnRight,
   normalizeMoneyInput,
   parseMoneyInput,
 } from '../../resources/scripts/helpers/currency-format.js'
@@ -17,6 +19,14 @@ const lyd = {
   swap_currency_symbol: false,
 }
 
+const baseMoney = readFileSync(
+  new URL(
+    '../../resources/scripts/components/base/BaseMoney.vue',
+    import.meta.url,
+  ),
+  'utf8',
+)
+
 test('uses locale-aware LYD symbols and positions', () => {
   assert.deepEqual(getCurrencyPresentation(lyd, 'en'), {
     symbol: 'LYD',
@@ -26,6 +36,31 @@ test('uses locale-aware LYD symbols and positions', () => {
     symbol: 'د.ل',
     symbolAfterAmount: false,
   })
+})
+
+test('places currency affixes away from the amount in LTR and RTL inputs', () => {
+  assert.equal(
+    isCurrencySymbolOnRight(getCurrencyPresentation(lyd, 'en'), 'en'),
+    true,
+  )
+  assert.equal(
+    isCurrencySymbolOnRight(getCurrencyPresentation(lyd, 'ar'), 'ar'),
+    true,
+  )
+  assert.equal(
+    isCurrencySymbolOnRight({ symbol: '€', symbolAfterAmount: false }, 'en'),
+    false,
+  )
+  assert.equal(
+    isCurrencySymbolOnRight({ symbol: 'ден', symbolAfterAmount: true }, 'ar'),
+    false,
+  )
+})
+
+test('reserves physical input space for the currency affix', () => {
+  assert.match(baseMoney, /isCurrencySymbolOnRight \? 'right-3' : 'left-3'/)
+  assert.match(baseMoney, /isCurrencySymbolOnRight \? 'pr-14' : 'pl-14'/)
+  assert.doesNotMatch(baseMoney, /symbolAfterAmount \? 'pe-14' : 'ps-14'/)
 })
 
 test('formats LYD for English and Arabic', () => {
