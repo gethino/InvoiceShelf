@@ -8,6 +8,7 @@ import {
   normalizeBrandColor,
   requestErrorMessage,
   resolveHeaderLogo,
+  resolveMobileMenuLogo,
 } from '../../Modules/TripoliCustomizations/Resources/scripts/branding.js'
 
 test('normalizes valid colors and falls back for invalid colors', () => {
@@ -60,6 +61,24 @@ test('header logo prefers dark company branding with safe fallbacks', () => {
     '/storage/admin.png',
   )
   assert.equal(resolveHeaderLogo({}), false)
+})
+
+test('mobile menu logo uses normal company branding and ignores dark logo', () => {
+  assert.equal(
+    resolveMobileMenuLogo(
+      { dark_logo: '/dark.png', logo: '/logo.png' },
+      { admin_portal_logo: 'admin.png' },
+    ),
+    '/logo.png',
+  )
+  assert.equal(
+    resolveMobileMenuLogo(
+      { dark_logo: '/dark.png' },
+      { admin_portal_logo: 'admin.png' },
+    ),
+    '/storage/admin.png',
+  )
+  assert.equal(resolveMobileMenuLogo({ dark_logo: '/dark.png' }), false)
 })
 
 test('request error message prefers validation details', () => {

@@ -6,6 +6,7 @@ import {
   isSimplifiedLogin,
   requestErrorMessage,
   resolveHeaderLogo,
+  resolveMobileMenuLogo,
 } from './branding.js'
 
 function transformBootstrapData(data) {
@@ -31,6 +32,7 @@ window.TripoliCustomizations = {
   isSimplifiedLogin,
   requestErrorMessage,
   resolveHeaderLogo,
+  resolveMobileMenuLogo,
   customerOrganizationField: CustomerOrganizationField,
   transformBootstrapData,
 }
