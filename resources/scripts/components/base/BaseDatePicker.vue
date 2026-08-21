@@ -122,7 +122,7 @@ const props = defineProps({
   defaultInputClass: {
     type: String,
     default:
-      'font-base ps-8 py-2 outline-hidden focus:ring-primary-400 focus:outline-hidden focus:border-primary-400 block w-full sm:text-sm border-gray-200 rounded-md text-black',
+      'font-base ps-8 py-2 outline-hidden focus:ring-primary-400 focus:outline-hidden focus:border-primary-400 block w-full sm:text-sm border-gray-200 rounded-md text-start text-black',
   },
   time24hr: {
     type: Boolean,
