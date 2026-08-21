@@ -62,6 +62,13 @@ export function resolveHeaderLogo(company, globalSettings = {}) {
   return false
 }
 
+export function requestErrorMessage(error, fallback) {
+  const errors = error?.response?.data?.errors || {}
+  const validationMessage = Object.values(errors).flat().find(Boolean)
+
+  return validationMessage || error?.response?.data?.message || fallback
+}
+
 function mixHex(source, target, amount) {
   const sourceRgb = hexToRgb(source)
   const targetRgb = hexToRgb(target)

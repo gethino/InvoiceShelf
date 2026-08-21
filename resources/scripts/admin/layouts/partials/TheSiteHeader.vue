@@ -33,7 +33,11 @@
         md:block
       "
     >
-      <img v-if="adminLogo" :src="adminLogo" class="h-6" />
+      <img
+        v-if="adminLogo"
+        :src="adminLogo"
+        class="h-10 w-auto max-w-56 object-contain"
+      />
       <MainLogo v-else class="h-6" light-color="white" dark-color="white" />
     </router-link>
 

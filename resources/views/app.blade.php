@@ -19,9 +19,9 @@
         <link rel="manifest" href="/favicons/site.webmanifest">
         <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5851d8">
         <link rel="shortcut icon" href="/favicons/favicon.ico">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-config" content="/favicons/browserconfig.xml">
     @endif
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-config" content="/favicons/browserconfig.xml">
     <meta name="theme-color" content="{{ $tripoli_branding['theme_color'] ?? '#ffffff' }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
