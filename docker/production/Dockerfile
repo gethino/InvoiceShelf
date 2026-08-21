@@ -20,6 +20,7 @@ FROM serversideup/php:8.4-fpm-nginx-alpine AS base
     RUN install-php-extensions bcmath
     RUN install-php-extensions intl
     RUN install-php-extensions curl
+    RUN install-php-extensions calendar
 
     # Copy entrypoint and inject script, and make sure they are executable
     COPY --chmod=755 docker/production/inject.sh /inject.sh
@@ -43,6 +44,7 @@ FROM base AS production
     # working tree — copying it after `COPY .` guarantees the stale host build can
     # never clobber the fresh one produced by static_builder.
     COPY --chown=www-data:www-data . /var/www/html
+    COPY --chown=www-data:www-data storage/app/templates/pdf/ /opt/invoiceshelf/pdf-templates/
     COPY --from=static_builder --chown=www-data:www-data /var/www/html/public/build /var/www/html/public/build
     # Authenticate composer against GitHub when a token is provided (build secret),
     # so multi-arch builds don't exhaust the unauthenticated API rate limit while the

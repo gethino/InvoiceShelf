@@ -13,7 +13,8 @@ public/build/
 
 database/*.sqlite
 storage/app/*
-!storage/app/templates*
+!storage/app/templates/
+!storage/app/templates/**
 storage/fonts/*
 storage/framework/cache/data/*
 storage/framework/sessions/*
