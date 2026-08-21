@@ -39,6 +39,9 @@ class TripoliCustomizationsServiceProvider extends ServiceProvider
         Company::created(function (Company $company): void {
             CompanySetting::setSettings([
                 'brand_color' => '#4a3dff',
+                'meta_title' => '',
+                'meta_description' => '',
+                'theme_color' => '#ffffff',
                 'taxes_enabled' => 'NO',
             ], $company->id);
 
@@ -62,6 +65,11 @@ class TripoliCustomizationsServiceProvider extends ServiceProvider
             $view->with('tripoli_branding', [
                 'brand_color' => CompanySetting::getSetting('brand_color', $company->id) ?? '#4a3dff',
                 'logo_url' => $company->logo,
+                'simplified_login' => Setting::getSetting('simplified_login') !== 'NO',
+                'meta_title' => CompanySetting::getSetting('meta_title', $company->id) ?: null,
+                'meta_description' => CompanySetting::getSetting('meta_description', $company->id) ?: null,
+                'theme_color' => CompanySetting::getSetting('theme_color', $company->id) ?: '#ffffff',
+                'favicon_url' => $company->favicon,
             ]);
         });
 

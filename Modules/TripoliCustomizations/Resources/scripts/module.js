@@ -1,7 +1,11 @@
 import CustomerOrganizationField from './components/CustomerOrganizationField.vue'
 import TripoliCustomizationSettings from './views/TripoliCustomizationSettings.vue'
 import moduleLocales from '../locales/locales.js'
-import { applyBrandColor } from './branding.js'
+import {
+  applyBrandColor,
+  isSimplifiedLogin,
+  resolveHeaderLogo,
+} from './branding.js'
 
 function transformBootstrapData(data) {
   const settings = data.current_company_settings || {}
@@ -23,6 +27,8 @@ function transformBootstrapData(data) {
 
 window.TripoliCustomizations = {
   applyBrandColor,
+  isSimplifiedLogin,
+  resolveHeaderLogo,
   customerOrganizationField: CustomerOrganizationField,
   transformBootstrapData,
 }

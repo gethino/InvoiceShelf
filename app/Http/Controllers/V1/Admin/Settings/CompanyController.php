@@ -60,10 +60,8 @@ class CompanyController extends Controller
 
     /**
      * Upload the company logo to storage.
-     *
-     * @return JsonResponse
      */
-    public function uploadCompanyLogo(CompanyLogoRequest $request)
+    public function uploadCompanyLogo(CompanyLogoRequest $request): JsonResponse
     {
         $company = Company::find($request->header('company'));
 
@@ -86,8 +84,42 @@ class CompanyController extends Controller
             }
         }
 
+        $darkLogo = $request->filled('dark_company_logo')
+            ? json_decode($request->string('dark_company_logo')->toString())
+            : null;
+
+        if ($request->boolean('is_dark_company_logo_removed')) {
+            $company->clearMediaCollection('dark_logo');
+        }
+
+        if ($darkLogo) {
+            $company->clearMediaCollection('dark_logo');
+            $company->addMediaFromBase64($darkLogo->data)
+                ->usingFileName($darkLogo->name)
+                ->toMediaCollection('dark_logo');
+        }
+
+        $favicon = $request->filled('company_favicon')
+            ? json_decode($request->string('company_favicon')->toString())
+            : null;
+
+        if ($request->boolean('is_company_favicon_removed')) {
+            $company->clearMediaCollection('favicon');
+        }
+
+        if ($favicon) {
+            $company->clearMediaCollection('favicon');
+            $company->addMediaFromBase64($favicon->data)
+                ->usingFileName($favicon->name)
+                ->toMediaCollection('favicon');
+        }
+
+        $company = $company->fresh();
+
         return response()->json([
             'success' => true,
+            'dark_logo_url' => $company->dark_logo,
+            'favicon_url' => $company->favicon,
         ]);
     }
 

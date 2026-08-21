@@ -17,6 +17,18 @@ use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
 
+function base64Png(int $width, int $height): string
+{
+    $image = imagecreatetruecolor($width, $height);
+
+    ob_start();
+    imagepng($image);
+    $contents = ob_get_clean();
+    imagedestroy($image);
+
+    return 'data:image/png;base64,'.base64_encode($contents);
+}
+
 beforeEach(function () {
     $currency = Currency::query()->find(1) ?? new Currency;
     $currency->id = 1;
@@ -60,18 +72,30 @@ beforeEach(function () {
 test('owner can save company branding tax state and login default', function () {
     putJson('/api/v1/tripoli-customizations/settings', [
         'brand_color' => '#123abc',
+        'meta_title' => 'Tripoli Center',
+        'meta_description' => 'Tripoli Center invoicing portal.',
+        'theme_color' => '#102030',
         'taxes_enabled' => true,
         'use_on_login' => true,
+        'simplified_login' => false,
     ])->assertOk()->assertJson([
         'success' => true,
         'brand_color' => '#123abc',
+        'meta_title' => 'Tripoli Center',
+        'meta_description' => 'Tripoli Center invoicing portal.',
+        'theme_color' => '#102030',
         'taxes_enabled' => true,
         'use_on_login' => true,
+        'simplified_login' => false,
     ]);
 
     expect(CompanySetting::getSetting('brand_color', $this->company->id))->toBe('#123abc')
+        ->and(CompanySetting::getSetting('meta_title', $this->company->id))->toBe('Tripoli Center')
+        ->and(CompanySetting::getSetting('meta_description', $this->company->id))->toBe('Tripoli Center invoicing portal.')
+        ->and(CompanySetting::getSetting('theme_color', $this->company->id))->toBe('#102030')
         ->and(CompanySetting::getSetting('taxes_enabled', $this->company->id))->toBe('YES')
-        ->and(Setting::getSetting('login_brand_company_id'))->toBe((string) $this->company->id);
+        ->and(Setting::getSetting('login_brand_company_id'))->toBe((string) $this->company->id)
+        ->and(Setting::getSetting('simplified_login'))->toBe('NO');
 
     getJson('/api/v1/tax-types')->assertOk();
 });
@@ -79,9 +103,59 @@ test('owner can save company branding tax state and login default', function () 
 test('custom settings validate brand colors', function () {
     putJson('/api/v1/tripoli-customizations/settings', [
         'brand_color' => 'blue',
+        'meta_title' => '',
+        'meta_description' => '',
+        'theme_color' => '#ffffff',
         'taxes_enabled' => false,
         'use_on_login' => false,
+        'simplified_login' => true,
     ])->assertUnprocessable()->assertJsonValidationErrors('brand_color');
+});
+
+test('simplified login defaults to enabled', function () {
+    getJson('/api/v1/tripoli-customizations/settings')
+        ->assertOk()
+        ->assertJsonPath('simplified_login', true);
+});
+
+test('owner can upload and remove dark logo and square favicon', function () {
+    $darkLogo = json_encode([
+        'name' => 'dark-logo.png',
+        'data' => base64Png(2, 1),
+    ], JSON_THROW_ON_ERROR);
+    $favicon = json_encode([
+        'name' => 'favicon.png',
+        'data' => base64Png(2, 2),
+    ], JSON_THROW_ON_ERROR);
+
+    postJson('/api/v1/company/upload-logo', [
+        'dark_company_logo' => $darkLogo,
+        'company_favicon' => $favicon,
+    ])->assertOk()
+        ->assertJsonPath('success', true)
+        ->assertJsonStructure(['dark_logo_url', 'favicon_url']);
+
+    expect($this->company->fresh()->getMedia('dark_logo'))->toHaveCount(1)
+        ->and($this->company->fresh()->getMedia('favicon'))->toHaveCount(1);
+
+    postJson('/api/v1/company/upload-logo', [
+        'is_dark_company_logo_removed' => true,
+        'is_company_favicon_removed' => true,
+    ])->assertOk();
+
+    expect($this->company->fresh()->getMedia('dark_logo'))->toBeEmpty()
+        ->and($this->company->fresh()->getMedia('favicon'))->toBeEmpty();
+});
+
+test('favicon must be a square png', function () {
+    $favicon = json_encode([
+        'name' => 'favicon.png',
+        'data' => base64Png(2, 1),
+    ], JSON_THROW_ON_ERROR);
+
+    postJson('/api/v1/company/upload-logo', [
+        'company_favicon' => $favicon,
+    ])->assertUnprocessable()->assertJsonValidationErrors('company_favicon');
 });
 
 test('owner can create an organization and assign customer people', function () {
@@ -146,12 +220,37 @@ test('customer creation rejects an organization from another company', function 
 });
 
 test('login page receives the explicit default company brand', function () {
-    CompanySetting::setSettings(['brand_color' => '#123abc'], $this->company->id);
+    CompanySetting::setSettings([
+        'brand_color' => '#123abc',
+        'meta_title' => 'Tripoli Center',
+        'meta_description' => 'Invoices & payments',
+        'theme_color' => '#123abc',
+    ], $this->company->id);
+    $this->company->addMediaFromBase64(base64Png(2, 2))
+        ->usingFileName('favicon.png')
+        ->toMediaCollection('favicon');
     Setting::setSetting('login_brand_company_id', (string) $this->company->id);
+    Setting::setSetting('simplified_login', 'YES');
+
+    $faviconUrl = $this->company->fresh()->favicon;
 
     $this->view('app')
         ->assertSee('window.tripoli_branding', false)
-        ->assertSee('#123abc', false);
+        ->assertSee('#123abc', false)
+        ->assertSee('<title>Tripoli Center</title>', false)
+        ->assertSee('<meta name="description" content="Invoices &amp; payments">', false)
+        ->assertSee($faviconUrl, false)
+        ->assertDontSee('/favicons/favicon-32x32.png', false)
+        ->assertSee('"simplified_login":true', false);
+});
+
+test('login page preserves default metadata without custom branding', function () {
+    Setting::setSetting('login_brand_company_id', (string) $this->company->id);
+
+    $this->view('app')
+        ->assertSee('<title>InvoiceShelf - Self Hosted Invoicing Platform</title>', false)
+        ->assertSee('/favicons/favicon-32x32.png', false)
+        ->assertDontSee('<meta name="description"', false);
 });
 
 test('a customer can belong to only one organization', function () {
