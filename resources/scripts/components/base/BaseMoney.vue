@@ -13,7 +13,7 @@
       :dir="currencyPresentation.symbolAfterAmount ? 'ltr' : 'rtl'"
       :class="[
         'pointer-events-none absolute inset-y-0 z-10 flex items-center text-sm text-gray-500',
-        currencyPresentation.symbolAfterAmount ? 'end-3' : 'start-3',
+        isCurrencySymbolOnRight ? 'right-3' : 'left-3',
       ]"
     >
       {{ currencyPresentation.symbol }}
@@ -28,7 +28,7 @@
       :class="[
         inputClass,
         invalidClass,
-        currencyPresentation.symbolAfterAmount ? 'pe-14' : 'ps-14',
+        isCurrencySymbolOnRight ? 'pr-14' : 'pl-14',
         isArabic ? 'text-right' : 'text-left',
       ]"
       :disabled="disabled"
@@ -47,6 +47,7 @@ import {
   formatMoneyInputDisplay,
   getCurrencyPresentation,
   isArabicLocale,
+  isCurrencySymbolOnRight as currencySymbolIsOnRight,
   normalizeMoneyInput,
   parseMoneyInput,
 } from '@/scripts/helpers/currency-format'
@@ -99,6 +100,9 @@ const currencyPresentation = computed(() => {
 })
 
 const isArabic = computed(() => isArabicLocale(locale.value))
+const isCurrencySymbolOnRight = computed(() => {
+  return currencySymbolIsOnRight(currencyPresentation.value, locale.value)
+})
 
 watch(
   [() => props.modelValue, selectedCurrency],
