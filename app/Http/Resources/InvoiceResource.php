@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\URL;
 
 class InvoiceResource extends JsonResource
 {
@@ -50,6 +51,9 @@ class InvoiceResource extends JsonResource
             'currency_id' => $this->currency_id,
             'formatted_created_at' => $this->formattedCreatedAt,
             'invoice_pdf_url' => $this->invoicePdfUrl,
+            'whatsapp_pdf_url' => URL::signedRoute('customer.invoice.pdf', [
+                'invoice' => $this->unique_hash,
+            ]),
             'formatted_invoice_date' => $this->formattedInvoiceDate,
             'formatted_due_date' => $this->formattedDueDate,
             'allow_edit' => $this->allow_edit,

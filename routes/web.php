@@ -11,6 +11,7 @@ use App\Http\Controllers\V1\Customer\Auth\LoginController as CustomerLoginContro
 use App\Http\Controllers\V1\Customer\EstimatePdfController as CustomerEstimatePdfController;
 use App\Http\Controllers\V1\Customer\InvoicePdfController as CustomerInvoicePdfController;
 use App\Http\Controllers\V1\Customer\PaymentPdfController as CustomerPaymentPdfController;
+use App\Http\Controllers\V1\Customer\PublicInvoicePdfController;
 use App\Http\Controllers\V1\Modules\ScriptController;
 use App\Http\Controllers\V1\Modules\StyleController;
 use App\Http\Controllers\V1\PDF\DownloadReceiptController;
@@ -101,6 +102,10 @@ Route::middleware('pdf-auth')->group(function () {
 // -------------------------------------------------
 
 Route::prefix('/customer')->group(function () {
+    Route::get('/invoices/pdf/{invoice:unique_hash}', PublicInvoicePdfController::class)
+        ->middleware('signed')
+        ->name('customer.invoice.pdf');
+
     Route::get('/invoices/{email_log:token}', [CustomerInvoicePdfController::class, 'getInvoice']);
     Route::get('/invoices/view/{email_log:token}', [CustomerInvoicePdfController::class, 'getPdf'])->name('invoice');
 

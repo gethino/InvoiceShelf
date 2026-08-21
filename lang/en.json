@@ -424,6 +424,8 @@
     "notes": "Notes",
     "view": "View",
     "send_invoice": "Send Invoice",
+    "send_via_whatsapp": "Send via WhatsApp",
+    "whatsapp_message": "Hello {customer}, invoice {invoice} is ready. View or download PDF: {url}",
     "resend_invoice": "Resend Invoice",
     "invoice_template": "Invoice Template",
     "conversion_message": "Invoice cloned successful",
