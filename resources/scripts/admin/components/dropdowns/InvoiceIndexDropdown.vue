@@ -4,7 +4,11 @@
       <BaseButton v-if="route.name === 'invoices.view'" variant="primary">
         <BaseIcon name="EllipsisHorizontalIcon" class="h-5 text-white" />
       </BaseButton>
-      <BaseIcon v-else name="EllipsisHorizontalIcon" class="h-5 text-gray-500" />
+      <BaseIcon
+        v-else
+        name="EllipsisHorizontalIcon"
+        class="h-5 text-gray-500"
+      />
     </template>
 
     <!-- Edit Invoice  -->
@@ -28,6 +32,14 @@
         class="w-5 h-5 me-3 text-gray-400 group-hover:text-gray-500"
       />
       {{ $t('general.copy_pdf_url') }}
+    </BaseDropdownItem>
+
+    <BaseDropdownItem
+      v-if="userStore.hasAbilities(abilities.SEND_INVOICE)"
+      @click="sendInvoiceViaWhatsApp(row)"
+    >
+      <WhatsAppIcon class="w-5 h-5 me-3 text-[#25D366]" />
+      {{ $t('invoices.send_via_whatsapp') }}
     </BaseDropdownItem>
 
     <!-- View Invoice  -->
@@ -123,6 +135,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/scripts/admin/stores/user'
 import { inject } from 'vue'
 import abilities from '@/scripts/admin/stub/abilities'
+import WhatsAppIcon from '@/scripts/components/icons/WhatsAppIcon.vue'
+import { buildWhatsAppUrl } from '@/scripts/helpers/whatsapp'
 
 const props = defineProps({
   row: {
@@ -257,5 +271,19 @@ function copyPdfUrl() {
     type: 'success',
     message: t('general.copied_pdf_url_clipboard'),
   })
+}
+
+function sendInvoiceViaWhatsApp(invoice) {
+  const message = t('invoices.whatsapp_message', {
+    customer: invoice.customer.name,
+    invoice: invoice.invoice_number,
+    url: invoice.whatsapp_pdf_url,
+  })
+
+  window.open(
+    buildWhatsAppUrl(invoice.customer.phone, message),
+    '_blank',
+    'noopener,noreferrer',
+  )
 }
 </script>

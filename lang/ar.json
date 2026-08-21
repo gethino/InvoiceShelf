@@ -424,6 +424,8 @@
     "notes": "ملاحظات",
     "view": "عرض",
     "send_invoice": "إرسال الفاتورة",
+    "send_via_whatsapp": "إرسال عبر واتساب",
+    "whatsapp_message": "مرحباً {customer}، الفاتورة رقم {invoice} جاهزة. عرض أو تنزيل PDF: {url}",
     "resend_invoice": "إعادة إرسال الفاتورة",
     "invoice_template": "قالب الفاتورة",
     "conversion_message": "Invoice cloned successful",
