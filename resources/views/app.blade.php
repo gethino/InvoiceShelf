@@ -3,17 +3,26 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{{ get_page_title(!Request::header('company')) }}</title>
+    <title>{{ Request::routeIs('customer.dashboard') ? get_page_title(!Request::header('company')) : ($tripoli_branding['meta_title'] ?? get_page_title(!Request::header('company'))) }}</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
-    <link rel="manifest" href="/favicons/site.webmanifest">
-    <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5851d8">
-    <link rel="shortcut icon" href="/favicons/favicon.ico">
+    @if(!empty($tripoli_branding['meta_description']))
+        <meta name="description" content="{{ $tripoli_branding['meta_description'] }}">
+    @endif
+    @if(!empty($tripoli_branding['favicon_url']))
+        <link rel="apple-touch-icon" href="{{ $tripoli_branding['favicon_url'] }}">
+        <link rel="icon" type="image/png" href="{{ $tripoli_branding['favicon_url'] }}">
+        <link rel="shortcut icon" type="image/png" href="{{ $tripoli_branding['favicon_url'] }}">
+    @else
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+        <link rel="manifest" href="/favicons/site.webmanifest">
+        <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5851d8">
+        <link rel="shortcut icon" href="/favicons/favicon.ico">
+    @endif
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-config" content="/favicons/browserconfig.xml">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="{{ $tripoli_branding['theme_color'] ?? '#ffffff' }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Module Styles -->

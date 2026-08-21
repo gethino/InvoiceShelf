@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\Base64Mime;
+use App\Rules\Base64SquareImage;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CompanyLogoRequest extends FormRequest
@@ -24,6 +25,15 @@ class CompanyLogoRequest extends FormRequest
             'company_logo' => [
                 'nullable',
                 new Base64Mime(['gif', 'jpg', 'png']),
+            ],
+            'dark_company_logo' => [
+                'nullable',
+                new Base64Mime(['gif', 'jpg', 'png']),
+            ],
+            'company_favicon' => [
+                'nullable',
+                new Base64Mime(['png']),
+                new Base64SquareImage,
             ],
         ];
     }

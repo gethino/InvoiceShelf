@@ -4,7 +4,9 @@ import test from 'node:test'
 import {
   applyBrandColor,
   createBrandPalette,
+  isSimplifiedLogin,
   normalizeBrandColor,
+  resolveHeaderLogo,
 } from '../../Modules/TripoliCustomizations/Resources/scripts/branding.js'
 
 test('normalizes valid colors and falls back for invalid colors', () => {
@@ -35,4 +37,26 @@ test('writes palette values to CSS custom properties', () => {
 
   assert.equal(values.get('--color-primary-500'), 'rgb(18 52 86)')
   assert.equal(values.size, 11)
+})
+
+test('simplified login requires an explicit enabled module setting', () => {
+  assert.equal(isSimplifiedLogin({ simplified_login: true }), true)
+  assert.equal(isSimplifiedLogin({ simplified_login: false }), false)
+  assert.equal(isSimplifiedLogin(null), false)
+})
+
+test('header logo prefers dark company branding with safe fallbacks', () => {
+  assert.equal(
+    resolveHeaderLogo(
+      { dark_logo: '/dark.png', logo: '/logo.png' },
+      { admin_portal_logo: 'admin.png' },
+    ),
+    '/dark.png',
+  )
+  assert.equal(resolveHeaderLogo({ logo: '/logo.png' }), '/logo.png')
+  assert.equal(
+    resolveHeaderLogo({}, { admin_portal_logo: 'admin.png' }),
+    '/storage/admin.png',
+  )
+  assert.equal(resolveHeaderLogo({}), false)
 })

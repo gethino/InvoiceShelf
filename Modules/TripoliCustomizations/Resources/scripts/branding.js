@@ -42,6 +42,26 @@ export function applyBrandColor(color, root = document.documentElement) {
   })
 }
 
+export function isSimplifiedLogin(branding) {
+  return branding?.simplified_login === true
+}
+
+export function resolveHeaderLogo(company, globalSettings = {}) {
+  if (company?.dark_logo) {
+    return company.dark_logo
+  }
+
+  if (company?.logo) {
+    return company.logo
+  }
+
+  if (globalSettings.admin_portal_logo) {
+    return `/storage/${globalSettings.admin_portal_logo}`
+  }
+
+  return false
+}
+
 function mixHex(source, target, amount) {
   const sourceRgb = hexToRgb(source)
   const targetRgb = hexToRgb(target)

@@ -21,6 +21,8 @@ class CompanyResource extends JsonResource
             'tax_id' => $this->tax_id,
             'logo' => $this->logo,
             'logo_path' => $this->logo_path,
+            'dark_logo' => $this->dark_logo,
+            'favicon' => $this->favicon,
             'unique_hash' => $this->unique_hash,
             'owner_id' => $this->owner_id,
             'slug' => $this->slug,

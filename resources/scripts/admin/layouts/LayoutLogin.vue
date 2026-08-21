@@ -3,23 +3,22 @@
     <NotificationRoot />
 
     <div
+      :class="
+        simplifiedLogin
+          ? 'col-span-12 p-4 md:p-8'
+          : 'col-span-12 p-4 md:col-span-6 md:p-8 md:pb-48 md:pt-40 lg:col-span-4'
+      "
       class="
         flex
         items-center
         justify-center
         w-full
-        max-w-sm
-        col-span-12
-        p-4
         mx-auto
         text-gray-900
-        md:p-8 md:col-span-6
-        lg:col-span-4
         flex-2
-        md:pb-48 md:pt-40
       "
     >
-      <div class="w-full">
+      <div class="w-full max-w-sm">
         <MainLogo
           v-if="!loginPageLogo"
           class="block w-48 h-auto max-w-full mb-32 text-primary-500"
@@ -53,6 +52,7 @@
       </div>
     </div>
     <div
+      v-if="!simplifiedLogin"
       class="
         relative
         flex-col
@@ -166,6 +166,12 @@ const loginPageLogo = computed(() => {
 
   return false
 })
+
+const simplifiedLogin = computed(
+  () =>
+    window.TripoliCustomizations?.isSimplifiedLogin(window.tripoli_branding) ??
+    false,
+)
 </script>
 
 <style scoped>

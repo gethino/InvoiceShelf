@@ -199,8 +199,13 @@ const previewAvatar = computed(() => {
 })
 
 const adminLogo = computed(() => {
-  if (companyStore.selectedCompany?.logo) {
-    return companyStore.selectedCompany.logo
+  const customizedLogo = window.TripoliCustomizations?.resolveHeaderLogo(
+    companyStore.selectedCompany,
+    globalStore.globalSettings,
+  )
+
+  if (customizedLogo) {
+    return customizedLogo
   }
 
   if (globalStore.globalSettings.admin_portal_logo) {

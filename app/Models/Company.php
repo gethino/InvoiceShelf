@@ -26,7 +26,7 @@ class Company extends Model implements HasMedia
 
     public const CUSTOMER_LEVEL = 'customer_level';
 
-    protected $appends = ['logo', 'logo_path'];
+    protected $appends = ['logo', 'logo_path', 'dark_logo', 'favicon'];
 
     public function getRolesAttribute()
     {
@@ -60,6 +60,16 @@ class Company extends Model implements HasMedia
         }
 
         return null;
+    }
+
+    public function getDarkLogoAttribute(): ?string
+    {
+        return $this->getFirstMediaUrl('dark_logo') ?: null;
+    }
+
+    public function getFaviconAttribute(): ?string
+    {
+        return $this->getFirstMediaUrl('favicon') ?: null;
     }
 
     public function customers(): HasMany
