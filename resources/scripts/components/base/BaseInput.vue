@@ -199,7 +199,7 @@ const props = defineProps({
   defaultInputClass: {
     type: String,
     default:
-      'font-base block w-full sm:text-sm border-gray-200 rounded-md text-start text-black',
+      'font-base block w-full sm:text-sm border-gray-200 rounded-md text-black',
   },
   iconLeftClass: {
     type: String,

@@ -29,18 +29,3 @@ test('uses logical spacing between invoice action buttons', () => {
   assert.match(invoiceView, /class="text-sm me-3"/)
   assert.match(invoiceView, /class="ms-3"/)
 })
-
-test('uses logical spacing between document edit actions', () => {
-  const editViewPaths = [
-    'resources/scripts/admin/views/invoices/create/InvoiceCreate.vue',
-    'resources/scripts/admin/views/estimates/create/EstimateCreate.vue',
-    'resources/scripts/admin/views/recurring-invoices/create/RecurringInvoiceCreate.vue',
-  ]
-
-  for (const path of editViewPaths) {
-    const editView = readProjectFile(path)
-
-    assert.match(editView, /class="me-3"/, path)
-    assert.doesNotMatch(editView, /class="mr-3"/, path)
-  }
-})

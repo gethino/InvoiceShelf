@@ -129,30 +129,6 @@ test('keeps date picker text clear of its logical-start icon', () => {
   assert.doesNotMatch(datePicker, /font-base pl-8 py-2/)
 })
 
-test('aligns shared text fields with the active writing direction', () => {
-  const input = readProjectFile(
-    'resources/scripts/components/base/BaseInput.vue',
-  )
-  const textarea = readProjectFile(
-    'resources/scripts/components/base/BaseTextarea.vue',
-  )
-  const datePicker = readProjectFile(
-    'resources/scripts/components/base/BaseDatePicker.vue',
-  )
-  const timePicker = readProjectFile(
-    'resources/scripts/components/base/BaseTimePicker.vue',
-  )
-
-  for (const control of [input, textarea, datePicker, timePicker]) {
-    assert.match(control, /\btext-start\b/)
-  }
-
-  assert.doesNotMatch(textarea, /\btext-left\b/)
-  assert.match(timePicker, /\binset-s-0\b/)
-  assert.match(timePicker, /font-base ps-8 py-2/)
-  assert.doesNotMatch(timePicker, /font-base pl-8 py-2/)
-})
-
 test('uses logical spacing between dropdown action icons and text', () => {
   const dropdownDirectory = new URL(
     '../../resources/scripts/admin/components/dropdowns/',

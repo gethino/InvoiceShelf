@@ -13,11 +13,10 @@
       xmlns="http://www.w3.org/2000/svg"
       class="
         absolute
-        inset-s-0
         top-px
         w-4
         h-4
-        ms-2
+        mx-2
         my-2.5
         text-sm
         not-italic
@@ -87,7 +86,7 @@ const props = defineProps({
   defaultInputClass: {
     type: String,
     default:
-      'font-base ps-8 py-2 outline-hidden focus:ring-primary-400 focus:outline-hidden focus:border-primary-400 block w-full sm:text-sm border-gray-300 rounded-md text-start text-black',
+      'font-base pl-8 py-2 outline-hidden focus:ring-primary-400 focus:outline-hidden focus:border-primary-400 block w-full sm:text-sm border-gray-300 rounded-md text-black',
   },
 })
 
