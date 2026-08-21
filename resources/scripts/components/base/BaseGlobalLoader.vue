@@ -34,28 +34,25 @@
         ><i></i><i></i> <i></i><i></i><i></i> <i></i><i></i><i></i> <i></i
         ><i></i><i></i> <i></i><i></i><i></i> <i></i><i></i><i></i>
       </div>
-      <MainLogo
+      <img
+        src="/favicon.svg"
         class="
           absolute
           block
-          h-auto
-          max-w-full
+          h-20
+          w-20
           transform
           -translate-x-1/2 -translate-y-1/2
-          w-28
-          text-primary-400
           top-1/2
           left-1/2
         "
-        alt="InvoiceShelf Logo"
+        alt="Tripoli Center"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-import MainLogo from '@/scripts/components/icons/MainLogo.vue'
-
 const props = defineProps({
   showBgOverlay: {
     default: false,
