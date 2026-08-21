@@ -9,12 +9,13 @@ namespace App\Services;
 */
 
 use App;
+use App\Services\PDFDrivers\DompdfPDFDriver;
 use App\Services\PDFDrivers\GotenbergPDFDriver;
 use Illuminate\Http\Response;
 
 interface ResponseStream
 {
-    public function stream(string $filename): Response;
+    public function stream(string $filename = 'document.pdf'): Response;
 
     public function output(): string;
 }
@@ -29,7 +30,7 @@ class PDFDriverFactory
     public static function create(string $driver)
     {
         return match ($driver) {
-            'dompdf' => App::make('dompdf.wrapper'),
+            'dompdf' => App::make(DompdfPDFDriver::class),
             'gotenberg' => new GotenbergPDFDriver,
             default => throw new \InvalidArgumentException('Invalid PDFDriver requested')
         };

@@ -15,6 +15,7 @@
         "guzzlehttp/guzzle": "^7.9",
         "hashids/hashids": "^5.0",
         "invoiceshelf/modules": "^1.0.0",
+        "khaled.alshamaa/ar-php": "^7.0",
         "laravel/framework": "^13.0",
         "laravel/helpers": "^1.7",
         "laravel/sanctum": "^4.0",

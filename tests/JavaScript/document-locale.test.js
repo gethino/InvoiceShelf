@@ -26,3 +26,15 @@ test('synchronizes document language and direction', () => {
     lang: 'ar-LY',
   })
 })
+
+test('switches direction when moving between Arabic and English', () => {
+  const documentElement = {}
+
+  syncDocumentLocale('ar', documentElement)
+  assert.equal(documentElement.dir, 'rtl')
+  assert.equal(documentElement.lang, 'ar')
+
+  syncDocumentLocale('en', documentElement)
+  assert.equal(documentElement.dir, 'ltr')
+  assert.equal(documentElement.lang, 'en')
+})

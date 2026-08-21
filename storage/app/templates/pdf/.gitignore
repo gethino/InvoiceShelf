@@ -6,6 +6,8 @@ invoice/*
 !invoice/tripoli-center-ar.blade.php
 !invoice/tripoli-center-en.png
 !invoice/tripoli-center-ar.png
+!invoice/tripoli-center-modern-ar.blade.php
+!invoice/tripoli-center-modern-ar.png
 !invoice/assets/
 invoice/assets/*
 !invoice/assets/tripoli-center-logo.png
@@ -14,3 +16,7 @@ invoice/assets/*
 invoice/partials/*
 !invoice/partials/tripoli-center-layout.blade.php
 !invoice/partials/tripoli-center-item-description.blade.php
+!estimate/
+estimate/*
+!estimate/tripoli-center-modern-ar.blade.php
+!estimate/tripoli-center-modern-ar.png
