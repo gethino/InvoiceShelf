@@ -9,19 +9,15 @@
         <meta name="description" content="{{ $tripoli_branding['meta_description'] }}">
     @endif
     @if(!empty($tripoli_branding['favicon_url']))
-        <link rel="apple-touch-icon" href="{{ $tripoli_branding['favicon_url'] }}">
         <link rel="icon" type="image/png" href="{{ $tripoli_branding['favicon_url'] }}">
-        <link rel="shortcut icon" type="image/png" href="{{ $tripoli_branding['favicon_url'] }}">
     @else
-        <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
-        <link rel="manifest" href="/favicons/site.webmanifest">
-        <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5851d8">
-        <link rel="shortcut icon" href="/favicons/favicon.ico">
-        <meta name="msapplication-TileColor" content="#ffffff">
-        <meta name="msapplication-config" content="/favicons/browserconfig.xml">
+        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <link rel="shortcut icon" href="/favicon.ico">
     @endif
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-title" content="Tripoli Center">
+    <link rel="manifest" href="/site.webmanifest">
     <meta name="theme-color" content="{{ $tripoli_branding['theme_color'] ?? '#ffffff' }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
