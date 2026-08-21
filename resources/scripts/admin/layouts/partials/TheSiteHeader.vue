@@ -73,7 +73,6 @@
                 justify-center
                 w-8
                 h-8
-                ms-2
                 text-sm text-black
                 bg-white
                 rounded
@@ -133,7 +132,7 @@
         />
       </li>
 
-      <li>
+      <li class="ms-2">
         <CompanySwitcher />
       </li>
 
