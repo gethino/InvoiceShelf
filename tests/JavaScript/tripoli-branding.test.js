@@ -6,6 +6,7 @@ import {
   createBrandPalette,
   isSimplifiedLogin,
   normalizeBrandColor,
+  requestErrorMessage,
   resolveHeaderLogo,
 } from '../../Modules/TripoliCustomizations/Resources/scripts/branding.js'
 
@@ -59,4 +60,25 @@ test('header logo prefers dark company branding with safe fallbacks', () => {
     '/storage/admin.png',
   )
   assert.equal(resolveHeaderLogo({}), false)
+})
+
+test('request error message prefers validation details', () => {
+  assert.equal(
+    requestErrorMessage(
+      {
+        response: {
+          data: {
+            message: 'Validation failed.',
+            errors: { company_favicon: ['Favicon must be square.'] },
+          },
+        },
+      },
+      'Something went wrong.',
+    ),
+    'Favicon must be square.',
+  )
+  assert.equal(
+    requestErrorMessage(null, 'Something went wrong.'),
+    'Something went wrong.',
+  )
 })

@@ -41,6 +41,9 @@
               @change="onFaviconChange"
               @remove="onFaviconRemove"
             />
+            <p class="mt-2 text-xs text-gray-500">
+              {{ $t('tripoli_customizations.settings.favicon_help') }}
+            </p>
           </BaseInputGroup>
 
           <BaseInputGroup
@@ -136,8 +139,9 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
 import http from '@/scripts/http'
+import { computed, onMounted, reactive, ref } from 'vue'
+import { requestErrorMessage } from '../branding.js'
 
 const t = (...parameters) => window.i18n.global.t(...parameters)
 const form = reactive({
@@ -179,8 +183,8 @@ async function load() {
       ? [{ image: data.dark_logo_url }]
       : []
     previewFavicon.value = data.favicon_url ? [{ image: data.favicon_url }] : []
-  } catch {
-    showError()
+  } catch (error) {
+    showError(error)
   } finally {
     isLoading.value = false
   }
@@ -262,15 +266,18 @@ async function save() {
     hasError.value = false
     message.value = t('tripoli_customizations.settings.saved')
     window.setTimeout(() => window.location.reload(), 500)
-  } catch {
-    showError()
+  } catch (error) {
+    showError(error)
   } finally {
     isSaving.value = false
   }
 }
 
-function showError() {
+function showError(error = null) {
   hasError.value = true
-  message.value = t('tripoli_customizations.common.error')
+  message.value = requestErrorMessage(
+    error,
+    t('tripoli_customizations.common.error'),
+  )
 }
 </script>

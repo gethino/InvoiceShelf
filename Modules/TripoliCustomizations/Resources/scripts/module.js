@@ -4,6 +4,7 @@ import moduleLocales from '../locales/locales.js'
 import {
   applyBrandColor,
   isSimplifiedLogin,
+  requestErrorMessage,
   resolveHeaderLogo,
 } from './branding.js'
 
@@ -28,6 +29,7 @@ function transformBootstrapData(data) {
 window.TripoliCustomizations = {
   applyBrandColor,
   isSimplifiedLogin,
+  requestErrorMessage,
   resolveHeaderLogo,
   customerOrganizationField: CustomerOrganizationField,
   transformBootstrapData,

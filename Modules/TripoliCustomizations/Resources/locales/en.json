@@ -8,6 +8,7 @@
       "logo": "Company logo",
       "dark_logo": "Dark header logo",
       "favicon": "Square favicon (PNG)",
+      "favicon_help": "PNG only, square, maximum 2 MB. Recommended size: 512 × 512 px.",
       "meta_title": "Page title",
       "meta_description": "Meta description",
       "theme_color": "Browser theme color",
