@@ -36,7 +36,8 @@
       <img
         v-if="adminLogo"
         :src="adminLogo"
-        class="h-10 w-auto max-w-56 object-contain"
+        class="h-16 w-auto max-w-80 object-contain"
+        alt=""
       />
       <MainLogo v-else class="h-6" light-color="white" dark-color="white" />
     </router-link>

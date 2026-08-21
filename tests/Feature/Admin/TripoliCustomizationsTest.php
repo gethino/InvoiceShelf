@@ -240,16 +240,32 @@ test('login page receives the explicit default company brand', function () {
         ->assertSee('<title>Tripoli Center</title>', false)
         ->assertSee('<meta name="description" content="Invoices &amp; payments">', false)
         ->assertSee($faviconUrl, false)
-        ->assertDontSee('/favicons/favicon-32x32.png', false)
+        ->assertSee('/apple-touch-icon.png', false)
+        ->assertSee('/site.webmanifest', false)
         ->assertSee('"simplified_login":true', false);
 });
 
 test('login page preserves default metadata without custom branding', function () {
     Setting::setSetting('login_brand_company_id', (string) $this->company->id);
 
+    expect([
+        public_path('favicon-96x96.png'),
+        public_path('favicon.svg'),
+        public_path('favicon.ico'),
+        public_path('apple-touch-icon.png'),
+        public_path('site.webmanifest'),
+        public_path('web-app-manifest-192x192.png'),
+        public_path('web-app-manifest-512x512.png'),
+    ])->each->toBeFile();
+
     $this->view('app')
         ->assertSee('<title>InvoiceShelf - Self Hosted Invoicing Platform</title>', false)
-        ->assertSee('/favicons/favicon-32x32.png', false)
+        ->assertSee('/favicon-96x96.png', false)
+        ->assertSee('/favicon.svg', false)
+        ->assertSee('/favicon.ico', false)
+        ->assertSee('/apple-touch-icon.png', false)
+        ->assertSee('<meta name="apple-mobile-web-app-title" content="Tripoli Center">', false)
+        ->assertSee('/site.webmanifest', false)
         ->assertDontSee('<meta name="description"', false);
 });
 
