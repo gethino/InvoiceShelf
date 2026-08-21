@@ -90,7 +90,7 @@
                         <span class="flex items-center">
                           {{
                             itemData.discount_type == 'fixed'
-                              ? currency.symbol
+                              ? currencyPresentation.symbol
                               : '%'
                           }}
 
@@ -194,6 +194,7 @@ import useVuelidate from '@vuelidate/core'
 import { useCompanyStore } from '@/scripts/admin/stores/company'
 import { useItemStore } from '@/scripts/admin/stores/item'
 import DragIcon from '@/scripts/components/icons/DragIcon.vue'
+import { getCurrencyPresentation } from '@/scripts/helpers/currency-format'
 
 const props = defineProps({
   store: {
@@ -240,7 +241,7 @@ const companyStore = useCompanyStore()
 const itemStore = useItemStore()
 
 let route = useRoute()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const quantity = computed({
   get: () => {
@@ -286,6 +287,10 @@ const selectedCurrency = computed(() => {
   } else {
     return companyStore.selectedCompanyCurrency
   }
+})
+
+const currencyPresentation = computed(() => {
+  return getCurrencyPresentation(selectedCurrency.value, locale.value)
 })
 
 const showRemoveButton = computed(() => {

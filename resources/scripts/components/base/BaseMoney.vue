@@ -6,21 +6,52 @@
       style="height: 38px"
     />
   </BaseContentPlaceholders>
-  <money3
-    v-else
-    v-model="money"
-    v-bind="currencyBindings"
-    :class="[inputClass, invalidClass]"
-    :disabled="disabled"
-  />
+  <div v-else class="relative w-full">
+    <span
+      v-if="currencyPresentation.symbol"
+      aria-hidden="true"
+      :dir="currencyPresentation.symbolAfterAmount ? 'ltr' : 'rtl'"
+      :class="[
+        'pointer-events-none absolute inset-y-0 z-10 flex items-center text-sm text-gray-500',
+        currencyPresentation.symbolAfterAmount ? 'end-3' : 'start-3',
+      ]"
+    >
+      {{ currencyPresentation.symbol }}
+    </span>
+
+    <input
+      v-bind="$attrs"
+      :value="inputValue"
+      type="text"
+      inputmode="decimal"
+      dir="ltr"
+      :class="[
+        inputClass,
+        invalidClass,
+        currencyPresentation.symbolAfterAmount ? 'pe-14' : 'ps-14',
+        isArabic ? 'text-right' : 'text-left',
+      ]"
+      :disabled="disabled"
+      @input="handleInput"
+      @focus="handleFocus"
+      @blur="handleBlur"
+    />
+  </div>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
-import { Money3Component } from 'v-money3'
+import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useCompanyStore } from '@/scripts/admin/stores/company'
+import {
+  formatMoneyInputDisplay,
+  getCurrencyPresentation,
+  isArabicLocale,
+  normalizeMoneyInput,
+  parseMoneyInput,
+} from '@/scripts/helpers/currency-format'
 
-let money3 = Money3Component
+defineOptions({ inheritAttrs: false })
 
 const props = defineProps({
   contentLoading: {
@@ -30,7 +61,6 @@ const props = defineProps({
   modelValue: {
     type: [String, Number],
     required: true,
-    default: '',
   },
   invalid: {
     type: Boolean,
@@ -54,35 +84,71 @@ const props = defineProps({
     default: null,
   },
 })
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'input', 'focus', 'blur'])
 const companyStore = useCompanyStore()
-let hasInitialValueSet = false
+const { locale } = useI18n()
+const inputValue = ref('')
+const isFocused = ref(false)
 
-const money = computed({
-  get: () => props.modelValue,
-  set: (value) => {
-    if (!hasInitialValueSet) {
-      hasInitialValueSet = true
-      return
+const selectedCurrency = computed(() => {
+  return props.currency || companyStore.selectedCompanyCurrency
+})
+
+const currencyPresentation = computed(() => {
+  return getCurrencyPresentation(selectedCurrency.value, locale.value)
+})
+
+const isArabic = computed(() => isArabicLocale(locale.value))
+
+watch(
+  [() => props.modelValue, selectedCurrency],
+  ([modelValue, currency]) => {
+    if (!isFocused.value && currency) {
+      inputValue.value = formatMoneyInputDisplay(modelValue, currency)
     }
-
-    emit('update:modelValue', value)
   },
-})
+  { immediate: true },
+)
 
-const currencyBindings = computed(() => {
-  const currency = props.currency
-    ? props.currency
-    : companyStore.selectedCompanyCurrency
+function handleInput(event) {
+  const normalized = normalizeMoneyInput(
+    event.target.value,
+    selectedCurrency.value,
+  )
+  const parsed = parseMoneyInput(normalized, selectedCurrency.value)
 
-  return {
-    decimal: currency.decimal_separator,
-    thousands: currency.thousand_separator,
-    prefix: currency.symbol + ' ',
-    precision: currency.precision,
-    masked: false,
+  inputValue.value = normalized
+  event.target.value = normalized
+  emit('update:modelValue', parsed ?? '')
+  emit('input', event)
+}
+
+function handleFocus(event) {
+  isFocused.value = true
+
+  if (Number(props.modelValue) === 0) {
+    inputValue.value = ''
+    event.target.value = ''
+  } else {
+    inputValue.value = normalizeMoneyInput(
+      props.modelValue,
+      selectedCurrency.value,
+    )
+    event.target.value = inputValue.value
   }
-})
+
+  emit('focus', event)
+}
+
+function handleBlur(event) {
+  isFocused.value = false
+  inputValue.value = formatMoneyInputDisplay(
+    parseMoneyInput(inputValue.value, selectedCurrency.value),
+    selectedCurrency.value,
+  )
+  event.target.value = inputValue.value
+  emit('blur', event)
+}
 
 const invalidClass = computed(() => {
   if (props.invalid) {

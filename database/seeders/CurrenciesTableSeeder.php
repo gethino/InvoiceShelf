@@ -617,10 +617,11 @@ class CurrenciesTableSeeder extends Seeder
             [
                 'name' => 'Libyan Dinar',
                 'code' => 'LYD',
-                'symbol' => 'LD',
+                'symbol' => 'LYD',
                 'precision' => '3',
                 'thousand_separator' => ',',
                 'decimal_separator' => '.',
+                'swap_currency_symbol' => true,
             ],
             [
                 'name' => 'Algerian Dinar',

@@ -31,11 +31,7 @@
       <BaseDescriptionListItem
         :content-loading="contentLoading"
         :label="$t('wizard.currency')"
-        :value="
-          selectedViewCustomer?.currency
-            ? `${selectedViewCustomer?.currency?.code} (${selectedViewCustomer?.currency?.symbol})`
-            : ''
-        "
+        :value="currencyLabel"
       />
 
       <BaseDescriptionListItem
@@ -107,13 +103,28 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useCustomerStore } from '@/scripts/admin/stores/customer'
+import { getCurrencyPresentation } from '@/scripts/helpers/currency-format'
 
 const customerStore = useCustomerStore()
+const { locale } = useI18n()
 
 const selectedViewCustomer = computed(() => customerStore.selectedViewCustomer)
 
 const contentLoading = computed(() => customerStore.isFetchingViewData)
+
+const currencyLabel = computed(() => {
+  const currency = selectedViewCustomer.value?.currency
+
+  if (!currency) {
+    return ''
+  }
+
+  const { symbol } = getCurrencyPresentation(currency, locale.value)
+
+  return `${currency.code} (${symbol})`
+})
 
 const customerCustomFields = computed(() => {
   if (selectedViewCustomer?.value?.fields) {

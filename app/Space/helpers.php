@@ -123,15 +123,21 @@ function getCustomFieldValueKey(string $type)
 }
 
 /**
- * @return formated_money
+ * @return formatted-money HTML
  */
-function format_money_pdf($money, $currency = null)
+function format_money_pdf(int|float|string $money, ?Currency $currency = null, ?string $locale = null): string
 {
-    $money = $money / 100;
+    $money = (float) $money / 100;
 
     if (! $currency) {
         $currency = Currency::findOrFail(CompanySetting::getSetting('currency', 1));
     }
+
+    $language = strtolower(explode('-', str_replace('_', '-', $locale ?? app()->getLocale()))[0]);
+    $isArabic = $language === 'ar';
+    $isLibyanDinar = strtoupper((string) $currency->code) === 'LYD';
+    $symbol = $isLibyanDinar && $isArabic ? 'د.ل' : ($isLibyanDinar ? 'LYD' : (string) $currency->symbol);
+    $symbolAfterAmount = $isLibyanDinar ? ! $isArabic : (bool) $currency->swap_currency_symbol;
 
     $format_money = number_format(
         $money,
@@ -140,14 +146,11 @@ function format_money_pdf($money, $currency = null)
         $currency->thousand_separator
     );
 
-    $currency_with_symbol = '';
-    if ($currency->swap_currency_symbol) {
-        $currency_with_symbol = $format_money.'<span style="font-family: DejaVu Sans;">'.$currency->symbol.'</span>';
-    } else {
-        $currency_with_symbol = '<span style="font-family: DejaVu Sans;">'.$currency->symbol.'</span>'.$format_money;
-    }
+    $symbolMarkup = '<span style="font-family: DejaVu Sans;">'.e($symbol).'</span>';
 
-    return $currency_with_symbol;
+    return $symbolAfterAmount
+        ? $format_money.'&nbsp;'.$symbolMarkup
+        : $symbolMarkup.'&nbsp;'.$format_money;
 }
 
 /**

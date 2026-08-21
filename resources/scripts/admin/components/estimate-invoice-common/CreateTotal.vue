@@ -123,7 +123,7 @@
               <span class="flex items-center">
                 {{
                   store[storeProp].discount_type == 'fixed'
-                    ? defaultCurrency.symbol
+                    ? currencyPresentation.symbol
                     : '%'
                 }}
 
@@ -226,12 +226,14 @@
 
 <script setup>
 import { computed, inject, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Guid from 'guid'
 import NetTotal from './NetTotal.vue'
 import Tax from './CreateTotalTaxes.vue'
 import TaxStub from '@/scripts/admin/stub/abilities'
 import SelectTaxPopup from './SelectTaxPopup.vue'
 import { useCompanyStore } from '@/scripts/admin/stores/company'
+import { getCurrencyPresentation } from '@/scripts/helpers/currency-format'
 
 const taxModal = ref(null)
 
@@ -261,6 +263,7 @@ const props = defineProps({
 const utils = inject('$utils')
 
 const companyStore = useCompanyStore()
+const { locale } = useI18n()
 
 const taxesEnabled = computed(
   () => companyStore.selectedCompanySettings.taxes_enabled !== 'NO',
@@ -328,6 +331,10 @@ const defaultCurrency = computed(() => {
   } else {
     return companyStore.selectedCompanyCurrency
   }
+})
+
+const currencyPresentation = computed(() => {
+  return getCurrencyPresentation(defaultCurrency.value, locale.value)
 })
 
 function setDiscount() {
