@@ -422,9 +422,13 @@ class Estimate extends Model implements HasMedia
         App::setLocale($locale);
 
         $logo = $company->logo_path;
+        $brandColor = CompanySetting::getSetting('brand_color', $company->id);
+        $faviconPath = $company->getFirstMediaPath('favicon');
 
         view()->share([
             'estimate' => $this,
+            'brandColor' => $brandColor,
+            'faviconPath' => $faviconPath,
             'customFields' => $customFields,
             'logo' => $logo ?? null,
             'company_address' => $this->getCompanyAddress(),
