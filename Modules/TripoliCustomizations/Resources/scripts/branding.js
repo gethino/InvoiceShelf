@@ -62,18 +62,6 @@ export function resolveHeaderLogo(company, globalSettings = {}) {
   return false
 }
 
-export function resolveMobileMenuLogo(company, globalSettings = {}) {
-  if (company?.logo) {
-    return company.logo
-  }
-
-  if (globalSettings.admin_portal_logo) {
-    return `/storage/${globalSettings.admin_portal_logo}`
-  }
-
-  return false
-}
-
 export function requestErrorMessage(error, fallback) {
   const errors = error?.response?.data?.errors || {}
   const validationMessage = Object.values(errors).flat().find(Boolean)

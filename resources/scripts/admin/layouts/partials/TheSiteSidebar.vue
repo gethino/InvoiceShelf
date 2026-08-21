@@ -65,14 +65,7 @@
           </TransitionChild>
           <div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
             <div class="flex items-center shrink-0 px-4 mb-10">
-              <img
-                v-if="mobileMenuLogo"
-                :src="mobileMenuLogo"
-                class="block h-auto max-w-full w-36 object-contain"
-                :alt="companyStore.selectedCompany?.name || 'Company logo'"
-              />
               <MainLogo
-                v-else
                 class="block h-auto max-w-full w-36 text-primary-400"
                 alt="InvoiceShelf Logo"
               />
@@ -174,36 +167,11 @@ import {
   TransitionRoot,
 } from '@headlessui/vue'
 
-import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGlobalStore } from '@/scripts/admin/stores/global'
-import { useCompanyStore } from '@/scripts/admin/stores/company'
 
 const route = useRoute()
 const globalStore = useGlobalStore()
-const companyStore = useCompanyStore()
-
-const mobileMenuLogo = computed(() => {
-  const customizedLogo =
-    window.TripoliCustomizations?.resolveMobileMenuLogo?.(
-      companyStore.selectedCompany,
-      globalStore.globalSettings,
-    )
-
-  if (customizedLogo) {
-    return customizedLogo
-  }
-
-  if (companyStore.selectedCompany?.logo) {
-    return companyStore.selectedCompany.logo
-  }
-
-  if (globalStore.globalSettings.admin_portal_logo) {
-    return `/storage/${globalStore.globalSettings.admin_portal_logo}`
-  }
-
-  return false
-})
 
 function hasActiveUrl(url) {
   return route.path.indexOf(url) > -1
