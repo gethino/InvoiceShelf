@@ -14,8 +14,9 @@ function tripoliCenterInvoiceTemplateData(): array
 {
     $currency = new Currency;
     $currency->forceFill([
-        'symbol' => 'LYD ',
-        'precision' => 2,
+        'code' => 'LYD',
+        'symbol' => 'LD',
+        'precision' => 3,
         'decimal_separator' => '.',
         'thousand_separator' => ',',
         'swap_currency_symbol' => false,
@@ -299,6 +300,19 @@ it('renders localized English and Arabic custom invoice markup', function (strin
     'English' => ['tripoli-center-en', 'en', 'ltr', 'Tripoli First Company'],
     'Arabic' => ['tripoli-center-ar', 'ar', 'rtl', 'شركة طرابلس الأولى'],
 ]);
+
+it('uses each custom template locale for LYD formatting', function () {
+    App::setLocale('ar');
+    $englishHtml = view('pdf_templates::invoice.tripoli-center-en', tripoliCenterInvoiceTemplateData())->render();
+
+    App::setLocale('en');
+    $arabicHtml = view('pdf_templates::invoice.tripoli-center-ar', tripoliCenterInvoiceTemplateData())->render();
+
+    expect($englishHtml)
+        ->toContain('250.000&nbsp;<span style="font-family: DejaVu Sans;">LYD</span>')
+        ->and($arabicHtml)
+        ->toContain('<span style="font-family: DejaVu Sans;">د.ل</span>&nbsp;250.000');
+});
 
 it('paginates long invoices while keeping the custom template renderable', function () {
     $data = tripoliCenterInvoiceTemplateData();

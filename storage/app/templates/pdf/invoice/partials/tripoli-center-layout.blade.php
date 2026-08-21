@@ -501,8 +501,8 @@
                     @foreach ($invoice->items as $item)
                         <tr>
                             @if ($tripoliDirection === 'rtl')
-                                <td class="numeric-cell">{!! format_money_pdf($item->total, $invoice->customer->currency) !!}</td>
-                                <td class="numeric-cell">{!! format_money_pdf($item->price, $invoice->customer->currency) !!}</td>
+                                <td class="numeric-cell">{!! format_money_pdf($item->total, $invoice->customer->currency, $tripoliLocale) !!}</td>
+                                <td class="numeric-cell">{!! format_money_pdf($item->price, $invoice->customer->currency, $tripoliLocale) !!}</td>
                                 <td class="numeric-cell">
                                     {{ $item->quantity }}
                                     @if ($item->unit_name)
@@ -524,8 +524,8 @@
                                         {{ $item->unit_name }}
                                     @endif
                                 </td>
-                                <td class="numeric-cell">{!! format_money_pdf($item->price, $invoice->customer->currency) !!}</td>
-                                <td class="numeric-cell">{!! format_money_pdf($item->total, $invoice->customer->currency) !!}</td>
+                                <td class="numeric-cell">{!! format_money_pdf($item->price, $invoice->customer->currency, $tripoliLocale) !!}</td>
+                                <td class="numeric-cell">{!! format_money_pdf($item->total, $invoice->customer->currency, $tripoliLocale) !!}</td>
                             @endif
                         </tr>
                     @endforeach
@@ -536,7 +536,7 @@
         <table class="summary-table">
             <tr>
                 <td class="summary-label">{{ $tripoliLabels['subtotal'] }}</td>
-                <td class="summary-value">{!! format_money_pdf($invoice->sub_total, $invoice->customer->currency) !!}</td>
+                <td class="summary-value">{!! format_money_pdf($invoice->sub_total, $invoice->customer->currency, $tripoliLocale) !!}</td>
             </tr>
 
             @if ($invoice->discount > 0 && $invoice->discount_per_item === 'NO')
@@ -547,7 +547,7 @@
                             ({{ $invoice->discount }}%)
                         @endif
                     </td>
-                    <td class="summary-value">{!! format_money_pdf($invoice->discount_val, $invoice->customer->currency) !!}</td>
+                    <td class="summary-value">{!! format_money_pdf($invoice->discount_val, $invoice->customer->currency, $tripoliLocale) !!}</td>
                 </tr>
             @endif
 
@@ -555,7 +555,7 @@
                 <tr>
                     <td class="summary-label">{{ $tripoliLabels['net_total'] }}</td>
                     <td class="summary-value">
-                        {!! format_money_pdf($invoice->sub_total - $invoice->discount - $invoice->tax, $invoice->customer->currency) !!}
+                        {!! format_money_pdf($invoice->sub_total - $invoice->discount - $invoice->tax, $invoice->customer->currency, $tripoliLocale) !!}
                     </td>
                 </tr>
             @endif
@@ -566,12 +566,12 @@
                         <td class="summary-label">
                             {{ $tax->name }}
                             @if ($tax->calculation_type === 'fixed')
-                                ({!! format_money_pdf($tax->fixed_amount, $invoice->customer->currency) !!})
+                                ({!! format_money_pdf($tax->fixed_amount, $invoice->customer->currency, $tripoliLocale) !!})
                             @else
                                 ({{ $tax->percent }}%)
                             @endif
                         </td>
-                        <td class="summary-value">{!! format_money_pdf($tax->amount, $invoice->customer->currency) !!}</td>
+                        <td class="summary-value">{!! format_money_pdf($tax->amount, $invoice->customer->currency, $tripoliLocale) !!}</td>
                     </tr>
                 @endforeach
             @else
@@ -580,31 +580,31 @@
                         <td class="summary-label">
                             {{ $tax->name }}
                             @if ($tax->calculation_type === 'fixed')
-                                ({!! format_money_pdf($tax->fixed_amount, $invoice->customer->currency) !!})
+                                ({!! format_money_pdf($tax->fixed_amount, $invoice->customer->currency, $tripoliLocale) !!})
                             @else
                                 ({{ $tax->percent }}%)
                             @endif
                         </td>
-                        <td class="summary-value">{!! format_money_pdf($tax->amount, $invoice->customer->currency) !!}</td>
+                        <td class="summary-value">{!! format_money_pdf($tax->amount, $invoice->customer->currency, $tripoliLocale) !!}</td>
                     </tr>
                 @endforeach
             @endif
 
             <tr class="summary-total">
                 <td class="summary-label">{{ $tripoliLabels['total'] }}</td>
-                <td class="summary-value">{!! format_money_pdf($invoice->total, $invoice->customer->currency) !!}</td>
+                <td class="summary-value">{!! format_money_pdf($invoice->total, $invoice->customer->currency, $tripoliLocale) !!}</td>
             </tr>
 
             @if (in_array($invoice->paid_status, [\App\Models\Invoice::STATUS_PARTIALLY_PAID, \App\Models\Invoice::STATUS_PAID], true))
                 <tr>
                     <td class="summary-label">{{ $tripoliLabels['amount_paid'] }}</td>
                     <td class="summary-value">
-                        {!! format_money_pdf($invoice->total - $invoice->due_amount, $invoice->customer->currency) !!}
+                        {!! format_money_pdf($invoice->total - $invoice->due_amount, $invoice->customer->currency, $tripoliLocale) !!}
                     </td>
                 </tr>
                 <tr>
                     <td class="summary-label">{{ $tripoliLabels['amount_due'] }}</td>
-                    <td class="summary-value">{!! format_money_pdf($invoice->due_amount, $invoice->customer->currency) !!}</td>
+                    <td class="summary-value">{!! format_money_pdf($invoice->due_amount, $invoice->customer->currency, $tripoliLocale) !!}</td>
                 </tr>
             @endif
         </table>
@@ -612,7 +612,7 @@
         <div class="amount-words">
             <span class="amount-words-label">{{ $tripoliLabels['amount_in_words'] }}</span>
             <span class="amount-words-value">
-                {{ $tripoliAmountInWords ?: strip_tags(format_money_pdf($invoice->total, $invoice->customer->currency)) }}
+                {{ $tripoliAmountInWords ?: strip_tags(format_money_pdf($invoice->total, $invoice->customer->currency, $tripoliLocale)) }}
             </span>
         </div>
 

@@ -137,6 +137,7 @@ import { useTaxTypeStore } from '@/scripts/admin/stores/tax-type'
 import { useNotificationStore } from '@/scripts/stores/notification'
 import { useEstimateStore } from '@/scripts/admin/stores/estimate'
 import { useInvoiceStore } from '@/scripts/admin/stores/invoice'
+import { getCurrencyPresentation } from '@/scripts/helpers/currency-format'
 
 const emit = defineEmits(['newItem'])
 
@@ -147,9 +148,16 @@ const taxTypeStore = useTaxTypeStore()
 const estimateStore = useEstimateStore()
 const notificationStore = useNotificationStore()
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const isLoading = ref(false)
 const taxPerItemSetting = ref(companyStore.selectedCompanySettings.tax_per_item)
+
+const currencyPresentation = computed(() => {
+  return getCurrencyPresentation(
+    companyStore.selectedCompanyCurrency,
+    locale.value
+  )
+})
 
 const modalActive = computed(
   () => modalStore.active && modalStore.componentName === 'ItemModal'
@@ -169,7 +177,7 @@ const taxes = computed({
         return {
           ...tax,
           tax_type_id: tax.id,
-          tax_name: tax.name + ' (' + (tax.calculation_type === 'fixed' ? tax.fixed_amount : tax.percent) + (tax.calculation_type === 'fixed' ? companyStore.selectedCompanyCurrency.symbol : '%') + ')',
+          tax_name: tax.name + ' (' + (tax.calculation_type === 'fixed' ? tax.fixed_amount : tax.percent) + (tax.calculation_type === 'fixed' ? currencyPresentation.value.symbol : '%') + ')',
         }
       }
     }),

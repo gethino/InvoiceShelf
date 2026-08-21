@@ -2,6 +2,7 @@ import i18n from '../plugins/i18n'
 const { global } = i18n
 import { useNotificationStore } from '@/scripts/stores/notification'
 import { isArray } from 'lodash'
+import { formatMoney as formatCurrencyMoney } from './currency-format'
 
 export default {
   isImageFile(fileType) {
@@ -31,44 +32,8 @@ export default {
       }
     }
 
-    amount = amount / 100
-
-    let {
-      precision,
-      decimal_separator,
-      thousand_separator,
-      symbol,
-      swap_currency_symbol,
-    } = currency
-
     try {
-      precision = Math.abs(precision)
-      precision = isNaN(precision) ? 2 : precision
-
-      const negativeSign = amount < 0 ? '-' : ''
-
-      let i = parseInt(
-        (amount = Math.abs(Number(amount) || 0).toFixed(precision))
-      ).toString()
-      let j = i.length > 3 ? i.length % 3 : 0
-
-      let moneySymbol = `${symbol}`
-      let thousandText = j ? i.substr(0, j) + thousand_separator : ''
-      let amountText = i
-        .substr(j)
-        .replace(/(\d{3})(?=\d)/g, '$1' + thousand_separator)
-      let precisionText = precision
-        ? decimal_separator +
-        Math.abs(amount - i)
-          .toFixed(precision)
-          .slice(2)
-        : ''
-      let combinedAmountText =
-        negativeSign + thousandText + amountText + precisionText
-
-      return swap_currency_symbol
-        ? combinedAmountText + ' ' + moneySymbol
-        : moneySymbol + ' ' + combinedAmountText
+      return formatCurrencyMoney(amount, currency)
     } catch (e) {
       console.error(e)
     }
