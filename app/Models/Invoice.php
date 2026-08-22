@@ -594,9 +594,13 @@ class Invoice extends Model implements HasMedia
         App::setLocale($locale);
 
         $logo = $company->logo_path;
+        $brandColor = CompanySetting::getSetting('brand_color', $company->id);
+        $faviconDataUri = $company->getFaviconDataUri();
 
         view()->share([
             'invoice' => $this,
+            'brandColor' => $brandColor,
+            'faviconDataUri' => $faviconDataUri,
             'customFields' => $customFields,
             'company_address' => $this->getCompanyAddress(),
             'shipping_address' => $this->getCustomerShippingAddress(),

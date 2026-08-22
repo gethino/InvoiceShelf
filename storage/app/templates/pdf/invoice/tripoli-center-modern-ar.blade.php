@@ -4,7 +4,12 @@
     $tripoliLogoPath = $logo && is_file($logo)
         ? $logo
         : storage_path('app/templates/pdf/invoice/assets/tripoli-center-logo.png');
-    $tripoliWatermarkPath = storage_path('app/templates/pdf/invoice/assets/tripoli-center-watermark.jpeg');
+    $tripoliWatermarkSrc = is_string($faviconDataUri ?? null) && str_starts_with($faviconDataUri, 'data:image/png;base64,')
+        ? $faviconDataUri
+        : \App\Space\ImageUtils::toBase64Src(public_path('favicon-96x96.png'));
+    $brandColor = is_string($brandColor ?? null) && preg_match('/^#[0-9a-f]{6}$/i', $brandColor)
+        ? $brandColor
+        : '#e54128';
     $customerName = trim((string) ($invoice->customer->name ?? ''));
     $customerCompany = trim((string) ($invoice->customer->company_name ?? ''));
     $paidAmount = max(0, $invoice->total - ($invoice->due_amount ?? $invoice->total));
@@ -126,7 +131,7 @@
         }
 
         .header-table {
-            border-bottom: 3px solid #e54128;
+            border-bottom: 3px solid {{ $brandColor }};
             direction: ltr;
             margin-bottom: 8px;
             table-layout: fixed;
@@ -147,7 +152,7 @@
         }
 
         .company-main {
-            color: #b92f1c;
+            color: {{ $brandColor }};
             font-size: 20px;
             font-weight: 800;
             line-height: 1.25;
@@ -191,7 +196,7 @@
         }
 
         .service-dot {
-            color: #e54128;
+            color: {{ $brandColor }};
             font-weight: 800;
         }
 
@@ -211,7 +216,7 @@
         }
 
         .invoice-title {
-            color: #b92f1c;
+            color: {{ $brandColor }};
             font-size: 18px;
             font-weight: 800;
             padding: 0 12px;
@@ -251,7 +256,7 @@
         }
 
         .meta-label {
-            color: #b92f1c;
+            color: {{ $brandColor }};
             direction: rtl;
             font-size: 8px;
             font-weight: 800;
@@ -278,8 +283,10 @@
             border: 1px solid #d0d7e0;
             direction: ltr;
             font-size: 8px;
+            position: relative;
             table-layout: fixed;
             width: 100%;
+            z-index: 1;
         }
 
         .items-shell {
@@ -293,7 +300,7 @@
             position: absolute;
             top: 34mm;
             width: 94mm;
-            z-index: -1;
+            z-index: 0;
         }
 
         .items-table thead {
@@ -305,8 +312,8 @@
         }
 
         .items-table th {
-            background: #e54128;
-            border: 1px solid #c73a24;
+            background: {{ $brandColor }};
+            border: 1px solid {{ $brandColor }};
             color: #fff;
             direction: rtl;
             font-size: 8px;
@@ -346,7 +353,7 @@
         }
 
         .item-meta-label {
-            color: #b92f1c;
+            color: {{ $brandColor }};
             font-weight: 700;
         }
 
@@ -394,7 +401,7 @@
         }
 
         .total-value {
-            background: #e54128;
+            background: {{ $brandColor }};
             color: #fff;
             font-size: 15px;
             font-weight: 800;
@@ -431,7 +438,7 @@
         }
 
         .notes-label {
-            color: #b92f1c;
+            color: {{ $brandColor }};
             direction: rtl;
             font-weight: 800;
             text-align: right;
@@ -466,12 +473,12 @@
         }
 
         .contact-label {
-            color: #e54128;
+            color: {{ $brandColor }};
         }
 
         .footer {
             border-top: 1px solid #d0d7e0;
-            color: #b92f1c;
+            color: {{ $brandColor }};
             font-size: 9px;
             font-weight: 800;
             line-height: 1.55;
@@ -500,7 +507,7 @@
         }
     </style>
 </head>
-<body class="{{ ($dompdfRendering ?? false) ? 'pdf-render' : 'browser-preview' }}" data-document-type="{{ $documentType }}">
+<body class="{{ ($dompdfRendering ?? false) ? 'pdf-render' : 'browser-preview' }}" data-document-type="{{ $documentType }}" data-brand-color="{{ $brandColor }}">
     <div class="invoice">
         <table class="header-table">
             <tr>
@@ -597,7 +604,7 @@
         <div class="items-shell">
             <img
                 class="watermark"
-                src="{{ \App\Space\ImageUtils::toBase64Src($tripoliWatermarkPath) }}"
+                src="{{ $tripoliWatermarkSrc }}"
                 alt=""
             >
 
