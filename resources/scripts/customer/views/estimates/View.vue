@@ -2,6 +2,18 @@
   <BasePage class="xl:ps-96">
     <BasePageHeader :title="pageTitle.estimate_number">
       <template #actions>
+        <BaseButton
+          v-if="pdfLink"
+          tag="a"
+          :href="pdfLink"
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="primary-outline"
+          class="me-3"
+        >
+          {{ $t('general.view_pdf') }}
+        </BaseButton>
+
         <div class="me-3 text-sm">
           <BaseButton
             v-if="estimateStore.selectedViewEstimate.status === 'DRAFT'"
@@ -28,15 +40,7 @@
       class="fixed top-0 inset-s-0 hidden h-full pt-16 pb-4 bg-white w-88 xl:block"
     >
       <div
-        class="
-          flex
-          items-center
-          justify-between
-          px-4
-          pt-8
-          pb-6
-          border border-gray-200 border-solid
-        "
+        class="flex items-center justify-between px-4 pt-8 pb-6 border border-gray-200 border-solid"
       >
         <BaseInput
           v-model="searchData.estimate_number"
@@ -72,14 +76,7 @@
             </template>
 
             <div
-              class="
-                px-4
-                py-1
-                pb-2
-                mb-2
-                text-sm
-                border-b border-gray-200 border-solid
-              "
+              class="px-4 py-1 pb-2 mb-2 text-sm border-b border-gray-200 border-solid"
             >
               {{ $t('general.sort_by') }}
             </div>
@@ -141,13 +138,7 @@
       </div>
 
       <div
-        class="
-          h-full
-          pb-32
-          overflow-y-scroll
-          border-s border-gray-200 border-solid
-          sw-scroll
-        "
+        class="h-full pb-32 overflow-y-scroll border-s border-gray-200 border-solid sw-scroll"
       >
         <router-link
           v-for="(estimate, index) in estimateStore.estimates"
@@ -165,15 +156,7 @@
         >
           <div class="flex-2">
             <div
-              class="
-                mb-1
-                text-md
-                not-italic
-                font-medium
-                leading-5
-                text-gray-500
-                capitalize
-              "
+              class="mb-1 text-md not-italic font-medium leading-5 text-gray-500 capitalize"
             >
               {{ estimate.estimate_number }}
             </div>
@@ -185,15 +168,7 @@
 
           <div class="flex-1 whitespace-nowrap right">
             <BaseFormatMoney
-              class="
-                mb-2
-                text-xl
-                not-italic
-                font-semibold
-                leading-8
-                text-end text-gray-900
-                block
-              "
+              class="mb-2 text-xl not-italic font-semibold leading-8 text-end text-gray-900 block"
               :amount="estimate.total"
               :currency="estimate.currency"
             />
@@ -212,21 +187,17 @@
       </div>
     </div>
 
-    <!-- pdf -->
-    <div
-      class="flex flex-col min-h-0 mt-8 overflow-hidden"
-      style="height: 75vh"
-    >
-      <iframe
-        v-if="shareableLink"
-        :src="shareableLink"
-        class="flex-1 border border-gray-400 border-solid rounded-md"
-      />
-    </div>
+    <DocumentPreviewFrame
+      :src="previewLink"
+      :title="pageTitle.estimate_number || $t('general.preview')"
+      class="mt-8"
+    />
   </BasePage>
 </template>
 
 <script setup>
+defineOptions({ name: 'CustomerEstimateView' })
+
 import { useI18n } from 'vue-i18n'
 import BaseDropdown from '@/scripts/components/base/BaseDropdown.vue'
 import BaseDropdownItem from '@/scripts/components/base/BaseDropdownItem.vue'
@@ -238,6 +209,7 @@ import moment from 'moment'
 import { useEstimateStore } from '@/scripts/customer/stores/estimate'
 import { useGlobalStore } from '@/scripts/customer/stores/global'
 import { useDialogStore } from '@/scripts/stores/dialog'
+import DocumentPreviewFrame from '@/scripts/components/DocumentPreviewFrame.vue'
 
 // Router
 const route = useRoute()
@@ -280,12 +252,16 @@ const getOrderBy = computed(() => {
 })
 
 const getOrderName = computed(() =>
-  getOrderBy.value ? tm('general.ascending') : tm('general.descending')
+  getOrderBy.value ? tm('general.ascending') : tm('general.descending'),
 )
 
-const shareableLink = computed(() => {
+const pdfLink = computed(() => {
   return estimate.unique_hash ? `/estimates/pdf/${estimate.unique_hash}` : false
 })
+
+const previewLink = computed(() =>
+  pdfLink.value ? `${pdfLink.value}?preview=1` : false,
+)
 
 // Watcher
 
@@ -320,7 +296,7 @@ async function loadEstimate() {
       {
         id: route.params.id,
       },
-      globalStore.companySlug
+      globalStore.companySlug,
     )
 
     if (response.data) {
@@ -364,7 +340,7 @@ async function onSearch() {
   try {
     let response = await estimateStore.searchEstimate(
       data,
-      globalStore.companySlug
+      globalStore.companySlug,
     )
     isSearching.value = false
 

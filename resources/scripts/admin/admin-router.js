@@ -112,8 +112,8 @@ const Installation = () =>
 const ModuleIndex = () => import('@/scripts/admin/views/modules/Index.vue')
 
 const ModuleView = () => import('@/scripts/admin/views/modules/View.vue')
-const InvoicePublicPage = () =>
-  import('@/scripts/components/InvoicePublicPage.vue')
+const DocumentPublicPage = () =>
+  import('@/scripts/components/DocumentPublicPage.vue')
 
 export default [
   {
@@ -131,8 +131,23 @@ export default [
 
   {
     path: '/customer/invoices/view/:hash',
-    component: InvoicePublicPage,
+    component: DocumentPublicPage,
     name: 'invoice.public',
+    props: { documentType: 'invoice' },
+  },
+
+  {
+    path: '/customer/estimates/view/:hash',
+    component: DocumentPublicPage,
+    name: 'estimate.public',
+    props: { documentType: 'estimate' },
+  },
+
+  {
+    path: '/customer/payments/view/:hash',
+    component: DocumentPublicPage,
+    name: 'payment.public',
+    props: { documentType: 'payment' },
   },
 
   {
