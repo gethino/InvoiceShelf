@@ -87,7 +87,7 @@ function tripoliCenterInvoiceTemplateData(): array
     return [
         'invoice' => $invoice,
         'brandColor' => '#123abc',
-        'faviconPath' => public_path('apple-touch-icon.png'),
+        'faviconDataUri' => ImageUtils::toBase64Src(public_path('apple-touch-icon.png')),
         'customFields' => collect(),
         'company_address' => 'Tripoli, Libya<br>Printing & media services',
         'shipping_address' => 'Al Dahra<br>Tripoli, Libya',
@@ -272,6 +272,7 @@ it('uses the initial invoice title with the company brand color and faded favico
 
     expect($source)
         ->toContain("public_path('favicon-96x96.png')")
+        ->not->toContain('is_file($faviconPath)')
         ->toMatch('/\.watermark\s*\{[^}]*opacity:\s*0\.08;[^}]*z-index:\s*0;/s')
         ->toMatch('/\.items-table\s*\{[^}]*position:\s*relative;[^}]*z-index:\s*1;/s');
 });

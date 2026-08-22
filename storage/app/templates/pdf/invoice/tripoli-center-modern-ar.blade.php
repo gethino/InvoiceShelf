@@ -4,9 +4,9 @@
     $tripoliLogoPath = $logo && is_file($logo)
         ? $logo
         : storage_path('app/templates/pdf/invoice/assets/tripoli-center-logo.png');
-    $tripoliWatermarkPath = is_string($faviconPath ?? null) && is_file($faviconPath)
-        ? $faviconPath
-        : public_path('favicon-96x96.png');
+    $tripoliWatermarkSrc = is_string($faviconDataUri ?? null) && str_starts_with($faviconDataUri, 'data:image/png;base64,')
+        ? $faviconDataUri
+        : \App\Space\ImageUtils::toBase64Src(public_path('favicon-96x96.png'));
     $brandColor = is_string($brandColor ?? null) && preg_match('/^#[0-9a-f]{6}$/i', $brandColor)
         ? $brandColor
         : '#e54128';
@@ -604,7 +604,7 @@
         <div class="items-shell">
             <img
                 class="watermark"
-                src="{{ \App\Space\ImageUtils::toBase64Src($tripoliWatermarkPath) }}"
+                src="{{ $tripoliWatermarkSrc }}"
                 alt=""
             >
 

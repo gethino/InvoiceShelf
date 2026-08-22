@@ -423,12 +423,12 @@ class Estimate extends Model implements HasMedia
 
         $logo = $company->logo_path;
         $brandColor = CompanySetting::getSetting('brand_color', $company->id);
-        $faviconPath = $company->getFirstMediaPath('favicon');
+        $faviconDataUri = $company->getFaviconDataUri();
 
         view()->share([
             'estimate' => $this,
             'brandColor' => $brandColor,
-            'faviconPath' => $faviconPath,
+            'faviconDataUri' => $faviconDataUri,
             'customFields' => $customFields,
             'logo' => $logo ?? null,
             'company_address' => $this->getCompanyAddress(),

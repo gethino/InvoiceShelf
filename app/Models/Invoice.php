@@ -595,12 +595,12 @@ class Invoice extends Model implements HasMedia
 
         $logo = $company->logo_path;
         $brandColor = CompanySetting::getSetting('brand_color', $company->id);
-        $faviconPath = $company->getFirstMediaPath('favicon');
+        $faviconDataUri = $company->getFaviconDataUri();
 
         view()->share([
             'invoice' => $this,
             'brandColor' => $brandColor,
-            'faviconPath' => $faviconPath,
+            'faviconDataUri' => $faviconDataUri,
             'customFields' => $customFields,
             'company_address' => $this->getCompanyAddress(),
             'shipping_address' => $this->getCustomerShippingAddress(),

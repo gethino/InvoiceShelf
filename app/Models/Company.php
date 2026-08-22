@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Space\ImageUtils;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -70,6 +71,21 @@ class Company extends Model implements HasMedia
     public function getFaviconAttribute(): ?string
     {
         return $this->getFirstMediaUrl('favicon') ?: null;
+    }
+
+    public function getFaviconDataUri(): ?string
+    {
+        $favicon = $this->getFirstMedia('favicon');
+
+        if (! $favicon) {
+            return null;
+        }
+
+        return ImageUtils::toBase64SrcFromStorage(
+            $favicon->disk,
+            $favicon->getPathRelativeToRoot(),
+            $favicon->mime_type,
+        );
     }
 
     public function customers(): HasMany

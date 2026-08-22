@@ -123,9 +123,10 @@ test('owner can upload and remove dark logo and square favicon', function () {
         'name' => 'dark-logo.png',
         'data' => base64Png(2, 1),
     ], JSON_THROW_ON_ERROR);
+    $faviconDataUri = base64Png(2, 2);
     $favicon = json_encode([
         'name' => 'favicon.png',
-        'data' => base64Png(2, 2),
+        'data' => $faviconDataUri,
     ], JSON_THROW_ON_ERROR);
 
     postJson('/api/v1/company/upload-logo', [
@@ -135,8 +136,11 @@ test('owner can upload and remove dark logo and square favicon', function () {
         ->assertJsonPath('success', true)
         ->assertJsonStructure(['dark_logo_url', 'favicon_url']);
 
-    expect($this->company->fresh()->getMedia('dark_logo'))->toHaveCount(1)
-        ->and($this->company->fresh()->getMedia('favicon'))->toHaveCount(1);
+    $company = $this->company->fresh();
+
+    expect($company->getMedia('dark_logo'))->toHaveCount(1)
+        ->and($company->getMedia('favicon'))->toHaveCount(1)
+        ->and($company->getFaviconDataUri())->toBe($faviconDataUri);
 
     postJson('/api/v1/company/upload-logo', [
         'is_dark_company_logo_removed' => true,
