@@ -26,6 +26,33 @@ test('shows the WhatsApp invoice action only with send permission', () => {
 test('provides localized WhatsApp labels and message templates', () => {
   assert.equal(englishMessages.invoices.send_via_whatsapp, 'Send via WhatsApp')
   assert.match(englishMessages.invoices.whatsapp_message, /\{url\}/)
+  assert.match(
+    englishMessages.invoices.whatsapp_message,
+    /hope you are doing well/,
+  )
+  assert.match(englishMessages.invoices.whatsapp_message_copied, /copied/)
+  assert.match(
+    englishMessages.invoices.whatsapp_message_copy_failed,
+    /could not be copied/,
+  )
   assert.equal(arabicMessages.invoices.send_via_whatsapp, 'إرسال عبر واتساب')
   assert.match(arabicMessages.invoices.whatsapp_message, /\{url\}/)
+  assert.match(arabicMessages.invoices.whatsapp_message, /نأمل أن تكون بخير/)
+  assert.match(arabicMessages.invoices.whatsapp_message_copied, /تم نسخ/)
+  assert.match(
+    arabicMessages.invoices.whatsapp_message_copy_failed,
+    /تعذّر نسخ/,
+  )
+})
+
+test('copies the full message without delaying WhatsApp', () => {
+  const copyPosition = invoiceDropdown.indexOf(
+    'utils.copyTextToClipboard(message).then(notifyWhatsAppCopyResult)',
+  )
+  const openPosition = invoiceDropdown.indexOf('window.open(', copyPosition)
+
+  assert.notEqual(copyPosition, -1)
+  assert.notEqual(openPosition, -1)
+  assert.ok(copyPosition < openPosition)
+  assert.doesNotMatch(invoiceDropdown, /await utils\.copyTextToClipboard/)
 })

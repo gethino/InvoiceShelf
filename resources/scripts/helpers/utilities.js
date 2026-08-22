@@ -60,12 +60,12 @@ export default {
     }
     let pattern = new RegExp(
       '^(https?:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$',
-      'i'
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$',
+      'i',
     ) // fragment locator
 
     return !!pattern.test(url)
@@ -78,19 +78,19 @@ export default {
 
     let pattern = new RegExp(
       '^(https?:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$',
-      'i'
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$',
+      'i',
     ) // fragment locator
 
     return !!pattern.test(url)
   },
 
   fallbackCopyTextToClipboard(text) {
-    var textArea = document.createElement('textarea')
+    const textArea = document.createElement('textarea')
     textArea.value = text
     // Avoid scrolling to bottom
     textArea.style.top = '0'
@@ -99,28 +99,27 @@ export default {
     document.body.appendChild(textArea)
     textArea.focus()
     textArea.select()
+    let isCopied = false
+
     try {
-      var successful = document.execCommand('copy')
-      var msg = successful ? 'successful' : 'unsuccessful'
-      console.log('Fallback: Copying text command was ' + msg)
+      isCopied = document.execCommand('copy')
     } catch (err) {
       console.error('Fallback: Oops, unable to copy', err)
     }
+
     document.body.removeChild(textArea)
+
+    return isCopied
   },
   copyTextToClipboard(text) {
     if (!navigator.clipboard) {
-      this.fallbackCopyTextToClipboard(text)
-      return
+      return Promise.resolve(this.fallbackCopyTextToClipboard(text))
     }
-    navigator.clipboard.writeText(text).then(
-      function () {
-        return true
-      },
-      function (err) {
-        return false
-      }
-    )
+
+    return navigator.clipboard
+      .writeText(text)
+      .then(() => true)
+      .catch(() => this.fallbackCopyTextToClipboard(text))
   },
   arrayDifference(array1, array2) {
     return array1?.filter((i) => {
@@ -242,5 +241,4 @@ export default {
 
     return formData
   },
-
 }

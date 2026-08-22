@@ -280,10 +280,23 @@ function sendInvoiceViaWhatsApp(invoice) {
     url: invoice.whatsapp_pdf_url,
   })
 
+  utils.copyTextToClipboard(message).then(notifyWhatsAppCopyResult)
+
   window.open(
     buildWhatsAppUrl(invoice.customer.phone, message),
     '_blank',
     'noopener,noreferrer',
   )
+}
+
+function notifyWhatsAppCopyResult(isCopied) {
+  notificationStore.showNotification({
+    type: isCopied ? 'success' : 'error',
+    message: t(
+      isCopied
+        ? 'invoices.whatsapp_message_copied'
+        : 'invoices.whatsapp_message_copy_failed',
+    ),
+  })
 }
 </script>
