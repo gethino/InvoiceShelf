@@ -44,6 +44,7 @@ class CustomizationSettingsController extends Controller
         }
 
         Setting::setSetting('simplified_login', $data['simplified_login'] ? 'YES' : 'NO');
+        Setting::setSetting('quick_login_enabled', $data['quick_login_enabled'] ? 'YES' : 'NO');
 
         return response()->json([
             'success' => true,
@@ -71,6 +72,7 @@ class CustomizationSettingsController extends Controller
             'taxes_enabled' => CompanySetting::getSetting('taxes_enabled', $company->id) === 'YES',
             'use_on_login' => (int) Setting::getSetting('login_brand_company_id') === $company->id,
             'simplified_login' => Setting::getSetting('simplified_login') !== 'NO',
+            'quick_login_enabled' => Setting::getSetting('quick_login_enabled') !== 'NO',
         ];
     }
 }

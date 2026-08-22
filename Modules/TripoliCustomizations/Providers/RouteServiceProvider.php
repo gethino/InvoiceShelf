@@ -10,6 +10,9 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->routes(function (): void {
+            Route::middleware('web')
+                ->group(module_path('TripoliCustomizations', 'Routes/web.php'));
+
             Route::prefix('api')
                 ->middleware('api')
                 ->group(module_path('TripoliCustomizations', 'Routes/api.php'));

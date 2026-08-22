@@ -1,11 +1,11 @@
 <template>
-  <div class="grid h-screen grid-cols-12 overflow-y-hidden bg-gray-100">
+  <div class="grid h-screen grid-cols-12 overflow-y-auto bg-gray-100">
     <NotificationRoot />
 
     <div
       :class="
         simplifiedLogin
-          ? 'col-span-12 p-4 md:p-8'
+          ? 'col-span-12 p-4 py-8 md:p-8'
           : 'col-span-12 p-4 md:col-span-6 md:p-8 md:pb-48 md:pt-40 lg:col-span-4'
       "
       class="
@@ -18,30 +18,30 @@
         flex-2
       "
     >
-      <div class="w-full max-w-sm">
+      <div class="w-full max-w-md">
         <MainLogo
           v-if="!loginPageLogo"
-          class="block w-48 h-auto max-w-full mb-32 text-primary-500"
+          class="mb-10 block h-auto w-48 max-w-full text-primary-500"
         />
 
         <img
           v-else
           :src="loginPageLogo"
-          class="block w-48 h-auto max-w-full mb-32 text-primary-500"
+          class="mb-10 block h-auto w-48 max-w-full text-primary-500"
         />
 
         <router-view />
 
         <div
           class="
-            pt-24
+            pt-10
             mt-0
             text-sm
             not-italic
             font-medium
             leading-relaxed
             text-left text-gray-400
-            md:pt-40
+            md:pt-12
           "
         >
           <p class="mb-3">

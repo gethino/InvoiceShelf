@@ -16,10 +16,20 @@
       "login_default_help": "Selecting another company later will replace this login default.",
       "simplified_login": "Simplified login page",
       "simplified_login_help": "Hide the artwork panel and center the login form. Disable this as a rollback after upstream changes.",
+      "quick_login": "Quick login cards",
+      "quick_login_help": "Show this company's users on the login page so they can select an account and enter only their password.",
       "taxes": "Enable taxes",
       "taxes_help": "When disabled, tax screens are hidden and tax-bearing API requests are rejected.",
       "saved": "Settings saved. Reloading the interface…",
       "save": "Save settings"
+    },
+    "quick_login": {
+      "title": "Choose your account",
+      "description": "Select your name, then enter your password.",
+      "use_email": "Use email login",
+      "back": "Back to quick login",
+      "sign_in_as": "Sign in as :name",
+      "change_account": "Change account"
     },
     "organizations": {
       "menu": "Customer organizations",

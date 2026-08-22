@@ -24,6 +24,7 @@ class UpdateCustomizationSettingsRequest extends FormRequest
             'taxes_enabled' => ['required', 'boolean'],
             'use_on_login' => ['required', 'boolean'],
             'simplified_login' => ['required', 'boolean'],
+            'quick_login_enabled' => ['required', 'boolean'],
         ];
     }
 
@@ -35,6 +36,7 @@ class UpdateCustomizationSettingsRequest extends FormRequest
             'taxes_enabled.boolean' => 'The tax setting must be enabled or disabled.',
             'use_on_login.boolean' => 'The login brand setting must be enabled or disabled.',
             'simplified_login.boolean' => 'The simplified login setting must be enabled or disabled.',
+            'quick_login_enabled.boolean' => 'The quick login setting must be enabled or disabled.',
         ];
     }
 }
