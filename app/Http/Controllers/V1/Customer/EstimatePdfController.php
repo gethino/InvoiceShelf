@@ -39,7 +39,18 @@ class EstimatePdfController extends Controller
             }
         }
 
-        return $estimate->getGeneratedPDFOrStream('estimate');
+        if ($request->has('preview')) {
+            return $estimate->getPDFData();
+        }
+
+        if ($request->has('pdf')) {
+            return $estimate->getGeneratedPDFOrStream('estimate');
+        }
+
+        return view('app')->with([
+            'customer_logo' => get_company_setting('customer_portal_logo', $estimate->company_id),
+            'current_theme' => get_company_setting('customer_portal_theme', $estimate->company_id),
+        ]);
     }
 
     public function getEstimate(EmailLog $emailLog)

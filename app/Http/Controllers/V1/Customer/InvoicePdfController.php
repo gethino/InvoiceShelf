@@ -43,6 +43,10 @@ class InvoicePdfController extends Controller
             }
         }
 
+        if ($request->has('preview')) {
+            return $invoice->getPDFData();
+        }
+
         if ($request->has('pdf')) {
             return $invoice->getGeneratedPDFOrStream('invoice');
         }

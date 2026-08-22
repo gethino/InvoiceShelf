@@ -4,6 +4,18 @@
     <BasePageHeader :title="pageTitle">
       <template #actions>
         <BaseButton
+          v-if="pdfLink"
+          tag="a"
+          :href="pdfLink"
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="primary-outline"
+          class="me-3"
+        >
+          {{ $t('general.view_pdf') }}
+        </BaseButton>
+
+        <BaseButton
           v-if="userStore.hasAbilities(abilities.SEND_PAYMENT)"
           :content-loading="isFetching"
           variant="primary"
@@ -22,31 +34,10 @@
 
     <!-- Sidebar -->
     <div
-      class="
-        fixed
-        top-0
-        inset-s-0
-        hidden
-        h-full
-        pt-16
-        pb-[6rem]
-        ms-56
-        bg-white
-        xl:ms-64
-        w-88
-        xl:block
-      "
+      class="fixed top-0 inset-s-0 hidden h-full pt-16 pb-[6rem] ms-56 bg-white xl:ms-64 w-88 xl:block"
     >
       <div
-        class="
-          flex
-          items-center
-          justify-between
-          px-4
-          pt-8
-          pb-6
-          border border-gray-200 border-solid
-        "
+        class="flex items-center justify-between px-4 pt-8 pb-6 border border-gray-200 border-solid"
       >
         <BaseInput
           v-model="searchData.searchText"
@@ -55,10 +46,7 @@
           @input="onSearch"
         >
           <template #left>
-            <BaseIcon
-              name="MagnifyingGlassIcon"
-              class="hidden h-5 rtl:block"
-            />
+            <BaseIcon name="MagnifyingGlassIcon" class="hidden h-5 rtl:block" />
           </template>
           <template #right>
             <BaseIcon name="MagnifyingGlassIcon" class="h-5 rtl:hidden" />
@@ -78,14 +66,7 @@
             </template>
 
             <div
-              class="
-                px-4
-                py-1
-                pb-2
-                mb-2
-                text-sm
-                border-b border-gray-200 border-solid
-              "
+              class="px-4 py-1 pb-2 mb-2 text-sm border-b border-gray-200 border-solid"
             >
               {{ $t('general.sort_by') }}
             </div>
@@ -166,43 +147,17 @@
             <div class="flex-2">
               <BaseText
                 :text="payment?.customer?.name"
-                class="
-                  pe-2
-                  mb-2
-                  text-sm
-                  not-italic
-                  font-normal
-                  leading-5
-                  text-black
-                  capitalize
-                  truncate
-                "
+                class="pe-2 mb-2 text-sm not-italic font-normal leading-5 text-black capitalize truncate"
               />
 
               <div
-                class="
-                  mb-1
-                  text-xs
-                  not-italic
-                  font-medium
-                  leading-5
-                  text-gray-500
-                  capitalize
-                "
+                class="mb-1 text-xs not-italic font-medium leading-5 text-gray-500 capitalize"
               >
                 {{ payment?.payment_number }}
               </div>
 
               <div
-                class="
-                  mb-1
-                  text-xs
-                  not-italic
-                  font-medium
-                  leading-5
-                  text-gray-500
-                  capitalize
-                "
+                class="mb-1 text-xs not-italic font-medium leading-5 text-gray-500 capitalize"
               >
                 {{ payment?.invoice_number }}
               </div>
@@ -210,15 +165,7 @@
 
             <div class="flex-1 whitespace-nowrap right">
               <BaseFormatMoney
-                class="
-                  block
-                  mb-2
-                  text-xl
-                  not-italic
-                  font-semibold
-                  leading-8
-                  text-end text-gray-900
-                "
+                class="block mb-2 text-xl not-italic font-semibold leading-8 text-end text-gray-900"
                 :amount="payment?.amount"
                 :currency="payment.customer?.currency"
               />
@@ -241,21 +188,13 @@
       </div>
     </div>
 
-    <!-- pdf -->
-    <div
-      class="flex flex-col min-h-0 mt-8 overflow-hidden"
-      style="height: 75vh"
-    >
-      <iframe
-        v-if="shareableLink"
-        :src="shareableLink"
-        class="flex-1 border border-gray-400 border-solid rounded-md"
-      />
-    </div>
+    <DocumentPreviewFrame :src="previewLink" :title="pageTitle" class="mt-8" />
   </BasePage>
 </template>
 
 <script setup>
+defineOptions({ name: 'AdminPaymentView' })
+
 import { useI18n } from 'vue-i18n'
 import { debounce } from 'lodash'
 import { ref, reactive, computed, watch } from 'vue'
@@ -268,6 +207,7 @@ import { useModalStore } from '@/scripts/stores/modal'
 import { useUserStore } from '@/scripts/admin/stores/user'
 
 import PaymentDropdown from '@/scripts/admin/components/dropdowns/PaymentIndexDropdown.vue'
+import DocumentPreviewFrame from '@/scripts/components/DocumentPreviewFrame.vue'
 import SendPaymentModal from '@/scripts/admin/components/modal-components/SendPaymentModal.vue'
 import LoadingIcon from '@/scripts/components/icons/LoadingIcon.vue'
 
@@ -307,16 +247,20 @@ const getOrderBy = computed(() => {
 })
 
 const getOrderName = computed(() =>
-  getOrderBy.value ? t('general.ascending') : t('general.descending')
+  getOrderBy.value ? t('general.ascending') : t('general.descending'),
 )
 
-const shareableLink = computed(() => {
+const pdfLink = computed(() => {
   return payment.unique_hash ? `/payments/pdf/${payment.unique_hash}` : false
 })
 
+const previewLink = computed(() =>
+  pdfLink.value ? `${pdfLink.value}?preview=1` : false,
+)
+
 const paymentDate = computed(() => {
   return moment(paymentStore?.selectedPayment?.payment_date).format(
-    'YYYY/MM/DD'
+    'YYYY/MM/DD',
   )
 })
 
@@ -381,7 +325,7 @@ async function loadPayments(pageNumber, fromScrollListener = false) {
   currentPageNumber.value = pageNumber ? pageNumber : 1
   lastPageNumber.value = response.data.meta.last_page
   let paymentFound = paymentList.value.find(
-    (paym) => paym.id == route.params.id
+    (paym) => paym.id == route.params.id,
   )
 
   if (

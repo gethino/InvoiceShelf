@@ -3,6 +3,17 @@
   <BasePage v-if="estimateData" class="xl:ps-96 xl:ms-8">
     <BasePageHeader :title="pageTitle">
       <template #actions>
+        <BaseButton
+          tag="a"
+          :href="pdfLink"
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="primary-outline"
+          class="me-3 text-sm"
+        >
+          {{ $t('general.view_pdf') }}
+        </BaseButton>
+
         <div class="me-3 text-sm">
           <BaseButton
             v-if="
@@ -37,32 +48,10 @@
 
     <!-- Sidebar -->
     <div
-      class="
-        fixed
-        top-0
-        inset-s-0
-        hidden
-        h-full
-        pt-16
-        pb-[6.4rem]
-        ms-56
-        bg-white
-        xl:ms-64
-        w-88
-        xl:block
-      "
+      class="fixed top-0 inset-s-0 hidden h-full pt-16 pb-[6.4rem] ms-56 bg-white xl:ms-64 w-88 xl:block"
     >
       <div
-        class="
-          flex
-          items-center
-          justify-between
-          px-4
-          pt-8
-          pb-2
-          border border-gray-200 border-solid
-          height-full
-        "
+        class="flex items-center justify-between px-4 pt-8 pb-2 border border-gray-200 border-solid height-full"
       >
         <div class="mb-6">
           <BaseInput
@@ -101,14 +90,7 @@
             </template>
 
             <div
-              class="
-                px-4
-                py-1
-                pb-2
-                mb-1 mb-2
-                text-sm
-                border-b border-gray-200 border-solid
-              "
+              class="px-4 py-1 pb-2 mb-1 mb-2 text-sm border-b border-gray-200 border-solid"
             >
               {{ $t('general.sort_by') }}
             </div>
@@ -165,12 +147,7 @@
 
       <div
         ref="estimateListSection"
-        class="
-          h-full
-          overflow-y-scroll
-          border-s border-gray-200 border-solid
-          base-scroll
-        "
+        class="h-full overflow-y-scroll border-s border-gray-200 border-solid base-scroll"
       >
         <div v-for="(estimate, index) in estimateList" :key="index">
           <router-link
@@ -189,29 +166,11 @@
             <div class="flex-2">
               <BaseText
                 :text="estimate.customer.name"
-                class="
-                  pe-2
-                  mb-2
-                  text-sm
-                  not-italic
-                  font-normal
-                  leading-5
-                  text-black
-                  capitalize
-                  truncate
-                "
+                class="pe-2 mb-2 text-sm not-italic font-normal leading-5 text-black capitalize truncate"
               />
 
               <div
-                class="
-                  mt-1
-                  mb-2
-                  text-xs
-                  not-italic
-                  font-medium
-                  leading-5
-                  text-gray-600
-                "
+                class="mt-1 mb-2 text-xs not-italic font-medium leading-5 text-gray-600"
               >
                 {{ estimate.estimate_number }}
               </div>
@@ -228,26 +187,11 @@
               <BaseFormatMoney
                 :amount="estimate.total"
                 :currency="estimate.customer.currency"
-                class="
-                  block
-                  mb-2
-                  text-xl
-                  not-italic
-                  font-semibold
-                  leading-8
-                  text-end text-gray-900
-                "
+                class="block mb-2 text-xl not-italic font-semibold leading-8 text-end text-gray-900"
               />
 
               <div
-                class="
-                  text-sm
-                  not-italic
-                  font-normal
-                  leading-5
-                  text-end text-gray-600
-                  est-date
-                "
+                class="text-sm not-italic font-normal leading-5 text-end text-gray-600 est-date"
               >
                 {{ estimate.formatted_estimate_date }}
               </div>
@@ -266,25 +210,13 @@
       </div>
     </div>
 
-    <div
-      class="flex flex-col min-h-0 mt-8 overflow-hidden"
-      style="height: 75vh"
-    >
-      <iframe
-        :src="`${shareableLink}`"
-        class="
-          flex-1
-          border border-gray-400 border-solid
-          rounded-md
-          bg-white
-          frame-style
-        "
-      />
-    </div>
+    <DocumentPreviewFrame :src="previewLink" :title="pageTitle" class="mt-8" />
   </BasePage>
 </template>
 
 <script setup>
+defineOptions({ name: 'AdminEstimateView' })
+
 import { useI18n } from 'vue-i18n'
 import { computed, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -297,6 +229,7 @@ import { useUserStore } from '@/scripts/admin/stores/user'
 
 import EstimateDropDown from '@/scripts/admin/components/dropdowns/EstimateIndexDropdown.vue'
 import SendEstimateModal from '@/scripts/admin/components/modal-components/SendEstimateModal.vue'
+import DocumentPreviewFrame from '@/scripts/components/DocumentPreviewFrame.vue'
 import LoadingIcon from '@/scripts/components/icons/LoadingIcon.vue'
 
 import abilities from '@/scripts/admin/stub/abilities'
@@ -342,9 +275,11 @@ const getOrderName = computed(() => {
   return t('general.descending')
 })
 
-const shareableLink = computed(() => {
+const pdfLink = computed(() => {
   return `/estimates/pdf/${estimateData.value.unique_hash}`
 })
+
+const previewLink = computed(() => `${pdfLink.value}?preview=1`)
 
 const getCurrentEstimateId = computed(() => {
   if (estimateData.value && estimateData.value.id) {
@@ -406,7 +341,7 @@ async function loadEstimates(pageNumber, fromScrollListener = false) {
   currentPageNumber.value = pageNumber ? pageNumber : 1
   lastPageNumber.value = response.data.meta.last_page
   let estimateFound = estimateList.value.find(
-    (est) => est.id == route.params.id
+    (est) => est.id == route.params.id,
   )
 
   if (
@@ -537,7 +472,7 @@ async function removeEstimate(id) {
 
 function updateSentEstimate() {
   let pos = estimateList.value.findIndex(
-    (estimate) => estimate.id === estimateData.value.id
+    (estimate) => estimate.id === estimateData.value.id,
   )
 
   if (estimateList.value[pos]) {
