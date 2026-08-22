@@ -1,6 +1,7 @@
 @php
     $isEstimateDocument = isset($estimate);
     $invoice = $estimate ?? $invoice;
+    $tripoliLocale = 'ar';
     $tripoliLogoPath = $logo && is_file($logo)
         ? $logo
         : storage_path('app/templates/pdf/invoice/assets/tripoli-center-logo.png');
@@ -621,8 +622,8 @@
             <tbody>
                 @foreach ($invoice->items as $item)
                     <tr>
-                        <td class="numeric">{!! format_money_pdf($item->total, $invoice->customer->currency) !!}</td>
-                        <td class="numeric">{!! format_money_pdf($item->price, $invoice->customer->currency) !!}</td>
+                        <td class="numeric">{!! format_money_pdf($item->total, $invoice->customer->currency, $tripoliLocale) !!}</td>
+                        <td class="numeric">{!! format_money_pdf($item->price, $invoice->customer->currency, $tripoliLocale) !!}</td>
                         <td class="numeric">
                             {{ $item->quantity }}
                             @if ($item->unit_name)
@@ -641,19 +642,19 @@
 
         <table class="summary-table">
             <tr>
-                <td class="value-cell discount-value" style="width: 32%">{!! format_money_pdf($discountAmount, $invoice->customer->currency) !!}</td>
+                <td class="value-cell discount-value" style="width: 32%">{!! format_money_pdf($discountAmount, $invoice->customer->currency, $tripoliLocale) !!}</td>
                 <td class="label-cell" style="width: 18%">الخصم<br>Discount</td>
-                <td class="value-cell" style="width: 32%">{!! format_money_pdf($invoice->sub_total, $invoice->customer->currency) !!}</td>
+                <td class="value-cell" style="width: 32%">{!! format_money_pdf($invoice->sub_total, $invoice->customer->currency, $tripoliLocale) !!}</td>
                 <td class="label-cell" style="width: 18%">المجموع الفرعي<br>Subtotal</td>
             </tr>
 
             @foreach ($displayTaxes as $tax)
                 <tr>
-                    <td class="value-cell" colspan="2">{!! format_money_pdf($tax->amount, $invoice->customer->currency) !!}</td>
+                    <td class="value-cell" colspan="2">{!! format_money_pdf($tax->amount, $invoice->customer->currency, $tripoliLocale) !!}</td>
                     <td class="label-cell" colspan="2">
                         {{ $tax->name }}
                         @if ($tax->calculation_type === 'fixed')
-                            ({!! format_money_pdf($tax->fixed_amount, $invoice->customer->currency) !!})
+                            ({!! format_money_pdf($tax->fixed_amount, $invoice->customer->currency, $tripoliLocale) !!})
                         @else
                             ({{ $tax->percent }}%)
                         @endif
@@ -663,14 +664,14 @@
 
             <tr>
                 <td class="words-cell" colspan="3">
-                    {{ $amountInWords ?: strip_tags(format_money_pdf($invoice->total, $invoice->customer->currency)) }}
+                    {{ $amountInWords ?: strip_tags(format_money_pdf($invoice->total, $invoice->customer->currency, $tripoliLocale)) }}
                 </td>
                 <td class="label-cell">المبلغ بالحروف<br>Amount in words</td>
             </tr>
             <tr>
-                <td class="value-cell total-value">{!! format_money_pdf($invoice->total, $invoice->customer->currency) !!}</td>
+                <td class="value-cell total-value">{!! format_money_pdf($invoice->total, $invoice->customer->currency, $tripoliLocale) !!}</td>
                 <td class="label-cell">الإجمالي / Total</td>
-                <td class="value-cell">{!! format_money_pdf($invoice->total, $invoice->customer->currency) !!}</td>
+                <td class="value-cell">{!! format_money_pdf($invoice->total, $invoice->customer->currency, $tripoliLocale) !!}</td>
                 <td class="label-cell">الصافي / Net</td>
             </tr>
         </table>
@@ -678,7 +679,7 @@
         @if (! $isEstimateDocument)
             <table class="payments-table">
                 <tr>
-                    <td class="value-cell" style="width: 32%">{!! format_money_pdf($paidAmount, $invoice->customer->currency) !!}</td>
+                    <td class="value-cell" style="width: 32%">{!! format_money_pdf($paidAmount, $invoice->customer->currency, $tripoliLocale) !!}</td>
                     <td class="label-cell paid-label" style="width: 18%">المدفوع<br>Paid</td>
                     <td style="width: 32%"><span class="signature-line"></span></td>
                     <td class="label-cell" style="width: 18%">التوقيع<br>Signature</td>
@@ -686,7 +687,7 @@
                 <tr>
                     <td class="value-cell" style="direction: rtl">{{ $paymentStatus }}</td>
                     <td class="label-cell">حالة السداد<br>Payment Status</td>
-                    <td class="value-cell">{!! format_money_pdf($invoice->due_amount, $invoice->customer->currency) !!}</td>
+                    <td class="value-cell">{!! format_money_pdf($invoice->due_amount, $invoice->customer->currency, $tripoliLocale) !!}</td>
                     <td class="label-cell">الباقي<br>Balance</td>
                 </tr>
             </table>
