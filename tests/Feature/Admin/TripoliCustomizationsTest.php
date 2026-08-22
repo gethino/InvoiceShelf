@@ -78,6 +78,7 @@ test('owner can save company branding tax state and login default', function () 
         'taxes_enabled' => true,
         'use_on_login' => true,
         'simplified_login' => false,
+        'quick_login_enabled' => false,
     ])->assertOk()->assertJson([
         'success' => true,
         'brand_color' => '#123abc',
@@ -87,6 +88,7 @@ test('owner can save company branding tax state and login default', function () 
         'taxes_enabled' => true,
         'use_on_login' => true,
         'simplified_login' => false,
+        'quick_login_enabled' => false,
     ]);
 
     expect(CompanySetting::getSetting('brand_color', $this->company->id))->toBe('#123abc')
@@ -95,7 +97,8 @@ test('owner can save company branding tax state and login default', function () 
         ->and(CompanySetting::getSetting('theme_color', $this->company->id))->toBe('#102030')
         ->and(CompanySetting::getSetting('taxes_enabled', $this->company->id))->toBe('YES')
         ->and(Setting::getSetting('login_brand_company_id'))->toBe((string) $this->company->id)
-        ->and(Setting::getSetting('simplified_login'))->toBe('NO');
+        ->and(Setting::getSetting('simplified_login'))->toBe('NO')
+        ->and(Setting::getSetting('quick_login_enabled'))->toBe('NO');
 
     getJson('/api/v1/tax-types')->assertOk();
 });
@@ -109,6 +112,7 @@ test('custom settings validate brand colors', function () {
         'taxes_enabled' => false,
         'use_on_login' => false,
         'simplified_login' => true,
+        'quick_login_enabled' => true,
     ])->assertUnprocessable()->assertJsonValidationErrors('brand_color');
 });
 

@@ -42,6 +42,12 @@ export const useAuthStore = (useWindow = false) => {
         })
       },
 
+      async quickLogin(data) {
+        await http.get('/sanctum/csrf-cookie')
+
+        return http.post('/quick-login', data)
+      },
+
       logout() {
         return new Promise((resolve, reject) => {
           http

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View;
 use Modules\TripoliCustomizations\Entities\CustomerOrganization;
+use Modules\TripoliCustomizations\Support\QuickLoginToken;
 
 class TripoliCustomizationsServiceProvider extends ServiceProvider
 {
@@ -66,6 +67,10 @@ class TripoliCustomizationsServiceProvider extends ServiceProvider
                 'brand_color' => CompanySetting::getSetting('brand_color', $company->id) ?? '#4a3dff',
                 'logo_url' => $company->logo,
                 'simplified_login' => Setting::getSetting('simplified_login') !== 'NO',
+                'quick_login_enabled' => Setting::getSetting('quick_login_enabled') !== 'NO',
+                'quick_login_users' => request()->routeIs('home', 'login')
+                    ? $this->quickLoginUsers($company)
+                    : [],
                 'meta_title' => CompanySetting::getSetting('meta_title', $company->id) ?: null,
                 'meta_description' => CompanySetting::getSetting('meta_description', $company->id) ?: null,
                 'theme_color' => CompanySetting::getSetting('theme_color', $company->id) ?: '#ffffff',
@@ -92,5 +97,31 @@ class TripoliCustomizationsServiceProvider extends ServiceProvider
             ->data('ability', '')
             ->data('model', '')
             ->data('group', '');
+    }
+
+    /**
+     * @return array<int, array{name: string, avatar: string|null, token: string}>
+     */
+    private function quickLoginUsers(Company $company): array
+    {
+        if (Setting::getSetting('quick_login_enabled') === 'NO') {
+            return [];
+        }
+
+        $quickLoginToken = app(QuickLoginToken::class);
+
+        return $company->users()
+            ->whereNotNull('users.name')
+            ->whereNotNull('users.email')
+            ->whereNotNull('users.password')
+            ->with('media')
+            ->orderBy('users.name')
+            ->get()
+            ->map(fn ($user): array => [
+                'name' => $user->name,
+                'avatar' => $user->avatar ?: null,
+                'token' => $quickLoginToken->issue($user, $company),
+            ])
+            ->all();
     }
 }

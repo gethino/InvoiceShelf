@@ -126,6 +126,20 @@
           <BaseSwitch v-model="form.simplified_login" />
         </div>
 
+        <div
+          class="flex items-start justify-between gap-6 rounded-lg border border-gray-200 p-4"
+        >
+          <div>
+            <p class="font-medium text-gray-900">
+              {{ $t('tripoli_customizations.settings.quick_login') }}
+            </p>
+            <p class="mt-1 text-sm text-gray-500">
+              {{ $t('tripoli_customizations.settings.quick_login_help') }}
+            </p>
+          </div>
+          <BaseSwitch v-model="form.quick_login_enabled" />
+        </div>
+
         <p v-if="message" :class="messageClass" class="text-sm">
           {{ message }}
         </p>
@@ -152,6 +166,7 @@ const form = reactive({
   taxes_enabled: false,
   use_on_login: false,
   simplified_login: true,
+  quick_login_enabled: true,
 })
 const isLoading = ref(true)
 const isSaving = ref(false)
