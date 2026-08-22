@@ -56,6 +56,14 @@ export function formatMoney(amount, currency, locale = getCurrentLocale()) {
     : `${symbol} ${formattedAmount}`
 }
 
+export function getMoneyInputFractionDigits(value, currency) {
+  const normalized = normalizeMoneyInput(value, currency)
+  const decimalSeparator = currency?.decimal_separator || '.'
+  const decimalIndex = normalized.indexOf(decimalSeparator)
+
+  return decimalIndex === -1 ? 0 : normalized.length - decimalIndex - 1
+}
+
 export function normalizeMoneyInput(value, currency) {
   if (value === null || value === undefined || value === '') {
     return ''
@@ -113,7 +121,11 @@ export function parseMoneyInput(value, currency) {
   return Number.isFinite(numericValue) ? numericValue : null
 }
 
-export function formatMoneyInputDisplay(value, currency) {
+export function formatMoneyInputDisplay(
+  value,
+  currency,
+  minimumFractionDigits = 0,
+) {
   if (value === null || value === undefined || value === '') {
     return ''
   }
@@ -124,22 +136,31 @@ export function formatMoneyInputDisplay(value, currency) {
     return ''
   }
 
-  return formatNumericValue(numericValue, currency)
+  return formatNumericValue(numericValue, currency, minimumFractionDigits)
 }
 
-function formatNumericValue(value, currency) {
+function formatNumericValue(value, currency, minimumFractionDigits = 0) {
   const precision = Math.max(0, Math.abs(Number(currency?.precision) || 0))
+  const minimumPrecision = Math.min(
+    precision,
+    Math.max(0, Number(minimumFractionDigits) || 0),
+  )
   const decimalSeparator = currency?.decimal_separator || '.'
   const thousandSeparator = currency?.thousand_separator || ','
   const negativeSign = value < 0 ? '-' : ''
   const [integer, fraction] = Math.abs(value).toFixed(precision).split('.')
+  const compactFraction = fraction?.replace(/0+$/, '') || ''
+  const displayedFraction = fraction?.slice(
+    0,
+    Math.max(compactFraction.length, minimumPrecision),
+  )
   const groupedInteger = integer.replace(
     /\B(?=(\d{3})+(?!\d))/g,
     thousandSeparator,
   )
 
   return `${negativeSign}${groupedInteger}${
-    precision ? decimalSeparator + fraction : ''
+    displayedFraction ? decimalSeparator + displayedFraction : ''
   }`
 }
 

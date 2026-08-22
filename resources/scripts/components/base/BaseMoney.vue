@@ -46,6 +46,7 @@ import { useCompanyStore } from '@/scripts/admin/stores/company'
 import {
   formatMoneyInputDisplay,
   getCurrencyPresentation,
+  getMoneyInputFractionDigits,
   isArabicLocale,
   isCurrencySymbolOnRight as currencySymbolIsOnRight,
   normalizeMoneyInput,
@@ -90,6 +91,7 @@ const companyStore = useCompanyStore()
 const { locale } = useI18n()
 const inputValue = ref('')
 const isFocused = ref(false)
+const minimumFractionDigits = ref(0)
 
 const selectedCurrency = computed(() => {
   return props.currency || companyStore.selectedCompanyCurrency
@@ -108,6 +110,7 @@ watch(
   [() => props.modelValue, selectedCurrency],
   ([modelValue, currency]) => {
     if (!isFocused.value && currency) {
+      minimumFractionDigits.value = 0
       inputValue.value = formatMoneyInputDisplay(modelValue, currency)
     }
   },
@@ -121,6 +124,10 @@ function handleInput(event) {
   )
   const parsed = parseMoneyInput(normalized, selectedCurrency.value)
 
+  minimumFractionDigits.value = getMoneyInputFractionDigits(
+    normalized,
+    selectedCurrency.value,
+  )
   inputValue.value = normalized
   event.target.value = normalized
   emit('update:modelValue', parsed ?? '')
@@ -131,11 +138,12 @@ function handleFocus(event) {
   isFocused.value = true
 
   if (Number(props.modelValue) === 0) {
+    minimumFractionDigits.value = 0
     inputValue.value = ''
     event.target.value = ''
   } else {
     inputValue.value = normalizeMoneyInput(
-      props.modelValue,
+      inputValue.value || props.modelValue,
       selectedCurrency.value,
     )
     event.target.value = inputValue.value
@@ -149,6 +157,7 @@ function handleBlur(event) {
   inputValue.value = formatMoneyInputDisplay(
     parseMoneyInput(inputValue.value, selectedCurrency.value),
     selectedCurrency.value,
+    minimumFractionDigits.value,
   )
   event.target.value = inputValue.value
   emit('blur', event)

@@ -5,6 +5,7 @@ import {
   formatMoney,
   formatMoneyInputDisplay,
   getCurrencyPresentation,
+  getMoneyInputFractionDigits,
   isCurrencySymbolOnRight,
   normalizeMoneyInput,
   parseMoneyInput,
@@ -64,8 +65,10 @@ test('reserves physical input space for the currency affix', () => {
 })
 
 test('formats LYD for English and Arabic', () => {
-  assert.equal(formatMoney(10000, lyd, 'en'), '100.000 LYD')
-  assert.equal(formatMoney(10000, lyd, 'ar'), 'د.ل 100.000')
+  assert.equal(formatMoney(10000, lyd, 'en'), '100 LYD')
+  assert.equal(formatMoney(10000, lyd, 'ar'), 'د.ل 100')
+  assert.equal(formatMoney(10050, lyd, 'en'), '100.5 LYD')
+  assert.equal(formatMoney(10055, lyd, 'ar'), 'د.ل 100.55')
 })
 
 test('preserves other currency presentation', () => {
@@ -74,6 +77,8 @@ test('preserves other currency presentation', () => {
     code: 'EUR',
     symbol: '€',
     precision: 2,
+    decimal_separator: ',',
+    thousand_separator: '.',
     swap_currency_symbol: false,
   }
   const denar = {
@@ -83,8 +88,8 @@ test('preserves other currency presentation', () => {
     swap_currency_symbol: true,
   }
 
-  assert.equal(formatMoney(10000, euro, 'ar'), '€ 100.00')
-  assert.equal(formatMoney(10000, denar, 'en'), '100.00 ден')
+  assert.equal(formatMoney(123450, euro, 'ar'), '€ 1.234,5')
+  assert.equal(formatMoney(123450, denar, 'en'), '1.234,5 ден')
 })
 
 test('keeps whole-number typing natural', () => {
@@ -95,7 +100,25 @@ test('keeps whole-number typing natural', () => {
 test('limits editing to two meaningful fraction digits', () => {
   assert.equal(normalizeMoneyInput('333.250', lyd), '333.25')
   assert.equal(normalizeMoneyInput('333.125', lyd), '333.12')
-  assert.equal(formatMoneyInputDisplay(333.25, lyd), '333.250')
+  assert.equal(formatMoneyInputDisplay(333.25, lyd), '333.25')
+})
+
+test('preserves only explicitly typed fraction digits during editing', () => {
+  for (const [typedValue, expected] of [
+    ['10000', '10,000'],
+    ['10000.5', '10,000.5'],
+    ['10000.50', '10,000.50'],
+    ['10000.00', '10,000.00'],
+  ]) {
+    const normalized = normalizeMoneyInput(typedValue, lyd)
+    const fractionDigits = getMoneyInputFractionDigits(normalized, lyd)
+    const parsed = parseMoneyInput(normalized, lyd)
+
+    assert.equal(formatMoneyInputDisplay(parsed, lyd, fractionDigits), expected)
+  }
+
+  assert.match(baseMoney, /inputValue\.value \|\| props\.modelValue/)
+  assert.match(baseMoney, /minimumFractionDigits\.value/)
 })
 
 test('accepts localized digits, decimal input, paste, and clearing', () => {

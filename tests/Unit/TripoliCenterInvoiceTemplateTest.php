@@ -327,9 +327,24 @@ it('uses each custom template locale for LYD formatting', function () {
     $arabicHtml = view('pdf_templates::invoice.tripoli-center-ar', tripoliCenterInvoiceTemplateData())->render();
 
     expect($englishHtml)
-        ->toContain('250.000&nbsp;<span style="font-family: DejaVu Sans;">LYD</span>')
+        ->toContain('250&nbsp;<span style="font-family: DejaVu Sans;">LYD</span>')
         ->and($arabicHtml)
-        ->toContain('<span style="font-family: DejaVu Sans;">د.ل</span>&nbsp;250.000');
+        ->toContain('<span style="font-family: DejaVu Sans;">د.ل</span>&nbsp;250');
+});
+
+it('uses compact Arabic LYD formatting in the modern invoice and estimate templates', function () {
+    App::setLocale('en');
+
+    $invoiceHtml = view('pdf_templates::invoice.tripoli-center-modern-ar', tripoliCenterInvoiceTemplateData())->render();
+    $estimateHtml = view('pdf_templates::estimate.tripoli-center-modern-ar', tripoliCenterEstimateTemplateData())->render();
+    $compactArabicAmount = '<span style="font-family: DejaVu Sans;">د.ل</span>&nbsp;250';
+
+    expect($invoiceHtml)
+        ->toContain($compactArabicAmount)
+        ->not->toContain('250.000')
+        ->and($estimateHtml)
+        ->toContain($compactArabicAmount)
+        ->not->toContain('250.000');
 });
 
 it('paginates long invoices while keeping the custom template renderable', function () {

@@ -139,18 +139,26 @@ function format_money_pdf(int|float|string $money, ?Currency $currency = null, ?
     $symbol = $isLibyanDinar && $isArabic ? 'د.ل' : ($isLibyanDinar ? 'LYD' : (string) $currency->symbol);
     $symbolAfterAmount = $isLibyanDinar ? ! $isArabic : (bool) $currency->swap_currency_symbol;
 
-    $format_money = number_format(
+    $formattedMoney = number_format(
         $money,
         $currency->precision,
         $currency->decimal_separator,
         $currency->thousand_separator
     );
 
+    if ($currency->precision > 0) {
+        [$wholeAmount, $fractionalAmount] = explode($currency->decimal_separator, $formattedMoney, 2);
+        $fractionalAmount = rtrim($fractionalAmount, '0');
+        $formattedMoney = $fractionalAmount === ''
+            ? $wholeAmount
+            : $wholeAmount.$currency->decimal_separator.$fractionalAmount;
+    }
+
     $symbolMarkup = '<span style="font-family: DejaVu Sans;">'.e($symbol).'</span>';
 
     return $symbolAfterAmount
-        ? $format_money.'&nbsp;'.$symbolMarkup
-        : $symbolMarkup.'&nbsp;'.$format_money;
+        ? $formattedMoney.'&nbsp;'.$symbolMarkup
+        : $symbolMarkup.'&nbsp;'.$formattedMoney;
 }
 
 /**
