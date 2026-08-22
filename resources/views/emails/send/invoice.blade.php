@@ -28,7 +28,7 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            Powered by <a class="footer-link" href="https://invoiceshelf.com" target="_blank">InvoiceShelf</a>
+            Powered by <a class="footer-link" href="https://www.facebook.com/SparxSolutions218/" target="_blank">Sparx Solutions</a>
         @endcomponent
     @endslot
 @endcomponent
