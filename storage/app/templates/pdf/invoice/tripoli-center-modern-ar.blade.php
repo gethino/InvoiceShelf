@@ -107,10 +107,7 @@
         }
 
         body.browser-preview {
-            align-items: flex-start;
             background: #eef1f5;
-            display: flex;
-            justify-content: center;
             overflow-x: hidden;
             padding: 12mm;
         }
@@ -132,16 +129,10 @@
             width: 100%;
         }
 
-        body.browser-preview .preview-shell {
-            margin: 0 auto;
-            max-width: 210mm;
-        }
-
         body.browser-preview .invoice {
             background: #fff;
             max-width: none;
             padding: 9mm 10mm;
-            transform-origin: top left;
             width: 210mm;
         }
 
@@ -509,20 +500,32 @@
             font-weight: 300;
         }
 
+        @media screen {
+            body.browser-preview .preview-shell {
+                margin: 0;
+                max-width: none;
+                position: relative;
+            }
+
+            body.browser-preview .invoice {
+                left: 50%;
+                margin-left: -105mm;
+                position: absolute;
+                top: 0;
+                transform-origin: top center;
+            }
+        }
+
         @media screen and (max-width: 900px) {
             body.browser-preview {
                 padding: 12px;
             }
 
-            body.browser-preview .preview-shell {
-                max-width: none;
-            }
         }
 
         @media print {
             body.browser-preview {
                 background: #fff;
-                display: block;
                 padding: 10mm 12mm;
             }
 
@@ -534,7 +537,9 @@
             }
 
             body.browser-preview .invoice {
+                margin-left: 0;
                 padding: 0;
+                position: static;
                 transform: none !important;
                 width: 100% !important;
             }
@@ -772,7 +777,6 @@
                     const scale = canvasWidth > 0 ? Math.min(1, availableWidth / canvasWidth) : 1;
 
                     previewCanvas.style.transform = `scale(${scale})`;
-                    previewShell.style.width = `${canvasWidth * scale}px`;
                     previewShell.style.height = `${previewCanvas.offsetHeight * scale}px`;
                 };
 

@@ -191,9 +191,10 @@ it('scales the fixed-width modern browser preview without changing PDF rendering
         ->toContain('data-preview-shell')
         ->toContain('data-preview-canvas')
         ->toContain('width: 210mm;')
-        ->toMatch('/body\.browser-preview\s*\{[^}]*display:\s*flex;[^}]*justify-content:\s*center;/s')
+        ->toMatch('/body\.browser-preview \.invoice\s*\{[^}]*left:\s*50%;[^}]*margin-left:\s*-105mm;[^}]*transform-origin:\s*top center;/s')
         ->toContain('fitPreviewToViewport')
         ->toContain('previewCanvas.style.transform = `scale(${scale})`;')
+        ->not->toContain('previewShell.style.width')
         ->and($pdfHtml)
         ->toContain('<body class="pdf-render"')
         ->not->toContain('fitPreviewToViewport');
@@ -401,6 +402,7 @@ it('paginates long modern Arabic invoices after shaping their text', function ()
     $data = tripoliCenterInvoiceTemplateData();
     $item = $data['invoice']->items->first();
     $data['invoice']->items = collect(range(1, 28))->map(fn (): object => clone $item);
+    $data['dompdfRendering'] = true;
 
     $html = view('pdf_templates::invoice.tripoli-center-modern-ar', $data)->render();
     $html = app(ArabicPdfHtmlProcessor::class)->process($html);
