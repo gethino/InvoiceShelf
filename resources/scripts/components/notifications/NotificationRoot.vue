@@ -6,6 +6,7 @@
       z-50
       flex flex-col
       items-end
+      rtl:items-start
       justify-start
       w-full
       px-4
