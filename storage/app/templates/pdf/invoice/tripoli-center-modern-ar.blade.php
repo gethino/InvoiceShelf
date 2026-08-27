@@ -107,7 +107,11 @@
         }
 
         body.browser-preview {
+            align-items: flex-start;
             background: #eef1f5;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
             padding: 12mm;
         }
 
@@ -120,15 +124,25 @@
             border-collapse: collapse;
         }
 
+        .preview-shell {
+            width: 100%;
+        }
+
         .invoice {
             width: 100%;
         }
 
-        body.browser-preview .invoice {
-            background: #fff;
+        body.browser-preview .preview-shell {
             margin: 0 auto;
             max-width: 210mm;
+        }
+
+        body.browser-preview .invoice {
+            background: #fff;
+            max-width: none;
             padding: 9mm 10mm;
+            transform-origin: top left;
+            width: 210mm;
         }
 
         .header-table {
@@ -189,7 +203,7 @@
         .services-table td {
             border: 0;
             color: #3d4a5c;
-            font-size: 7px;
+            font-size: 9px;
             padding: 3px 2px 0;
             text-align: right;
             vertical-align: top;
@@ -259,7 +273,7 @@
         .meta-label {
             color: {{ $brandColor }};
             direction: rtl;
-            font-size: 8px;
+            font-size: 10px;
             font-weight: 800;
             text-align: right;
             white-space: nowrap;
@@ -268,7 +282,7 @@
 
         .meta-value {
             direction: rtl;
-            font-size: 9px;
+            font-size: 11px;
             font-weight: 700;
             padding-right: 5px !important;
             text-align: right;
@@ -283,7 +297,7 @@
         .items-table {
             border: 1px solid #d0d7e0;
             direction: ltr;
-            font-size: 8px;
+            font-size: 10px;
             position: relative;
             table-layout: fixed;
             width: 100%;
@@ -317,7 +331,7 @@
             border: 1px solid {{ $brandColor }};
             color: #fff;
             direction: rtl;
-            font-size: 8px;
+            font-size: 10px;
             font-weight: 800;
             line-height: 1.35;
             padding: 5px 3px;
@@ -341,7 +355,7 @@
         }
 
         .item-name {
-            font-size: 8px;
+            font-size: 10px;
             font-weight: 700;
         }
 
@@ -349,7 +363,7 @@
         .item-meta {
             color: #5e6f88;
             display: block;
-            font-size: 7px;
+            font-size: 9px;
             margin-top: 2px;
         }
 
@@ -378,14 +392,14 @@
         }
 
         .label-cell {
-            font-size: 8px;
+            font-size: 10px;
             font-weight: 700;
         }
 
         .value-cell {
             background: #fafbfc;
             direction: ltr;
-            font-size: 9px;
+            font-size: 11px;
             font-weight: 700;
             unicode-bidi: embed;
         }
@@ -393,7 +407,7 @@
         .words-cell {
             background: #fafbfc;
             direction: rtl;
-            font-size: 9px;
+            font-size: 11px;
             text-align: right !important;
         }
 
@@ -404,7 +418,7 @@
         .total-value {
             background: {{ $brandColor }};
             color: #fff;
-            font-size: 15px;
+            font-size: 17px;
             font-weight: 800;
         }
 
@@ -428,6 +442,7 @@
 
         .notes-table {
             direction: ltr;
+            font-size: 11px;
             table-layout: fixed;
             width: 100%;
         }
@@ -466,7 +481,7 @@
             border: 0;
             color: #2c3e50;
             direction: ltr;
-            font-size: 7px;
+            font-size: 9px;
             font-weight: 700;
             padding: 6px 3px;
             text-align: center;
@@ -494,22 +509,41 @@
             font-weight: 300;
         }
 
+        @media screen and (max-width: 900px) {
+            body.browser-preview {
+                padding: 12px;
+            }
+
+            body.browser-preview .preview-shell {
+                max-width: none;
+            }
+        }
+
         @media print {
             body.browser-preview {
                 background: #fff;
+                display: block;
                 padding: 10mm 12mm;
             }
 
-            body.browser-preview .invoice {
+            body.browser-preview .preview-shell {
+                height: auto !important;
                 margin: 0;
                 max-width: none;
+                width: 100% !important;
+            }
+
+            body.browser-preview .invoice {
                 padding: 0;
+                transform: none !important;
+                width: 100% !important;
             }
         }
     </style>
 </head>
 <body class="{{ ($dompdfRendering ?? false) ? 'pdf-render' : 'browser-preview' }}" data-document-type="{{ $documentType }}" data-brand-color="{{ $brandColor }}">
-    <div class="invoice">
+    <div class="preview-shell" data-preview-shell>
+    <div class="invoice" data-preview-canvas>
         <table class="header-table">
             <tr>
                 <td class="brand-block">
@@ -706,7 +740,7 @@
 
         <table class="contact-table">
             <tr>
-                <td><span class="contact-label">Phone:</span> 094-582-1748 / 091-024-4048</td>
+                <td><span class="contact-label">Phone:</span> <span dir="ltr">0911094545 - 0913386777</span></td>
                 <td><span class="contact-label">Email:</span> Tripoli.center11@gmail.com</td>
                 <td><span class="contact-label">Web:</span> tripolicenter.com</td>
             </tr>
@@ -717,5 +751,45 @@
             <span class="footer-muted">للخدمات الإعلامية والفنية والدعاية والإعلان</span>
         </div>
     </div>
+    </div>
+
+    @unless ($dompdfRendering ?? false)
+        <script>
+            (() => {
+                const previewShell = document.querySelector('[data-preview-shell]');
+                const previewCanvas = document.querySelector('[data-preview-canvas]');
+
+                if (!previewShell || !previewCanvas) {
+                    return;
+                }
+
+                const fitPreviewToViewport = () => {
+                    const bodyStyles = window.getComputedStyle(document.body);
+                    const horizontalPadding = Number.parseFloat(bodyStyles.paddingLeft)
+                        + Number.parseFloat(bodyStyles.paddingRight);
+                    const availableWidth = Math.max(document.documentElement.clientWidth - horizontalPadding, 0);
+                    const canvasWidth = previewCanvas.offsetWidth;
+                    const scale = canvasWidth > 0 ? Math.min(1, availableWidth / canvasWidth) : 1;
+
+                    previewCanvas.style.transform = `scale(${scale})`;
+                    previewShell.style.width = `${canvasWidth * scale}px`;
+                    previewShell.style.height = `${previewCanvas.offsetHeight * scale}px`;
+                };
+
+                window.addEventListener('resize', fitPreviewToViewport, { passive: true });
+                document.querySelectorAll('img').forEach((image) => {
+                    if (!image.complete) {
+                        image.addEventListener('load', fitPreviewToViewport, { once: true });
+                    }
+                });
+
+                if (document.fonts?.ready) {
+                    document.fonts.ready.then(fitPreviewToViewport);
+                }
+
+                fitPreviewToViewport();
+            })();
+        </script>
+    @endunless
 </body>
 </html>

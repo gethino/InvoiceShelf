@@ -161,6 +161,44 @@ it('renders the modern Arabic template with customer identity and local Almarai 
     expect($pdf)->toStartWith('%PDF');
 });
 
+it('uses the current phone numbers and larger table typography in modern invoice and estimate templates', function () {
+    $invoiceHtml = view('pdf_templates::invoice.tripoli-center-modern-ar', tripoliCenterInvoiceTemplateData())->render();
+    $estimateHtml = view('pdf_templates::estimate.tripoli-center-modern-ar', tripoliCenterEstimateTemplateData())->render();
+
+    expect($invoiceHtml)
+        ->toContain('0911094545 - 0913386777')
+        ->not->toContain('094-582-1748')
+        ->not->toContain('091-024-4048')
+        ->toMatch('/\.items-table\s*\{[^}]*font-size:\s*10px;/s')
+        ->toMatch('/\.items-table th\s*\{[^}]*font-size:\s*10px;/s')
+        ->toMatch('/\.label-cell\s*\{[^}]*font-size:\s*10px;/s')
+        ->toMatch('/\.value-cell\s*\{[^}]*font-size:\s*11px;/s')
+        ->toMatch('/\.total-value\s*\{[^}]*font-size:\s*17px;/s')
+        ->and($estimateHtml)
+        ->toContain('0911094545 - 0913386777')
+        ->not->toContain('094-582-1748')
+        ->not->toContain('091-024-4048');
+});
+
+it('scales the fixed-width modern browser preview without changing PDF rendering', function () {
+    $browserHtml = view('pdf_templates::invoice.tripoli-center-modern-ar', tripoliCenterInvoiceTemplateData())->render();
+    $pdfHtml = view('pdf_templates::invoice.tripoli-center-modern-ar', [
+        ...tripoliCenterInvoiceTemplateData(),
+        'dompdfRendering' => true,
+    ])->render();
+
+    expect($browserHtml)
+        ->toContain('data-preview-shell')
+        ->toContain('data-preview-canvas')
+        ->toContain('width: 210mm;')
+        ->toMatch('/body\.browser-preview\s*\{[^}]*display:\s*flex;[^}]*justify-content:\s*center;/s')
+        ->toContain('fitPreviewToViewport')
+        ->toContain('previewCanvas.style.transform = `scale(${scale})`;')
+        ->and($pdfHtml)
+        ->toContain('<body class="pdf-render"')
+        ->not->toContain('fitPreviewToViewport');
+});
+
 it('keeps the modern template physically RTL with visible margins and a right-aligned logo', function () {
     $data = tripoliCenterInvoiceTemplateData();
     $html = view('pdf_templates::invoice.tripoli-center-modern-ar', $data)->render();
