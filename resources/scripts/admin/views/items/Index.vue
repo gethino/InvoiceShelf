@@ -125,10 +125,12 @@
 
       <BaseTable
         ref="table"
+        row-clickable
         :data="fetchData"
         :columns="itemColumns"
         :placeholder-count="itemStore.totalItems >= 20 ? 10 : 5"
         class="mt-3"
+        @row-click="$router.push(`/admin/items/${$event.id}/edit`)"
       >
         <template #header>
           <div class="absolute items-center inset-s-6 top-2.5 select-none">

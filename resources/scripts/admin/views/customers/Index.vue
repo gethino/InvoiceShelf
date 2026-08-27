@@ -123,8 +123,10 @@
       <BaseTable
         ref="tableComponent"
         class="mt-3"
+        row-clickable
         :data="fetchData"
         :columns="customerColumns"
+        @row-click="$router.push(`/admin/customers/${$event.id}/view`)"
       >
         <!-- Select All Checkbox -->
         <template #header>

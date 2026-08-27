@@ -171,11 +171,13 @@
 
       <BaseTable
         ref="tableComponent"
+        row-clickable
         :data="fetchData"
         :columns="estimateColumns"
         :placeholder-count="estimateStore.totalEstimateCount >= 20 ? 10 : 5"
         :key="tableKey"
         class="mt-10"
+        @row-click="$router.push(`/admin/estimates/${$event.id}/view`)"
       >
         <template #header>
           <div class="absolute items-center inset-s-6 top-2.5 select-none">

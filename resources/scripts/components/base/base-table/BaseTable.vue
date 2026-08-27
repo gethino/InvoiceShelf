@@ -75,7 +75,14 @@
               <tr
                 v-for="(row, index) in sortedRows"
                 :key="row.data?.id ?? index"
-                :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
+                :class="[
+                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50',
+                  {
+                    'cursor-pointer transition-colors hover:bg-gray-100/70':
+                      rowClickable,
+                  },
+                ]"
+                @click="handleRowClick($event, row)"
               >
                 <td
                   v-for="column in columns"
@@ -186,7 +193,16 @@ const props = defineProps({
     type: Number,
     default: 3,
   },
+  rowClickable: {
+    type: Boolean,
+    default: false,
+  },
 })
+
+const emit = defineEmits(['rowClick'])
+
+const interactiveRowSelector =
+  'a, button, input, select, option, textarea, label, summary, [role="button"], [role="link"], [role="menu"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="checkbox"], [role="combobox"], [role="listbox"], [role="option"], [role="radio"], [role="switch"], [role="tab"], [contenteditable="true"], [data-row-click-ignore]'
 
 const rows = ref([])
 let isLoading = ref(false)
@@ -232,6 +248,21 @@ const sortedRows = computed(() => {
 
 function getColumn(columnName) {
   return tableColumns.find((column) => column.key === columnName)
+}
+
+function handleRowClick(event, row) {
+  if (!props.rowClickable) {
+    return
+  }
+
+  if (
+    event.target instanceof Element &&
+    event.target.closest(interactiveRowSelector)
+  ) {
+    return
+  }
+
+  emit('rowClick', row.data)
 }
 
 function getThClass(column) {
