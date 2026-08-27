@@ -169,11 +169,13 @@
 
       <BaseTable
         ref="table"
+        row-clickable
         :data="fetchData"
         :columns="invoiceColumns"
         :placeholder-count="invoiceStore.invoiceTotalCount >= 20 ? 10 : 5"
         :key="tableKey"
         class="mt-10"
+        @row-click="$router.push(`/admin/invoices/${$event.id}/view`)"
       >
         <!-- Select All Checkbox -->
         <template #header>

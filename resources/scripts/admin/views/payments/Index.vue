@@ -124,10 +124,12 @@
 
       <BaseTable
         ref="tableComponent"
+        row-clickable
         :data="fetchData"
         :columns="paymentColumns"
         :placeholder-count="paymentStore.paymentTotalCount >= 20 ? 10 : 5"
         class="mt-3"
+        @row-click="$router.push(`/admin/payments/${$event.id}/view`)"
       >
         <!-- Select All Checkbox -->
         <template #header>

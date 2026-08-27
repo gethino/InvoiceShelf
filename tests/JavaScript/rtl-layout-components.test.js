@@ -17,6 +17,7 @@ const documentViewPaths = [
 ]
 
 const selectableIndexPaths = [
+  'resources/scripts/admin/views/customers/Index.vue',
   'resources/scripts/admin/views/invoices/Index.vue',
   'resources/scripts/admin/views/estimates/Index.vue',
   'resources/scripts/admin/views/items/Index.vue',
@@ -160,6 +161,34 @@ test('aligns shared table headers with the active writing direction', () => {
 
   assert.match(baseTable, /px-6 py-3 text-start text-xs/)
   assert.doesNotMatch(baseTable, /px-6 py-3 text-left text-xs/)
+})
+
+test('uses logical alignment in the customer table', () => {
+  const customerIndex = readProjectFile(
+    'resources/scripts/admin/views/customers/Index.vue',
+  )
+
+  assert.match(customerIndex, /thClass: 'extra w-10 pe-0'/)
+  assert.match(customerIndex, /text-end text-sm font-medium ps-0/)
+  assert.match(customerIndex, /name="TrashIcon" class="me-3/)
+  assert.doesNotMatch(customerIndex, /\b(?:left-6|pr-0|pl-0|text-right)\b/)
+})
+
+test('keeps notifications top-right with RTL-aware internal layout', () => {
+  const notificationRoot = readProjectFile(
+    'resources/scripts/components/notifications/NotificationRoot.vue',
+  )
+  const notificationItem = readProjectFile(
+    'resources/scripts/components/notifications/NotificationItem.vue',
+  )
+
+  assert.match(notificationRoot, /items-end/)
+  assert.match(notificationRoot, /rtl:items-start/)
+  assert.match(notificationRoot, /sm:translate-x-2/)
+  assert.match(notificationItem, /flex-1 w-0 ms-3 text-start/)
+  assert.match(notificationItem, /flex shrink-0 ms-4/)
+  assert.doesNotMatch(notificationItem, /\bml-3\b/)
+  assert.doesNotMatch(notificationItem, /\btext-left\b/)
 })
 
 test('uses logical spacing between dropdown action icons and text', () => {

@@ -59,7 +59,7 @@
               />
             </svg>
           </div>
-          <div class="flex-1 w-0 ml-3 text-left">
+          <div class="flex-1 w-0 ms-3 text-start">
             <p
               :class="`text-sm leading-5 font-medium ${
                 success || info ? 'text-gray-900' : 'text-red-800'
@@ -87,7 +87,7 @@
               }}
             </p>
           </div>
-          <div class="flex shrink-0">
+          <div class="flex shrink-0 ms-4">
             <button
               :class="
                 success || info

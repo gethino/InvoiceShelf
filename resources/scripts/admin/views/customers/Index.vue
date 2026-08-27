@@ -12,7 +12,7 @@
       </BaseBreadcrumb>
 
       <template #actions>
-        <div class="flex items-center justify-end space-x-5">
+        <div class="flex items-center justify-end gap-5">
           <BaseButton
             v-show="customerStore.totalCustomers"
             variant="primary-outline"
@@ -43,7 +43,7 @@
     </BasePageHeader>
 
     <BaseFilterWrapper :show="showFilters" class="mt-5" @clear="clearFilter">
-      <BaseInputGroup :label="$t('customers.display_name')" class="text-left">
+      <BaseInputGroup :label="$t('customers.display_name')" class="text-start">
         <BaseInput
           v-model="filters.display_name"
           type="text"
@@ -52,7 +52,7 @@
         />
       </BaseInputGroup>
 
-      <BaseInputGroup :label="$t('customers.contact_name')" class="text-left">
+      <BaseInputGroup :label="$t('customers.contact_name')" class="text-start">
         <BaseInput
           v-model="filters.contact_name"
           type="text"
@@ -61,7 +61,7 @@
         />
       </BaseInputGroup>
 
-      <BaseInputGroup :label="$t('customers.phone')" class="text-left">
+      <BaseInputGroup :label="$t('customers.phone')" class="text-start">
         <BaseInput
           v-model="filters.phone"
           type="text"
@@ -113,7 +113,7 @@
             </span>
           </template>
           <BaseDropdownItem @click="removeMultipleCustomers">
-            <BaseIcon name="TrashIcon" class="mr-3 text-gray-600" />
+            <BaseIcon name="TrashIcon" class="me-3 text-gray-600" />
             {{ $t('general.delete') }}
           </BaseDropdownItem>
         </BaseDropdown>
@@ -123,12 +123,16 @@
       <BaseTable
         ref="tableComponent"
         class="mt-3"
+        row-clickable
         :data="fetchData"
         :columns="customerColumns"
+        @row-click="$router.push(`/admin/customers/${$event.id}/view`)"
       >
         <!-- Select All Checkbox -->
         <template #header>
-          <div class="absolute z-10 items-center left-6 top-2.5 select-none">
+          <div
+            class="absolute z-10 items-center inset-s-6 top-2.5 select-none"
+          >
             <BaseCheckbox
               v-model="selectAllFieldStatus"
               variant="primary"
@@ -245,9 +249,9 @@ const customerColumns = computed(() => {
   return [
     {
       key: 'status',
-      thClass: 'extra w-10 pr-0',
+      thClass: 'extra w-10 pe-0',
       sortable: false,
-      tdClass: 'font-medium text-gray-900 pr-0',
+      tdClass: 'font-medium text-gray-900 pe-0',
     },
     {
       key: 'name',
@@ -263,8 +267,8 @@ const customerColumns = computed(() => {
     },
     {
       key: 'actions',
-      tdClass: 'text-right text-sm font-medium pl-0',
-      thClass: 'pl-0',
+      tdClass: 'text-end text-sm font-medium ps-0',
+      thClass: 'ps-0',
       sortable: false,
     },
   ]
