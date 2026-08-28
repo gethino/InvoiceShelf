@@ -381,7 +381,7 @@ async function checkUpdate() {
     isCheckingforUpdate.value = false
     if (!response.data.release) {
       notificationStore.showNotification({
-        title: 'Info!',
+        title: t('general.info'),
         type: 'info',
         message: t('settings.update_app.latest_message'),
       })
@@ -422,8 +422,7 @@ function onUpdateApp() {
         if (!allowToUpdate.value) {
           notificationStore.showNotification({
             type: 'error',
-            message:
-              'Your current configuration does not match the update requirements. Please try again after all the requirements are fulfilled.',
+            message: t('settings.update_app.requirements_not_met'),
           })
           return true
         }

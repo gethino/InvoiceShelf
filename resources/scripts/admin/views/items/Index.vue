@@ -52,14 +52,11 @@
           v-model="filters.unit_id"
           :placeholder="$t('items.select_a_unit')"
           value-prop="id"
-          track-by="name"
-          :filter-results="false"
-          label="name"
-          resolve-on-load
-          :delay="500"
+          track-by="display_name"
+          label="display_name"
           searchable
           class="w-full"
-          :options="searchUnits"
+          :options="localizedItemUnits"
         />
       </BaseInputGroup>
 
@@ -163,7 +160,11 @@
 
         <template #cell-unit_name="{ row }">
           <span>
-            {{ row.data.unit ? row.data.unit.name : '-' }}
+            {{
+              row.data.unit
+                ? formatUnitName(row.data.unit.name, locale, t)
+                : '-'
+            }}
           </span>
         </template>
 
@@ -202,6 +203,10 @@ import { useUserStore } from '@/scripts/admin/stores/user'
 import ItemDropdown from '@/scripts/admin/components/dropdowns/ItemIndexDropdown.vue'
 import SatelliteIcon from '@/scripts/components/icons/empty/SatelliteIcon.vue'
 import abilities from '@/scripts/admin/stub/abilities'
+import {
+  formatUnitName,
+  getLocalizedUnits,
+} from '@/scripts/helpers/unit-format'
 
 const utils = inject('utils')
 
@@ -211,7 +216,7 @@ const notificationStore = useNotificationStore()
 const dialogStore = useDialogStore()
 const userStore = useUserStore()
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 let showFilters = ref(false)
 let isFetchingInitialData = ref(true)
 
@@ -222,6 +227,10 @@ const filters = reactive({
 })
 
 const table = ref(null)
+
+const localizedItemUnits = computed(() =>
+  getLocalizedUnits(itemStore.itemUnits, locale.value, t)
+)
 
 const showEmptyScreen = computed(
   () => !itemStore.totalItems && !isFetchingInitialData.value
@@ -302,12 +311,6 @@ function refreshTable() {
 
 function setFilters() {
   refreshTable()
-}
-
-async function searchUnits(search) {
-  let res = await itemStore.fetchItemUnits({ search })
-
-  return res.data.data
 }
 
 async function fetchData({ page, filter, sort }) {

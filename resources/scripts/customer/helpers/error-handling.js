@@ -4,12 +4,12 @@ import { useNotificationStore } from '@/scripts/stores/notification'
 export const handleError = (err) => {
   const authStore = useAuthStore()
   const notificationStore = useNotificationStore()
+  const { global } = window.i18n
 
   if (!err.response) {
     notificationStore.showNotification({
       type: 'error',
-      message:
-        'Please check your internet connection or wait until servers are back online.',
+      message: global.t('errors.network_unavailable'),
     })
   } else {
     if (
@@ -18,11 +18,7 @@ export const handleError = (err) => {
         err.response.data === ' Unauthorized.')
     ) {
       // Unauthorized and log out
-      const msg = err.response.data.message
-        ? err.response.data.message
-        : 'Unauthorized'
-
-      showToaster(msg)
+      showToaster('errors.unauthorized')
 
       authStore.logout()
     } else if (err.response.data.errors) {

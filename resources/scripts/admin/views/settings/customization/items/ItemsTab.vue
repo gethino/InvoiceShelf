@@ -11,6 +11,10 @@
   </div>
 
   <BaseTable ref="table" class="mt-10" :data="fetchData" :columns="columns">
+    <template #cell-name="{ row }">
+      {{ formatUnitName(row.data.name, locale, t) }}
+    </template>
+
     <template #cell-actions="{ row }">
       <BaseDropdown>
         <template #activator>
@@ -46,8 +50,9 @@ import { useItemStore } from '@/scripts/admin/stores/item'
 import { useModalStore } from '@/scripts/stores/modal'
 import { useDialogStore } from '@/scripts/stores/dialog'
 import ItemUnitModal from '@/scripts/admin/components/modal-components/ItemUnitModal.vue'
+import { formatUnitName } from '@/scripts/helpers/unit-format'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const table = ref(null)
 
 const itemStore = useItemStore()

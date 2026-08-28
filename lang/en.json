@@ -40,6 +40,7 @@
     "subject": "Subject",
     "body": "Body",
     "message": "Message",
+    "info": "Information",
     "send": "Send",
     "preview": "Preview",
     "go_back": "Go Back",
@@ -1624,7 +1625,9 @@
     "api_error": "Server not responding.",
     "feature_not_enabled": "Feature not enabled.",
     "request_limit_met": "Api request limit exceeded.",
-    "address_incomplete": "Incomplete Address"
+    "address_incomplete": "Incomplete Address",
+    "network_unavailable": "Please check your internet connection or wait until servers are back online.",
+    "unauthorized": "Your session has expired. Please sign in again."
   },
   "pdf_estimate_label": "Estimate",
   "pdf_estimate_number": "Estimate Number",

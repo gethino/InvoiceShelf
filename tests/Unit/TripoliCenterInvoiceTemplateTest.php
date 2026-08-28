@@ -161,6 +161,22 @@ it('renders the modern Arabic template with customer identity and local Almarai 
     expect($pdf)->toStartWith('%PDF');
 });
 
+it('localizes built-in units in Arabic templates and preserves custom units', function () {
+    $data = tripoliCenterInvoiceTemplateData();
+    $data['invoice']->items->first()->unit_name = 'pc';
+
+    $arabicHtml = view('pdf_templates::invoice.tripoli-center-modern-ar', $data)->render();
+    $englishHtml = view('pdf_templates::invoice.tripoli-center-en', $data)->render();
+
+    expect($arabicHtml)->toContain('قطعة')
+        ->and($englishHtml)->toContain('pc');
+
+    $data['invoice']->items->first()->unit_name = 'copies';
+
+    expect(view('pdf_templates::invoice.tripoli-center-modern-ar', $data)->render())
+        ->toContain('copies');
+});
+
 it('uses the current phone numbers and larger table typography in modern invoice and estimate templates', function () {
     $invoiceHtml = view('pdf_templates::invoice.tripoli-center-modern-ar', tripoliCenterInvoiceTemplateData())->render();
     $estimateHtml = view('pdf_templates::estimate.tripoli-center-modern-ar', tripoliCenterEstimateTemplateData())->render();

@@ -43,14 +43,14 @@
             <BaseInputGroup :label="$t('items.unit')">
               <BaseMultiselect
                 v-model="itemStore.currentItem.unit_id"
-                label="name"
-                :options="itemStore.itemUnits"
+                label="display_name"
+                :options="localizedItemUnits"
                 value-prop="id"
                 :can-deselect="false"
                 :can-clear="false"
                 :placeholder="$t('items.select_a_unit')"
                 searchable
-                track-by="name"
+                track-by="display_name"
               />
             </BaseInputGroup>
 
@@ -138,6 +138,7 @@ import { useNotificationStore } from '@/scripts/stores/notification'
 import { useEstimateStore } from '@/scripts/admin/stores/estimate'
 import { useInvoiceStore } from '@/scripts/admin/stores/invoice'
 import { getCurrencyPresentation } from '@/scripts/helpers/currency-format'
+import { getLocalizedUnits } from '@/scripts/helpers/unit-format'
 
 const emit = defineEmits(['newItem'])
 
@@ -161,6 +162,10 @@ const currencyPresentation = computed(() => {
 
 const modalActive = computed(
   () => modalStore.active && modalStore.componentName === 'ItemModal'
+)
+
+const localizedItemUnits = computed(() =>
+  getLocalizedUnits(itemStore.itemUnits, locale.value, t)
 )
 
 const price = computed({
