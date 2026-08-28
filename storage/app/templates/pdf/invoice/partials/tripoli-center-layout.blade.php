@@ -506,7 +506,7 @@
                                 <td class="numeric-cell">
                                     {{ $item->quantity }}
                                     @if ($item->unit_name)
-                                        {{ $item->unit_name }}
+                                        {{ format_unit_name($item->unit_name, $tripoliLocale) }}
                                     @endif
                                 </td>
                                 <td class="description-cell">
@@ -521,7 +521,7 @@
                                 <td class="numeric-cell">
                                     {{ $item->quantity }}
                                     @if ($item->unit_name)
-                                        {{ $item->unit_name }}
+                                        {{ format_unit_name($item->unit_name, $tripoliLocale) }}
                                     @endif
                                 </td>
                                 <td class="numeric-cell">{!! format_money_pdf($item->price, $invoice->customer->currency, $tripoliLocale) !!}</td>

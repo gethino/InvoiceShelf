@@ -161,6 +161,35 @@ function format_money_pdf(int|float|string $money, ?Currency $currency = null, ?
         : $symbolMarkup.'&nbsp;'.$formattedMoney;
 }
 
+function format_unit_name(?string $unitName, ?string $locale = null): string
+{
+    if ($unitName === null || $unitName === '') {
+        return '';
+    }
+
+    $arabicUnitNames = [
+        'box' => 'صندوق',
+        'cm' => 'سم',
+        'dz' => 'دزينة',
+        'ft' => 'قدم',
+        'g' => 'غ',
+        'in' => 'بوصة',
+        'kg' => 'كغ',
+        'km' => 'كم',
+        'lb' => 'رطل',
+        'mg' => 'ملغ',
+        'pc' => 'قطعة',
+    ];
+    $unitCode = strtolower(trim($unitName));
+    $language = strtolower(explode('-', str_replace('_', '-', $locale ?? app()->getLocale()))[0]);
+
+    if ($language !== 'ar' || ! array_key_exists($unitCode, $arabicUnitNames)) {
+        return $unitName;
+    }
+
+    return $arabicUnitNames[$unitCode];
+}
+
 /**
  * @param  $string
  * @return string

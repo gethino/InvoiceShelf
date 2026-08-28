@@ -42,7 +42,7 @@
                 class="pr-20 text-right item-cell"
                 style="vertical-align: top;"
             >
-                {{$item->quantity}} @if($item->unit_name) {{$item->unit_name}} @endif
+                {{$item->quantity}} @if($item->unit_name) {{format_unit_name($item->unit_name)}} @endif
             </td>
             <td
                 class="pr-20 text-right item-cell"

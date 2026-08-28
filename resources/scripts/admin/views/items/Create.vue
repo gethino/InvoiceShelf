@@ -51,12 +51,12 @@
             <BaseMultiselect
               v-model="itemStore.currentItem.unit_id"
               :content-loading="isFetchingInitialData"
-              label="name"
-              :options="itemStore.itemUnits"
+              label="display_name"
+              :options="localizedItemUnits"
               value-prop="id"
               :placeholder="$t('items.select_a_unit')"
               searchable
-              track-by="name"
+              track-by="display_name"
             >
               <template #action>
                 <BaseSelectAction @click="addItemUnit">
@@ -152,12 +152,13 @@ import { useModalStore } from '@/scripts/stores/modal'
 import ItemUnitModal from '@/scripts/admin/components/modal-components/ItemUnitModal.vue'
 import { useUserStore } from '@/scripts/admin/stores/user'
 import abilities from '@/scripts/admin/stub/abilities'
+import { getLocalizedUnits } from '@/scripts/helpers/unit-format'
 
 const itemStore = useItemStore()
 const taxTypeStore = useTaxTypeStore()
 const modalStore = useModalStore()
 const companyStore = useCompanyStore()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
@@ -199,6 +200,10 @@ const taxes = computed({
 })
 
 const isEdit = computed(() => route.name === 'items.edit')
+
+const localizedItemUnits = computed(() =>
+  getLocalizedUnits(itemStore.itemUnits, locale.value, t)
+)
 
 const pageTitle = computed(() =>
   isEdit.value ? t('items.edit_item') : t('items.new_item')

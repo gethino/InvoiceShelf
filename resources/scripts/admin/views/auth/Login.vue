@@ -278,7 +278,7 @@ function finishLogin() {
 
   notificationStore.showNotification({
     type: 'success',
-    message: 'Logged in successfully.',
+    message: t('general.login_successfully'),
   })
 }
 

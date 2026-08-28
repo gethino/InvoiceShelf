@@ -56,7 +56,7 @@ export const useAuthStore = (useWindow = false) => {
               const notificationStore = useNotificationStore()
               notificationStore.showNotification({
                 type: 'success',
-                message: 'Logged out successfully.',
+                message: global.t('general.logged_out_successfully'),
               })
 
               // Clear stored auth data so next login doesn't send stale tokens
