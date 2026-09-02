@@ -16,6 +16,9 @@ const documentViewPaths = [
   'resources/scripts/customer/views/payments/View.vue',
 ]
 
+const customerViewSidebarPath =
+  'resources/scripts/admin/views/customers/partials/CustomerViewSidebar.vue'
+
 const selectableIndexPaths = [
   'resources/scripts/admin/views/customers/Index.vue',
   'resources/scripts/admin/views/invoices/Index.vue',
@@ -36,6 +39,46 @@ test('uses logical positioning in document sidebars', () => {
     assert.doesNotMatch(view, /\bborder-l(?:-4)?\b/, path)
     assert.doesNotMatch(view, /\btext-right\b/, path)
   }
+})
+
+test('uses logical positioning in the customer view sidebar', () => {
+  const customerView = readProjectFile(
+    'resources/scripts/admin/views/customers/View.vue',
+  )
+  const customerViewSidebar = readProjectFile(customerViewSidebarPath)
+
+  assert.match(customerView, /\bxl:ps-96\b/)
+  assert.doesNotMatch(customerView, /\bxl:pl-96\b/)
+  assert.match(customerViewSidebar, /\binset-s-0\b/)
+  assert.match(customerViewSidebar, /\bms-56\b/)
+  assert.match(customerViewSidebar, /\bxl:ms-64\b/)
+  assert.match(customerViewSidebar, /\bborder-s\b/)
+  assert.match(customerViewSidebar, /rtl:block/)
+  assert.match(customerViewSidebar, /rtl:hidden/)
+  assert.doesNotMatch(
+    customerViewSidebar,
+    /\b(?:left-0|ml-56|xl:ml-64|border-l|border-l-4|pr-2|text-right|ml-1)\b/,
+  )
+})
+
+test('isolates date values from the surrounding table direction', () => {
+  const baseTable = readProjectFile(
+    'resources/scripts/components/base/base-table/BaseTable.vue',
+  )
+
+  assert.match(baseTable, /<bdi v-if="isDateColumn\(column\)" dir="ltr">/)
+  assert.match(baseTable, /return \/\(\?:date\|at\)\$\/i\.test\(column\.key\)/)
+})
+
+test('uses the translated generic login action for quick login', () => {
+  const login = readProjectFile('resources/scripts/admin/views/auth/Login.vue')
+  const english = JSON.parse(readProjectFile('lang/en.json'))
+  const arabic = JSON.parse(readProjectFile('lang/ar.json'))
+
+  assert.match(login, /\$t\('login\.login'\)/)
+  assert.doesNotMatch(login, /quick_login\.sign_in_as/)
+  assert.equal(english.login.login, 'Login')
+  assert.equal(arabic.login.login, 'دخول')
 })
 
 test('mirrors document search icons without changing BaseInput globally', () => {

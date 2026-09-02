@@ -74,11 +74,7 @@
             :disabled="quickLoginLoading"
             type="submit"
           >
-            {{
-              $t('tripoli_customizations.quick_login.sign_in_as', {
-                name: user.name,
-              })
-            }}
+            {{ $t('login.login') }}
           </BaseButton>
         </form>
       </div>

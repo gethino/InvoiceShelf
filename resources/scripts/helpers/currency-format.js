@@ -25,7 +25,7 @@ export function getCurrencyPresentation(currency, locale = getCurrentLocale()) {
 
     return {
       symbol: isArabic ? 'د.ل' : 'LYD',
-      symbolAfterAmount: !isArabic,
+      symbolAfterAmount: true,
     }
   }
 

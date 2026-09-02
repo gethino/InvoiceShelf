@@ -35,7 +35,7 @@ test('uses locale-aware LYD symbols and positions', () => {
   })
   assert.deepEqual(getCurrencyPresentation(lyd, 'ar_LY'), {
     symbol: 'د.ل',
-    symbolAfterAmount: false,
+    symbolAfterAmount: true,
   })
 })
 
@@ -46,7 +46,7 @@ test('places currency affixes away from the amount in LTR and RTL inputs', () =>
   )
   assert.equal(
     isCurrencySymbolOnRight(getCurrencyPresentation(lyd, 'ar'), 'ar'),
-    true,
+    false,
   )
   assert.equal(
     isCurrencySymbolOnRight({ symbol: '€', symbolAfterAmount: false }, 'en'),
@@ -66,9 +66,9 @@ test('reserves physical input space for the currency affix', () => {
 
 test('formats LYD for English and Arabic', () => {
   assert.equal(formatMoney(10000, lyd, 'en'), '100 LYD')
-  assert.equal(formatMoney(10000, lyd, 'ar'), 'د.ل 100')
+  assert.equal(formatMoney(10000, lyd, 'ar'), '100 د.ل')
   assert.equal(formatMoney(10050, lyd, 'en'), '100.5 LYD')
-  assert.equal(formatMoney(10055, lyd, 'ar'), 'د.ل 100.55')
+  assert.equal(formatMoney(10055, lyd, 'ar'), '100.55 د.ل')
 })
 
 test('preserves other currency presentation', () => {
