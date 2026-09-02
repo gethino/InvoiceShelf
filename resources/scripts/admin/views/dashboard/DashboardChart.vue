@@ -164,19 +164,24 @@ const companyStore = useCompanyStore()
 const { t } = useI18n()
 const utils = inject('utils')
 const userStore = useUserStore()
-const years = ref( [{label: t('dateRange.this_year'), value: 'This year'}, {label: t( 'dateRange.previous_year'), value:
-  'Previous year'}])
+const years = ref([
+  { label: t('dateRange.this_month'), value: 'This month' },
+  { label: t('dateRange.this_year'), value: 'This year' },
+  { label: t('dateRange.previous_year'), value: 'Previous year' },
+])
 const selectedYear = ref('This year')
 
 watch(
   selectedYear,
   (val) => {
-    if (val === 'Previous year') {
-      let params = { previous_year: true }
-      loadData(params)
-    } else {
-      loadData()
-    }
+    const params =
+      val === 'This month'
+        ? { this_month: true }
+        : val === 'Previous year'
+          ? { previous_year: true }
+          : undefined
+
+    loadData(params)
   },
   { immediate: true }
 )
