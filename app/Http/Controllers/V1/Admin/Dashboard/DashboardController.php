@@ -10,6 +10,7 @@ use App\Models\Estimate;
 use App\Models\Expense;
 use App\Models\Invoice;
 use App\Models\Payment;
+use App\Services\DashboardChartService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,112 +18,125 @@ use Silber\Bouncer\BouncerFacade;
 
 class DashboardController extends Controller
 {
+    public function __construct(private readonly DashboardChartService $dashboardChartService) {}
+
     /**
      * Handle the incoming request.
-     *
-     * @return JsonResponse
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
         $company = Company::find($request->header('company'));
 
         $this->authorize('view dashboard', $company);
 
-        $invoice_totals = [];
-        $expense_totals = [];
-        $receipt_totals = [];
-        $net_income_totals = [];
-
-        $i = 0;
-        $months = [];
-        $monthCounter = 0;
-        $fiscalYear = CompanySetting::getSetting('fiscal_year', $request->header('company'));
-        $startDate = Carbon::now();
-        $start = Carbon::now();
-        $end = Carbon::now();
-        $terms = explode('-', $fiscalYear);
-        $companyStartMonth = intval($terms[0]);
-
-        if ($companyStartMonth <= $start->month) {
-            $startDate->month($companyStartMonth)->startOfMonth();
-            $start->month($companyStartMonth)->startOfMonth();
-            $end->month($companyStartMonth)->endOfMonth();
+        if ($request->boolean('this_month')) {
+            $currentMonthData = $this->dashboardChartService->getCurrentMonth();
+            $invoice_totals = $currentMonthData['invoice_totals'];
+            $expense_totals = $currentMonthData['expense_totals'];
+            $receipt_totals = $currentMonthData['receipt_totals'];
+            $net_income_totals = $currentMonthData['net_income_totals'];
+            $months = $currentMonthData['labels'];
+            $total_sales = $currentMonthData['total_sales'];
+            $total_receipts = $currentMonthData['total_receipts'];
+            $total_expenses = $currentMonthData['total_expenses'];
+            $total_net_income = $currentMonthData['total_net_income'];
         } else {
-            $startDate->subYear()->month($companyStartMonth)->startOfMonth();
-            $start->subYear()->month($companyStartMonth)->startOfMonth();
-            $end->subYear()->month($companyStartMonth)->endOfMonth();
+            $invoice_totals = [];
+            $expense_totals = [];
+            $receipt_totals = [];
+            $net_income_totals = [];
+
+            $i = 0;
+            $months = [];
+            $monthCounter = 0;
+            $fiscalYear = CompanySetting::getSetting('fiscal_year', $request->header('company'));
+            $startDate = Carbon::now();
+            $start = Carbon::now();
+            $end = Carbon::now();
+            $terms = explode('-', $fiscalYear);
+            $companyStartMonth = intval($terms[0]);
+
+            if ($companyStartMonth <= $start->month) {
+                $startDate->month($companyStartMonth)->startOfMonth();
+                $start->month($companyStartMonth)->startOfMonth();
+                $end->month($companyStartMonth)->endOfMonth();
+            } else {
+                $startDate->subYear()->month($companyStartMonth)->startOfMonth();
+                $start->subYear()->month($companyStartMonth)->startOfMonth();
+                $end->subYear()->month($companyStartMonth)->endOfMonth();
+            }
+
+            if ($request->has('previous_year')) {
+                $startDate->subYear()->startOfMonth();
+                $start->subYear()->startOfMonth();
+                $end->subYear()->endOfMonth();
+            }
+
+            while ($monthCounter < 12) {
+                array_push(
+                    $invoice_totals,
+                    Invoice::whereBetween(
+                        'invoice_date',
+                        [$start->format('Y-m-d'), $end->format('Y-m-d')]
+                    )
+                        ->whereCompany()
+                        ->sum('base_total')
+                );
+                array_push(
+                    $expense_totals,
+                    Expense::whereBetween(
+                        'expense_date',
+                        [$start->format('Y-m-d'), $end->format('Y-m-d')]
+                    )
+                        ->whereCompany()
+                        ->sum('base_amount')
+                );
+                array_push(
+                    $receipt_totals,
+                    Payment::whereBetween(
+                        'payment_date',
+                        [$start->format('Y-m-d'), $end->format('Y-m-d')]
+                    )
+                        ->whereCompany()
+                        ->sum('base_amount')
+                );
+                array_push(
+                    $net_income_totals,
+                    ($receipt_totals[$i] - $expense_totals[$i])
+                );
+                $i++;
+                array_push($months, $start->translatedFormat('M'));
+                $monthCounter++;
+                $end->startOfMonth();
+                $start->addMonth()->startOfMonth();
+                $end->addMonth()->endOfMonth();
+            }
+
+            $start->subMonth()->endOfMonth();
+
+            $total_sales = Invoice::whereBetween(
+                'invoice_date',
+                [$startDate->format('Y-m-d'), $start->format('Y-m-d')]
+            )
+                ->whereCompany()
+                ->sum('base_total');
+
+            $total_receipts = Payment::whereBetween(
+                'payment_date',
+                [$startDate->format('Y-m-d'), $start->format('Y-m-d')]
+            )
+                ->whereCompany()
+                ->sum('base_amount');
+
+            $total_expenses = Expense::whereBetween(
+                'expense_date',
+                [$startDate->format('Y-m-d'), $start->format('Y-m-d')]
+            )
+                ->whereCompany()
+                ->sum('base_amount');
+
+            $total_net_income = (int) $total_receipts - (int) $total_expenses;
         }
-
-        if ($request->has('previous_year')) {
-            $startDate->subYear()->startOfMonth();
-            $start->subYear()->startOfMonth();
-            $end->subYear()->endOfMonth();
-        }
-
-        while ($monthCounter < 12) {
-            array_push(
-                $invoice_totals,
-                Invoice::whereBetween(
-                    'invoice_date',
-                    [$start->format('Y-m-d'), $end->format('Y-m-d')]
-                )
-                    ->whereCompany()
-                    ->sum('base_total')
-            );
-            array_push(
-                $expense_totals,
-                Expense::whereBetween(
-                    'expense_date',
-                    [$start->format('Y-m-d'), $end->format('Y-m-d')]
-                )
-                    ->whereCompany()
-                    ->sum('base_amount')
-            );
-            array_push(
-                $receipt_totals,
-                Payment::whereBetween(
-                    'payment_date',
-                    [$start->format('Y-m-d'), $end->format('Y-m-d')]
-                )
-                    ->whereCompany()
-                    ->sum('base_amount')
-            );
-            array_push(
-                $net_income_totals,
-                ($receipt_totals[$i] - $expense_totals[$i])
-            );
-            $i++;
-            array_push($months, $start->translatedFormat('M'));
-            $monthCounter++;
-            $end->startOfMonth();
-            $start->addMonth()->startOfMonth();
-            $end->addMonth()->endOfMonth();
-        }
-
-        $start->subMonth()->endOfMonth();
-
-        $total_sales = Invoice::whereBetween(
-            'invoice_date',
-            [$startDate->format('Y-m-d'), $start->format('Y-m-d')]
-        )
-            ->whereCompany()
-            ->sum('base_total');
-
-        $total_receipts = Payment::whereBetween(
-            'payment_date',
-            [$startDate->format('Y-m-d'), $start->format('Y-m-d')]
-        )
-            ->whereCompany()
-            ->sum('base_amount');
-
-        $total_expenses = Expense::whereBetween(
-            'expense_date',
-            [$startDate->format('Y-m-d'), $start->format('Y-m-d')]
-        )
-            ->whereCompany()
-            ->sum('base_amount');
-
-        $total_net_income = (int) $total_receipts - (int) $total_expenses;
 
         $chart_data = [
             'months' => $months,

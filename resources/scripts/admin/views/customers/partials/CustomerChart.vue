@@ -140,7 +140,11 @@ const route = useRoute()
 let isLoading = ref(false)
 let chartData = reactive({})
 let data = reactive({})
-let years = reactive([{label: t('dateRange.this_year'), value: 'This year'}, {label: t('dateRange.previous_year'), value: 'Previous year'}])
+let years = reactive([
+  { label: t('dateRange.this_month'), value: 'This month' },
+  { label: t('dateRange.this_year'), value: 'This year' },
+  { label: t('dateRange.previous_year'), value: 'Previous year' },
+])
 let selectedYear = ref('This year')
 
 const getChartExpenses = computed(() => {
@@ -209,9 +213,13 @@ async function onChangeYear(data) {
     id: route.params.id,
   }
 
-  data === 'Previous year'
-    ? (params.previous_year = true)
-    : (params.this_year = true)
+  if (data === 'This month') {
+    params.this_month = true
+  } else if (data === 'Previous year') {
+    params.previous_year = true
+  } else {
+    params.this_year = true
+  }
 
   let response = await customerStore.fetchViewCustomer(params)
 
