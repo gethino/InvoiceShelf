@@ -81,6 +81,17 @@ test('uses the translated generic login action for quick login', () => {
   assert.equal(arabic.login.login, 'دخول')
 })
 
+test('uses logical spacing for customer view actions and transaction items', () => {
+  const customerView = readProjectFile(
+    'resources/scripts/admin/views/customers/View.vue',
+  )
+
+  assert.equal(customerView.match(/class="me-3"/g)?.length, 2)
+  assert.equal(customerView.match(/class="me-3 text-gray-600"/g)?.length, 4)
+  assert.match(customerView, /'ms-3': isLoading/)
+  assert.doesNotMatch(customerView, /\b(?:mr|ml)-3\b/)
+})
+
 test('mirrors document search icons without changing BaseInput globally', () => {
   for (const path of documentViewPaths) {
     const view = readProjectFile(path)

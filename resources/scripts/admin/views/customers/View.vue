@@ -7,7 +7,7 @@
           :to="`/admin/customers/${route.params.id}/edit`"
         >
           <BaseButton
-            class="mr-3"
+            class="me-3"
             variant="primary-outline"
             :content-loading="isLoading"
           >
@@ -22,7 +22,7 @@
         >
           <template #activator>
             <BaseButton
-              class="mr-3"
+              class="me-3"
               variant="primary"
               :content-loading="isLoading"
             >
@@ -35,7 +35,7 @@
             :to="`/admin/estimates/create?customer=${$route.params.id}`"
           >
             <BaseDropdownItem class="">
-              <BaseIcon name="DocumentIcon" class="mr-3 text-gray-600" />
+              <BaseIcon name="DocumentIcon" class="me-3 text-gray-600" />
               {{ $t('estimates.new_estimate') }}
             </BaseDropdownItem>
           </router-link>
@@ -45,7 +45,7 @@
             :to="`/admin/invoices/create?customer=${$route.params.id}`"
           >
             <BaseDropdownItem>
-              <BaseIcon name="DocumentTextIcon" class="mr-3 text-gray-600" />
+              <BaseIcon name="DocumentTextIcon" class="me-3 text-gray-600" />
               {{ $t('invoices.new_invoice') }}
             </BaseDropdownItem>
           </router-link>
@@ -55,7 +55,7 @@
             :to="`/admin/payments/create?customer=${$route.params.id}`"
           >
             <BaseDropdownItem>
-              <BaseIcon name="CreditCardIcon" class="mr-3 text-gray-600" />
+              <BaseIcon name="CreditCardIcon" class="me-3 text-gray-600" />
               {{ $t('payments.new_payment') }}
             </BaseDropdownItem>
           </router-link>
@@ -65,7 +65,7 @@
             :to="`/admin/expenses/create?customer=${$route.params.id}`"
           >
             <BaseDropdownItem>
-              <BaseIcon name="CalculatorIcon" class="mr-3 text-gray-600" />
+              <BaseIcon name="CalculatorIcon" class="me-3 text-gray-600" />
               {{ $t('expenses.new_expense') }}
             </BaseDropdownItem>
           </router-link>
@@ -74,7 +74,7 @@
         <CustomerDropdown
           v-if="hasAtleastOneAbility()"
           :class="{
-            'ml-3': isLoading,
+            'ms-3': isLoading,
           }"
           :row="customerStore.selectedViewCustomer"
           :load-data="refreshData"
