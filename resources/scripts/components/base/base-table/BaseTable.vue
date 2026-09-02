@@ -90,7 +90,12 @@
                   class=""
                   :class="getTdClass(column)"
                 >
-                  <slot :name="'cell-' + column.key" :row="row">
+                  <bdi v-if="isDateColumn(column)" dir="ltr">
+                    <slot :name="'cell-' + column.key" :row="row">
+                      {{ lodashGet(row.data, column.key) }}
+                    </slot>
+                  </bdi>
+                  <slot v-else :name="'cell-' + column.key" :row="row">
                     {{ lodashGet(row.data, column.key) }}
                   </slot>
                 </td>
@@ -248,6 +253,10 @@ const sortedRows = computed(() => {
 
 function getColumn(columnName) {
   return tableColumns.find((column) => column.key === columnName)
+}
+
+function isDateColumn(column) {
+  return /(?:date|at)$/i.test(column.key)
 }
 
 function handleRowClick(event, row) {

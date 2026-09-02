@@ -3,14 +3,14 @@
     class="
       fixed
       top-0
-      left-0
+      inset-s-0
       hidden
       h-full
       pt-16
       pb-[6.6rem]
-      ml-56
+      ms-56
       bg-white
-      xl:ml-64
+      xl:ms-64
       w-88
       xl:block
     "
@@ -35,15 +35,26 @@
         variant="gray"
         @input="onSearch()"
       >
-        <BaseIcon name="MagnifyingGlassIcon" class="text-gray-500" />
+        <template #left>
+          <BaseIcon
+            name="MagnifyingGlassIcon"
+            class="hidden h-5 text-gray-400 rtl:block"
+          />
+        </template>
+        <template #right>
+          <BaseIcon
+            name="MagnifyingGlassIcon"
+            class="h-5 text-gray-400 rtl:hidden"
+          />
+        </template>
       </BaseInput>
 
-      <div class="flex mb-6 ml-3" role="group" aria-label="First group">
+      <div class="flex mb-6 ms-3" role="group" aria-label="First group">
         <BaseDropdown
+          class="ms-3"
           :close-on-select="false"
           position="bottom-start"
           width-class="w-40"
-          position-class="left-0"
         >
           <template #activator>
             <BaseButton variant="gray">
@@ -99,7 +110,7 @@
           </div>
         </BaseDropdown>
 
-        <BaseButton class="ml-1" size="md" variant="gray" @click="sortData">
+        <BaseButton class="ms-1" size="md" variant="gray" @click="sortData">
           <BaseIcon v-if="getOrderBy" name="SortAscendingIcon" />
           <BaseIcon v-else name="SortDescendingIcon" />
         </BaseButton>
@@ -111,7 +122,7 @@
       class="
         h-full
         overflow-y-scroll
-        border-l border-gray-200 border-solid
+        border-s border-gray-200 border-solid
         sidebar
         base-scroll
       "
@@ -122,9 +133,9 @@
           :id="'customer-' + customer.id"
           :to="`/admin/customers/${customer.id}/view`"
           :class="[
-            'flex justify-between p-4 items-center cursor-pointer hover:bg-gray-100 border-l-4 border-l-transparent',
+            'flex justify-between p-4 items-center cursor-pointer hover:bg-gray-100 border-s-4 border-s-transparent',
             {
-              'bg-gray-100 border-l-4 border-l-primary-500 border-solid':
+              'bg-gray-100 border-s-4 border-s-primary-500 border-solid':
                 hasActiveUrl(customer.id),
             },
           ]"
@@ -134,7 +145,7 @@
             <BaseText
               :text="customer.name"
               class="
-                pr-2
+                pe-2
                 text-sm
                 not-italic
                 font-normal
@@ -158,7 +169,7 @@
               "
             />
           </div>
-          <div class="flex-1 font-bold text-right whitespace-nowrap">
+          <div class="flex-1 font-bold text-end whitespace-nowrap">
             <BaseFormatMoney
               :amount="customer.due_amount!==null ? customer.due_amount : 0"
               :currency="customer.currency"
