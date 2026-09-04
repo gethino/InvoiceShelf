@@ -7,3 +7,7 @@ DOKPLOY_TOOL_PRESET = "deploy"
 command = "php"
 args = ["artisan", "boost:mcp"]
 cwd = "/Users/apple/PhpstormProjects/tripolicenter/invoiceshelf"
+
+[mcp_servers.codegraph]
+command = "codegraph"
+args = ["serve", "--mcp"]
