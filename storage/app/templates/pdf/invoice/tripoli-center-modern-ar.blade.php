@@ -681,13 +681,22 @@
         </div>
 
         <table class="summary-table">
+            <colgroup>
+                <col style="width: 32%">
+                <col style="width: 18%">
+                <col style="width: 32%">
+                <col style="width: 18%">
+            </colgroup>
             <tr>
                 @if ((float) $discountAmount !== 0.0)
-                <td class="value-cell discount-value" style="width: 32%">{!! format_money_pdf($discountAmount, $invoice->customer->currency, $tripoliLocale) !!}</td>
-                <td class="label-cell" style="width: 18%">الخصم<br>Discount</td>
+                    <td class="value-cell discount-value">{!! format_money_pdf($discountAmount, $invoice->customer->currency, $tripoliLocale) !!}</td>
+                    <td class="label-cell">الخصم<br>Discount</td>
+                    <td class="value-cell">{!! format_money_pdf($invoice->sub_total, $invoice->customer->currency, $tripoliLocale) !!}</td>
+                    <td class="label-cell">المجموع الفرعي<br>Subtotal</td>
+                @else
+                    <td class="value-cell" colspan="3">{!! format_money_pdf($invoice->sub_total, $invoice->customer->currency, $tripoliLocale) !!}</td>
+                    <td class="label-cell">المجموع الفرعي<br>Subtotal</td>
                 @endif
-                <td class="value-cell" style="width: 32%">{!! format_money_pdf($invoice->sub_total, $invoice->customer->currency, $tripoliLocale) !!}</td>
-                <td class="label-cell" style="width: 18%">المجموع الفرعي<br>Subtotal</td>
             </tr>
 
             @foreach ($displayTaxes as $tax)

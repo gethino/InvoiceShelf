@@ -120,9 +120,26 @@ it('omits discount rows when an invoice has no discount', function () {
         'pdf_templates::invoice.tripoli-center-modern-ar',
         tripoliCenterInvoiceTemplateData()
     )->render();
+    $summaryMarkup = str($html)
+        ->after('<table class="summary-table">')
+        ->before('</table>')
+        ->toString();
 
     expect($html)
-        ->not->toContain('<td class="label-cell" style="width: 18%">الخصم<br>Discount</td>');
+        ->not->toContain('الخصم<br>Discount')
+        ->and($summaryMarkup)
+        ->toContain('<col style="width: 32%">')
+        ->toContain('<col style="width: 18%">')
+        ->toContain('<td class="value-cell" colspan="3">')
+        ->toContain('<td class="words-cell" colspan="3">');
+
+    view()->share([
+        ...tripoliCenterInvoiceTemplateData(),
+        'dompdfRendering' => true,
+    ]);
+
+    expect(PDFService::loadView('pdf_templates::invoice.tripoli-center-modern-ar')->output())
+        ->toStartWith('%PDF');
 });
 
 it('discovers the Tripoli Center templates and their preview images', function () {
