@@ -62,6 +62,7 @@ class ItemSalesReportController extends Controller
             ->get();
 
         view()->share([
+            'documentBrandingType' => 'report',
             'items' => $items,
             'colorSettings' => $colorSettings,
             'totalAmount' => $totalAmount,

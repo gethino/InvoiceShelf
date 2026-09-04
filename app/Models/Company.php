@@ -56,6 +56,22 @@ class Company extends Model implements HasMedia
         return $this->getFirstMediaUrl($collection) ?: null;
     }
 
+    public function documentBrandingAssetDataUri(string $asset): ?string
+    {
+        $collection = self::DOCUMENT_BRANDING_COLLECTIONS[$asset] ?? null;
+        $media = $collection ? $this->getFirstMedia($collection) : null;
+
+        if (! $media) {
+            return null;
+        }
+
+        return ImageUtils::toBase64SrcFromStorage(
+            $media->disk,
+            $media->getPathRelativeToRoot(),
+            $media->mime_type,
+        );
+    }
+
     public function getRolesAttribute()
     {
         return Role::where('scope', $this->id)

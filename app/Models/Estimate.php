@@ -428,6 +428,7 @@ class Estimate extends Model implements HasMedia
         $faviconDataUri = $company->getFaviconDataUri();
 
         view()->share([
+            'documentBrandingType' => 'estimate',
             'estimate' => $this,
             'brandColor' => $brandColor,
             'faviconDataUri' => $faviconDataUri,

@@ -386,6 +386,7 @@ class Payment extends Model implements HasMedia
         $logo = $company->logo_path;
 
         view()->share([
+            'documentBrandingType' => 'payment',
             'payment' => $this,
             'company_address' => $this->getCompanyAddress(),
             'billing_address' => $this->getCustomerBillingAddress(),

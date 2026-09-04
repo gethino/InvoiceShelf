@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->isLocale('ar') ? 'rtl' : 'ltr' }}">
 
 <head>
     <title>@lang('pdf_estimate_label') - {{ $estimate->estimate_number }}</title>
@@ -393,6 +393,7 @@
 </head>
 
 <body>
+    @include('app.pdf.partials.company-branding')
     <div class="header-container">
         <table width="100%">
             <tr>

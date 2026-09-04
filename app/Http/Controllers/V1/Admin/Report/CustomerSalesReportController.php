@@ -76,6 +76,7 @@ class CustomerSalesReportController extends Controller
             ->get();
 
         view()->share([
+            'documentBrandingType' => 'report',
             'customers' => $customers,
             'totalAmount' => $totalAmount,
             'colorSettings' => $colorSettings,

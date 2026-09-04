@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->isLocale('ar') ? 'rtl' : 'ltr' }}">
 
 <head>
     <title>@lang('pdf_payment_label') - {{ $payment->payment_number }}</title>
@@ -283,6 +283,7 @@
 </head>
 
 <body>
+    @include('app.pdf.partials.company-branding')
     <div class="header-container">
         <table width="100%">
             <tr>
@@ -344,7 +345,7 @@
                             <td class="attribute-value"> &nbsp;{{ $payment->invoice->invoice_number }}</td>
                         </tr>
                         <tr>
-                            <td class="attribute-label">Invoice Amount</td>
+                            <td class="attribute-label">@lang('pdf_invoice_amount')</td>
                             <td class="attribute-value"> &nbsp;{!! format_money_pdf($payment->invoice->total, $payment->invoice->currency) !!}</td>
                         </tr>
                     @endif
@@ -357,10 +358,16 @@
         <p class="total-display-label">@lang('pdf_payment_amount_received_label')</p>
         <span class="amount">{!! format_money_pdf($payment->amount, $payment->customer->currency) !!}</span>
         @if ($payment->invoice && $payment->invoice->invoice_number)
-            <br><p class="total-display-label">Balance Due</p>
+            <br><p class="total-display-label">@lang('pdf_balance_due')</p>
             <span class="amount">{!! $payment->invoice->formattedDueAmount !!}</span>
-            <br><p class="total-display-label">Invoice Status</p>
-            <span class="amount">{{ str_replace('_', ' ', optional($payment->invoice)->paid_status ?? optional($payment->invoice)->status) }}</span>
+            <br><p class="total-display-label">@lang('pdf_invoice_status')</p>
+            <span class="amount">
+                {{ __(match ($payment->invoice->paid_status) {
+                    \App\Models\Invoice::STATUS_PAID => 'pdf_status_paid',
+                    \App\Models\Invoice::STATUS_PARTIALLY_PAID => 'pdf_status_partially_paid',
+                    default => 'pdf_status_unpaid',
+                }) }}
+            </span>
         @endif
     </div>
     <div class="notes">

@@ -547,6 +547,7 @@
     </style>
 </head>
 <body class="{{ ($dompdfRendering ?? false) ? 'pdf-render' : 'browser-preview' }}" data-document-type="{{ $documentType }}" data-brand-color="{{ $brandColor }}">
+    @include('app.pdf.partials.company-branding')
     <div class="preview-shell" data-preview-shell>
     <div class="invoice" data-preview-canvas>
         <table class="header-table">

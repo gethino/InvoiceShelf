@@ -405,6 +405,7 @@
     @includeIf('app.pdf.partials.fonts')
 </head>
 <body>
+    @include('app.pdf.partials.company-branding')
     <div class="document">
         <table class="brand-table">
             <tr>

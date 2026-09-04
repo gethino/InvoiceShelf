@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->isLocale('ar') ? 'rtl' : 'ltr' }}">
 
 <head>
     <title>@lang('pdf_sales_customers_label')</title>
@@ -145,6 +145,7 @@
 </head>
 
 <body>
+    @include('app.pdf.partials.company-branding')
     <div class="sub-container">
         <table class="report-header">
             <tr>

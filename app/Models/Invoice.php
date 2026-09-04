@@ -599,6 +599,7 @@ class Invoice extends Model implements HasMedia
         $faviconDataUri = $company->getFaviconDataUri();
 
         view()->share([
+            'documentBrandingType' => 'invoice',
             'invoice' => $this,
             'brandColor' => $brandColor,
             'faviconDataUri' => $faviconDataUri,
