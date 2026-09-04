@@ -288,14 +288,15 @@ const getCurrentEstimateId = computed(() => {
   return null
 })
 
-watch(route, (to, from) => {
+watch(route, async (to) => {
   if (to.name === 'estimates.view') {
-    loadEstimate()
+    estimateList.value = []
+    await loadEstimate()
+    await loadEstimates()
   }
 })
 
-loadEstimates()
-loadEstimate()
+initializeEstimateView()
 
 onSearched = debounce(onSearched, 500)
 
@@ -309,6 +310,9 @@ async function loadEstimates(pageNumber, fromScrollListener = false) {
   }
 
   let params = {}
+  if (estimateData.value?.customer_id) {
+    params.customer_id = estimateData.value.customer_id
+  }
   if (
     searchData.searchText !== '' &&
     searchData.searchText !== null &&
@@ -393,6 +397,11 @@ async function loadEstimate() {
     isLoadingEstimate.value = false
     estimateData.value = { ...response.data.data }
   }
+}
+
+async function initializeEstimateView() {
+  await loadEstimate()
+  await loadEstimates()
 }
 
 async function onSearched() {

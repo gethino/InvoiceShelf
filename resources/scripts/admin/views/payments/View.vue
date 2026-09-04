@@ -264,12 +264,13 @@ const paymentDate = computed(() => {
   )
 })
 
-watch(route, () => {
-  loadPayment()
+watch(route, async () => {
+  paymentList.value = []
+  await loadPayment()
+  await loadPayments()
 })
 
-loadPayments()
-loadPayment()
+initializePaymentView()
 
 onSearch = debounce(onSearch, 500)
 
@@ -293,6 +294,9 @@ async function loadPayments(pageNumber, fromScrollListener = false) {
   }
 
   let params = {}
+  if (payment.customer_id) {
+    params.customer_id = payment.customer_id
+  }
   if (
     searchData.searchText !== '' &&
     searchData.searchText !== null &&
@@ -357,6 +361,11 @@ async function loadPayment() {
     isFetching.value = false
     Object.assign(payment, response.data.data)
   }
+}
+
+async function initializePaymentView() {
+  await loadPayment()
+  await loadPayments()
 }
 
 function scrollToPayment() {

@@ -26,6 +26,24 @@ test('invoice sidebar requests only the current customer invoices', () => {
   assert.match(view, /await loadInvoice\(\)[\s\S]*await loadInvoices\(\)/)
 })
 
+test('estimate sidebar requests only the current customer estimates', () => {
+  const view = readProjectFile(
+    'resources/scripts/admin/views/estimates/View.vue',
+  )
+
+  assert.match(view, /params\.customer_id = estimateData\.value\.customer_id/)
+  assert.match(view, /await loadEstimate\(\)[\s\S]*await loadEstimates\(\)/)
+})
+
+test('payment sidebar requests only the current customer payments', () => {
+  const view = readProjectFile(
+    'resources/scripts/admin/views/payments/View.vue',
+  )
+
+  assert.match(view, /params\.customer_id = payment\.customer_id/)
+  assert.match(view, /await loadPayment\(\)[\s\S]*await loadPayments\(\)/)
+})
+
 test('Arabic estimate statuses and recurring invoice UI are translated', () => {
   const arabic = JSON.parse(readProjectFile('lang/ar.json'))
 
@@ -35,5 +53,8 @@ test('Arabic estimate statuses and recurring invoice UI are translated', () => {
   assert.equal(arabic.recurring_invoices.frequency.every_week, 'كل أسبوع')
 
   const serialized = JSON.stringify(arabic.recurring_invoices)
-  assert.doesNotMatch(serialized, /Recurring Invoice|Select Frequency|Every Week/)
+  assert.doesNotMatch(
+    serialized,
+    /Recurring Invoice|Select Frequency|Every Week/,
+  )
 })
