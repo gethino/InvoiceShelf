@@ -21,7 +21,7 @@
         <BaseSelectAction @click.stop="openCreateModal">
           <BaseIcon
             name="PlusIcon"
-            class="mr-2 -ml-2 h-4 text-center text-primary-400"
+            class="me-2 -ms-2 h-4 text-center text-primary-400"
           />
           {{ $t('tripoli_customizations.customer_organization.create') }}
         </BaseSelectAction>

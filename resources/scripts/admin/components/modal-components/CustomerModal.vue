@@ -36,6 +36,7 @@
               </BaseInputGroup>
 
               <BaseInputGroup
+                v-if="showOptionalInfo"
                 :label="$t('settings.currencies.currency')"
                 required
                 :error="
@@ -78,6 +79,7 @@
               </BaseInputGroup>
 
               <BaseInputGroup
+                v-if="showOptionalInfo"
                 :label="$t('customers.prefix')"
                 :error="v$.prefix.$error && v$.prefix.$errors[0].$message"
                 :content-loading="isFetchingInitialData"
@@ -97,13 +99,14 @@
                 <BaseInputGroup :label="$t('customers.phone')">
                   <BaseInput
                     v-model.trim="customerStore.currentCustomer.phone"
-                    type="text"
+                    type="tel"
                     name="phone"
                     class="mt-1 md:mt-0"
                   />
                 </BaseInputGroup>
 
                 <BaseInputGroup
+                  v-if="showOptionalInfo"
                   :label="$t('customers.website')"
                   :error="v$.website.$error && v$.website.$errors[0].$message"
                 >
@@ -117,7 +120,10 @@
                 </BaseInputGroup>
               </BaseInputGrid>
 
-              <BaseInputGroup :label="$t('customers.tax_id')">
+              <BaseInputGroup
+                v-if="showOptionalInfo && taxesEnabled"
+                :label="$t('customers.tax_id')"
+              >
                 <BaseInput
                   v-model="customerStore.currentCustomer.tax_id"
                   type="text"
@@ -125,10 +131,32 @@
                 />
               </BaseInputGroup>
 
+              <component
+                :is="customerOrganizationField"
+                v-if="showOptionalInfo && customerOrganizationField"
+                v-model="customerStore.currentCustomer.customer_organization_id"
+              />
+
+              <BaseButton
+                type="button"
+                variant="primary-outline"
+                size="sm"
+                @click="showOptionalInfo = !showOptionalInfo"
+              >
+                {{
+                  showOptionalInfo
+                    ? $t('customers.hide_optional_info')
+                    : $t('customers.show_optional_info')
+                }}
+              </BaseButton>
+
             </BaseInputGrid>
           </BaseTab>
 
-          <BaseTab :title="$t('customers.portal_access')">
+          <BaseTab
+            v-if="showOptionalInfo"
+            :title="$t('customers.portal_access')"
+          >
             <BaseInputGrid class="col-span-5 lg:col-span-4">
               <div class="md:col-span-2">
                 <p class="text-sm text-gray-500">
@@ -203,7 +231,11 @@
             </BaseInputGrid>
           </BaseTab>
 
-          <BaseTab :title="$t('customers.billing_address')" class="!mt-2">
+          <BaseTab
+            v-if="showOptionalInfo"
+            :title="$t('customers.billing_address')"
+            class="!mt-2"
+          >
             <BaseInputGrid layout="one-column">
               <BaseInputGroup :label="$t('customers.name')">
                 <BaseInput
@@ -289,7 +321,7 @@
               <BaseInputGroup :label="$t('customers.phone')">
                 <BaseInput
                   v-model.trim="customerStore.currentCustomer.billing.phone"
-                  type="text"
+                  type="tel"
                   name="phone"
                   class="mt-1 md:mt-0"
                 />
@@ -305,7 +337,11 @@
             </BaseInputGrid>
           </BaseTab>
 
-          <BaseTab :title="$t('customers.shipping_address')" class="!mt-2">
+          <BaseTab
+            v-if="showOptionalInfo"
+            :title="$t('customers.shipping_address')"
+            class="!mt-2"
+          >
             <div class="grid md:grid-cols-12">
               <div class="flex justify-end col-span-12">
                 <BaseButton
@@ -404,7 +440,7 @@
               <BaseInputGroup :label="$t('customers.phone')">
                 <BaseInput
                   v-model.trim="customerStore.currentCustomer.shipping.phone"
-                  type="text"
+                  type="tel"
                   name="phone"
                   class="mt-1 md:mt-0"
                 />
@@ -494,6 +530,12 @@ const isEdit = ref(false)
 const isLoading = ref(false)
 let isShowPassword = ref(false)
 let isShowConfirmPassword = ref(false)
+const showOptionalInfo = ref(false)
+const customerOrganizationField =
+  window.TripoliCustomizations?.customerOrganizationField || null
+const taxesEnabled = computed(
+  () => companyStore.selectedCompanySettings?.taxes_enabled !== 'NO'
+)
 
 const modalActive = computed(
   () => modalStore.active && modalStore.componentName === 'CustomerModal'
@@ -656,6 +698,7 @@ async function submitCustomerData() {
 function closeCustomerModal() {
   modalStore.closeModal()
   setTimeout(() => {
+    showOptionalInfo.value = false
     customerStore.resetCurrentCustomer()
     v$.value.$reset()
   }, 300)

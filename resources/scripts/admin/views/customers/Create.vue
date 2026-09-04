@@ -93,12 +93,13 @@
               <BaseInput
                 v-model.trim="customerStore.currentCustomer.phone"
                 :content-loading="isFetchingInitialData"
-                type="text"
+                type="tel"
                 name="phone"
               />
             </BaseInputGroup>
 
             <BaseInputGroup
+              v-if="showOptionalInfo"
               :label="$t('customers.primary_currency')"
               :content-loading="isFetchingInitialData"
               :error="
@@ -124,6 +125,7 @@
             </BaseInputGroup>
 
             <BaseInputGroup
+              v-if="showOptionalInfo"
               :error="
                 v$.currentCustomer.website.$error &&
                 v$.currentCustomer.website.$errors[0].$message
@@ -140,6 +142,7 @@
             </BaseInputGroup>
 
             <BaseInputGroup
+              v-if="showOptionalInfo"
               :label="$t('customers.prefix')"
               :error="
                 v$.currentCustomer.prefix.$error &&
@@ -159,6 +162,7 @@
             </BaseInputGroup>
 
             <BaseInputGroup
+              v-if="showOptionalInfo && taxesEnabled"
               :label="$t('customers.tax_id')"
               :content-loading="isFetchingInitialData"
             >
@@ -172,18 +176,33 @@
 
             <component
               :is="customerOrganizationField"
-              v-if="customerOrganizationField"
+              v-if="showOptionalInfo && customerOrganizationField"
               v-model="customerStore.currentCustomer.customer_organization_id"
               :content-loading="isFetchingInitialData"
             />
           </BaseInputGrid>
+
+          <div class="col-span-5 flex justify-end">
+            <BaseButton
+              type="button"
+              variant="primary-outline"
+              size="sm"
+              @click="showOptionalInfo = !showOptionalInfo"
+            >
+              {{
+                showOptionalInfo
+                  ? $t('customers.hide_optional_info')
+                  : $t('customers.show_optional_info')
+              }}
+            </BaseButton>
+          </div>
         </div>
 
-        <BaseDivider class="mb-5 md:mb-8" />
+        <BaseDivider v-if="showOptionalInfo" class="mb-5 md:mb-8" />
 
         <!-- Portal Access-->
 
-        <div class="grid grid-cols-5 gap-4 mb-8">
+        <div v-if="showOptionalInfo" class="grid grid-cols-5 gap-4 mb-8">
           <h6 class="col-span-5 text-lg font-semibold text-left lg:col-span-1">
             {{ $t('customers.portal_access') }}
           </h6>
@@ -266,10 +285,10 @@
           </BaseInputGrid>
         </div>
 
-        <BaseDivider class="mb-5 md:mb-8" />
+        <BaseDivider v-if="showOptionalInfo" class="mb-5 md:mb-8" />
 
         <!-- Billing Address   -->
-        <div class="grid grid-cols-5 gap-4 mb-8">
+        <div v-if="showOptionalInfo" class="grid grid-cols-5 gap-4 mb-8">
           <h6 class="col-span-5 text-lg font-semibold text-left lg:col-span-1">
             {{ $t('customers.billing_address') }}
           </h6>
@@ -380,7 +399,7 @@
                 <BaseInput
                   v-model.trim="customerStore.currentCustomer.billing.phone"
                   :content-loading="isFetchingInitialData"
-                  type="text"
+                  type="tel"
                   name="phone"
                 />
               </BaseInputGroup>
@@ -401,10 +420,11 @@
           </BaseInputGrid>
         </div>
 
-        <BaseDivider class="mb-5 md:mb-8" />
+        <BaseDivider v-if="showOptionalInfo" class="mb-5 md:mb-8" />
 
         <!-- Billing Address Copy Button  -->
         <div
+          v-if="showOptionalInfo"
           class="flex items-center justify-start mb-6 md:justify-end md:mb-0"
         >
           <div class="p-1">
@@ -428,7 +448,7 @@
 
         <!-- Shipping Address  -->
         <div
-          v-if="customerStore.currentCustomer.shipping"
+          v-if="showOptionalInfo && customerStore.currentCustomer.shipping"
           class="grid grid-cols-5 gap-4 mb-8"
         >
           <h6 class="col-span-5 text-lg font-semibold text-left lg:col-span-1">
@@ -536,7 +556,7 @@
                 <BaseInput
                   v-model.trim="customerStore.currentCustomer.shipping.phone"
                   :content-loading="isFetchingInitialData"
-                  type="text"
+                  type="tel"
                   name="phone"
                 />
               </BaseInputGroup>
@@ -558,12 +578,12 @@
         </div>
 
         <BaseDivider
-          v-if="customFieldStore.customFields.length > 0"
+          v-if="showOptionalInfo && customFieldStore.customFields.length > 0"
           class="mb-5 md:mb-8"
         />
 
         <!-- Customer Custom Fields -->
-        <div class="grid grid-cols-5 gap-2 mb-8">
+        <div v-if="showOptionalInfo" class="grid grid-cols-5 gap-2 mb-8">
           <h6
             v-if="customFieldStore.customFields.length > 0"
             class="col-span-5 text-lg font-semibold text-left lg:col-span-1"
@@ -628,11 +648,15 @@ const route = useRoute()
 let isFetchingInitialData = ref(false)
 let isShowPassword = ref(false)
 let isShowConfirmPassword = ref(false)
+const showOptionalInfo = ref(false)
 
 let active = ref(false)
 const isSaving = ref(false)
 
 const isEdit = computed(() => route.name === 'customers.edit')
+const taxesEnabled = computed(
+  () => companyStore.selectedCompanySettings?.taxes_enabled !== 'NO'
+)
 
 let isLoadingContent = computed(() => customerStore.isFetchingInitialSettings)
 

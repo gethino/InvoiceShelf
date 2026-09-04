@@ -234,6 +234,8 @@
     "new_customer": "New Customer",
     "edit_customer": "Edit Customer",
     "basic_info": "Basic Info",
+    "show_optional_info": "Show optional info",
+    "hide_optional_info": "Hide optional info",
     "portal_access": "Portal Access",
     "portal_access_text": "Would you like to allow this customer to login to the Customer Portal?",
     "portal_access_url": "Customer Portal Login URL",
