@@ -200,6 +200,12 @@
           class="mt-6"
         />
 
+        <BaseCheckbox
+          v-model="paymentStore.currentPayment.show_paid_stamp"
+          :label="$t('settings.document_templates.show_paid_stamp')"
+          class="mt-6"
+        />
+
         <!-- Payment Note field -->
         <div class="relative mt-6">
           <div

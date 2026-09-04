@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Company;
 use App\Models\CompanySetting;
 use App\Space\PdfTemplateUtils;
+use App\Support\PdfHtmlSanitizer;
 
 class DocumentTemplateService
 {
@@ -66,23 +68,45 @@ class DocumentTemplateService
      */
     public function configuration(int $companyId): array
     {
+        $company = Company::query()->findOrFail($companyId);
+
         return [
             'allowed_invoice_templates' => $this->allowedNames(self::INVOICE, $companyId),
             'default_invoice_template' => $this->defaultName(self::INVOICE, $companyId),
             'allowed_estimate_templates' => $this->allowedNames(self::ESTIMATE, $companyId),
             'default_estimate_template' => $this->defaultName(self::ESTIMATE, $companyId),
+            'header_mode' => CompanySetting::getSetting('document_header_mode', $companyId) ?? 'none',
+            'header_html' => CompanySetting::getSetting('document_header_html', $companyId) ?? '',
+            'footer_mode' => CompanySetting::getSetting('document_footer_mode', $companyId) ?? 'none',
+            'footer_html' => CompanySetting::getSetting('document_footer_html', $companyId) ?? '',
+            'header_url' => $company->documentBrandingAssetUrl('header'),
+            'footer_url' => $company->documentBrandingAssetUrl('footer'),
+            'watermark_url' => $company->documentBrandingAssetUrl('watermark'),
+            'paid_stamp_url' => $company->documentBrandingAssetUrl('paid_stamp'),
         ];
     }
 
     /** @param array<string, mixed> $configuration */
     public function save(int $companyId, array $configuration): void
     {
-        CompanySetting::setSettings([
+        $settings = [
             'allowed_invoice_templates' => json_encode(array_values($configuration['allowed_invoice_templates']), JSON_THROW_ON_ERROR),
             'default_invoice_template' => $configuration['default_invoice_template'],
             'allowed_estimate_templates' => json_encode(array_values($configuration['allowed_estimate_templates']), JSON_THROW_ON_ERROR),
             'default_estimate_template' => $configuration['default_estimate_template'],
-        ], $companyId);
+        ];
+
+        if (array_key_exists('header_mode', $configuration)) {
+            $settings['document_header_mode'] = $configuration['header_mode'];
+            $settings['document_header_html'] = PdfHtmlSanitizer::sanitize($configuration['header_html'] ?? '');
+        }
+
+        if (array_key_exists('footer_mode', $configuration)) {
+            $settings['document_footer_mode'] = $configuration['footer_mode'];
+            $settings['document_footer_html'] = PdfHtmlSanitizer::sanitize($configuration['footer_html'] ?? '');
+        }
+
+        CompanySetting::setSettings($settings, $companyId);
     }
 
     /** @return array<int, string>|null */

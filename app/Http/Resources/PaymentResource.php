@@ -24,6 +24,8 @@ class PaymentResource extends JsonResource
             'invoice_id' => $this->invoice_id,
             'company_id' => $this->company_id,
             'payment_method_id' => $this->payment_method_id,
+            'show_paid_stamp' => $this->show_paid_stamp,
+            'paid_stamp_eligible' => $this->company?->documentBrandingAssetUrl('paid_stamp') !== null,
             'creator_id' => $this->creator_id,
             'customer_id' => $this->customer_id,
             'exchange_rate' => $this->exchange_rate,

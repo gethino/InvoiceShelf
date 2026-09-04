@@ -895,7 +895,20 @@
       "default_invoice": "قالب الفاتورة الافتراضي",
       "allowed_estimates": "قوالب عروض الأسعار المتاحة",
       "default_estimate": "قالب عرض السعر الافتراضي",
-      "saved": "تم حفظ إعدادات قوالب المستندات."
+      "saved": "تم حفظ إعدادات قوالب المستندات.",
+      "branding": "هوية المستندات",
+      "header_mode": "نوع الترويسة",
+      "footer_mode": "نوع التذييل",
+      "mode_none": "بدون",
+      "mode_image": "صورة",
+      "mode_html": "HTML",
+      "header_image": "صورة الترويسة",
+      "footer_image": "صورة التذييل",
+      "header_html": "HTML الترويسة",
+      "footer_html": "HTML التذييل",
+      "watermark": "العلامة المائية للخلفية",
+      "paid_stamp": "ختم مدفوع",
+      "show_paid_stamp": "إظهار ختم مدفوع"
     },
     "address_information": {
       "section_description": "  You can update Your Address information using form below."

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\URL;
@@ -23,6 +24,9 @@ class InvoiceResource extends JsonResource
             'reference_number' => $this->reference_number,
             'status' => $this->status,
             'paid_status' => $this->paid_status,
+            'show_paid_stamp' => $this->show_paid_stamp,
+            'paid_stamp_eligible' => $this->paid_status === Invoice::STATUS_PAID
+                && $this->company?->documentBrandingAssetUrl('paid_stamp') !== null,
             'tax_per_item' => $this->tax_per_item,
             'tax_included' => $this->tax_included,
             'discount_per_item' => $this->discount_per_item,

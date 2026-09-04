@@ -17,6 +17,7 @@ import DocumentPreviewFrame from '@/scripts/components/DocumentPreviewFrame.vue'
 import LoadingIcon from '@/scripts/components/icons/LoadingIcon.vue'
 
 import abilities from '@/scripts/admin/stub/abilities'
+import http from '@/scripts/http'
 
 const modalStore = useModalStore()
 const invoiceStore = useInvoiceStore()
@@ -29,6 +30,7 @@ const route = useRoute()
 
 const isMarkAsSent = ref(false)
 const isLoading = ref(false)
+const isUpdatingPaidStamp = ref(false)
 
 const invoiceList = ref(null)
 const currentPageNumber = ref(1)
@@ -233,6 +235,20 @@ function updateSentInvoice() {
   }
 }
 
+async function updatePaidStamp(showPaidStamp) {
+  isUpdatingPaidStamp.value = true
+
+  try {
+    const response = await http.patch(
+      `/api/v1/invoices/${invoiceData.value.id}/paid-stamp`,
+      { show_paid_stamp: showPaidStamp },
+    )
+    invoiceData.value.show_paid_stamp = response.data.data.show_paid_stamp
+  } finally {
+    isUpdatingPaidStamp.value = false
+  }
+}
+
 async function initializeInvoiceView() {
   await loadInvoice()
   await loadInvoices()
@@ -308,6 +324,15 @@ onSearched = debounce(onSearched, 500)
         />
       </template>
     </BasePageHeader>
+
+    <BaseCheckbox
+      v-if="invoiceData.paid_stamp_eligible"
+      :model-value="invoiceData.show_paid_stamp"
+      :disabled="isUpdatingPaidStamp"
+      :label="$t('settings.document_templates.show_paid_stamp')"
+      class="mb-4"
+      @update:model-value="updatePaidStamp"
+    />
 
     <!-- sidebar -->
     <div

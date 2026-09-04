@@ -48,6 +48,7 @@ use App\Http\Controllers\V1\Admin\Invoice\InvoicesController;
 use App\Http\Controllers\V1\Admin\Invoice\InvoiceTemplatesController;
 use App\Http\Controllers\V1\Admin\Invoice\SendInvoiceController;
 use App\Http\Controllers\V1\Admin\Invoice\SendInvoicePreviewController;
+use App\Http\Controllers\V1\Admin\Invoice\ToggleInvoicePaidStampController;
 use App\Http\Controllers\V1\Admin\Item\ItemsController;
 use App\Http\Controllers\V1\Admin\Item\UnitsController;
 use App\Http\Controllers\V1\Admin\Mobile\AuthController;
@@ -69,6 +70,7 @@ use App\Http\Controllers\V1\Admin\RecurringInvoice\RecurringInvoiceController;
 use App\Http\Controllers\V1\Admin\RecurringInvoice\RecurringInvoiceFrequencyController;
 use App\Http\Controllers\V1\Admin\Role\AbilitiesController;
 use App\Http\Controllers\V1\Admin\Role\RolesController;
+use App\Http\Controllers\V1\Admin\Settings\CompanyBrandingAssetController;
 use App\Http\Controllers\V1\Admin\Settings\CompanyController;
 use App\Http\Controllers\V1\Admin\Settings\CompanyCurrencyCheckTransactionsController;
 use App\Http\Controllers\V1\Admin\Settings\DiskController;
@@ -248,6 +250,8 @@ Route::prefix('/v1')->group(function () {
 
             Route::put('/company/document-templates', [DocumentTemplateSettingsController::class, 'update']);
 
+            Route::post('/company/document-branding/{asset}', CompanyBrandingAssetController::class);
+
             // Customers
             // ----------------------------------
 
@@ -276,6 +280,8 @@ Route::prefix('/v1')->group(function () {
             Route::post('/invoices/{invoice}/clone', CloneInvoiceController::class);
 
             Route::post('/invoices/{invoice}/status', ChangeInvoiceStatusController::class);
+
+            Route::patch('/invoices/{invoice}/paid-stamp', ToggleInvoicePaidStampController::class);
 
             Route::post('/invoices/delete', [InvoicesController::class, 'delete']);
 

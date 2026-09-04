@@ -885,7 +885,20 @@
       "default_invoice": "Default invoice template",
       "allowed_estimates": "Allowed estimate templates",
       "default_estimate": "Default estimate template",
-      "saved": "Document template settings saved."
+      "saved": "Document template settings saved.",
+      "branding": "Document branding",
+      "header_mode": "Header type",
+      "footer_mode": "Footer type",
+      "mode_none": "None",
+      "mode_image": "Image",
+      "mode_html": "HTML",
+      "header_image": "Header image",
+      "footer_image": "Footer image",
+      "header_html": "Header HTML",
+      "footer_html": "Footer HTML",
+      "watermark": "Background watermark",
+      "paid_stamp": "Paid stamp",
+      "show_paid_stamp": "Show paid stamp"
     },
     "address_information": {
       "section_description": "  You can update Your Address information using form below."

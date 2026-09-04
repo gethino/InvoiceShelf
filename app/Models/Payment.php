@@ -50,6 +50,7 @@ class Payment extends Model implements HasMedia
         return [
             'notes' => 'string',
             'exchange_rate' => 'float',
+            'show_paid_stamp' => 'boolean',
         ];
     }
 

@@ -72,6 +72,7 @@ class Invoice extends Model implements HasMedia
             'discount' => 'float',
             'discount_val' => 'integer',
             'exchange_rate' => 'float',
+            'show_paid_stamp' => 'boolean',
         ];
     }
 

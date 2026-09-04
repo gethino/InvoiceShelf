@@ -72,6 +72,94 @@
         </BaseInputGroup>
       </BaseInputGrid>
 
+      <BaseDivider class="my-6" />
+
+      <h3 class="text-base font-semibold text-gray-900">
+        {{ $t('settings.document_templates.branding') }}
+      </h3>
+
+      <BaseInputGrid class="mt-5">
+        <BaseInputGroup :label="$t('settings.document_templates.header_mode')">
+          <BaseMultiselect
+            v-model="settings.header_mode"
+            :options="brandingModes"
+            value-prop="value"
+            label="label"
+            :can-deselect="false"
+          />
+        </BaseInputGroup>
+
+        <BaseInputGroup
+          v-if="settings.header_mode === 'image'"
+          :label="$t('settings.document_templates.header_image')"
+        >
+          <BaseFileUploader
+            v-model="headerFiles"
+            base64
+            accept="image/png,image/jpeg,image/gif,image/webp"
+            @change="onHeaderChange"
+            @remove="removeHeader"
+          />
+        </BaseInputGroup>
+
+        <BaseInputGroup
+          v-if="settings.header_mode === 'html'"
+          :label="$t('settings.document_templates.header_html')"
+        >
+          <BaseTextarea v-model="settings.header_html" rows="5" />
+        </BaseInputGroup>
+
+        <BaseInputGroup :label="$t('settings.document_templates.footer_mode')">
+          <BaseMultiselect
+            v-model="settings.footer_mode"
+            :options="brandingModes"
+            value-prop="value"
+            label="label"
+            :can-deselect="false"
+          />
+        </BaseInputGroup>
+
+        <BaseInputGroup
+          v-if="settings.footer_mode === 'image'"
+          :label="$t('settings.document_templates.footer_image')"
+        >
+          <BaseFileUploader
+            v-model="footerFiles"
+            base64
+            accept="image/png,image/jpeg,image/gif,image/webp"
+            @change="onFooterChange"
+            @remove="removeFooter"
+          />
+        </BaseInputGroup>
+
+        <BaseInputGroup
+          v-if="settings.footer_mode === 'html'"
+          :label="$t('settings.document_templates.footer_html')"
+        >
+          <BaseTextarea v-model="settings.footer_html" rows="5" />
+        </BaseInputGroup>
+
+        <BaseInputGroup :label="$t('settings.document_templates.watermark')">
+          <BaseFileUploader
+            v-model="watermarkFiles"
+            base64
+            accept="image/png,image/jpeg,image/gif,image/webp"
+            @change="onWatermarkChange"
+            @remove="removeWatermark"
+          />
+        </BaseInputGroup>
+
+        <BaseInputGroup :label="$t('settings.document_templates.paid_stamp')">
+          <BaseFileUploader
+            v-model="paidStampFiles"
+            base64
+            accept="image/png,image/jpeg,image/gif,image/webp"
+            @change="onPaidStampChange"
+            @remove="removePaidStamp"
+          />
+        </BaseInputGroup>
+      </BaseInputGrid>
+
       <BaseButton
         type="submit"
         :loading="isSaving"
@@ -104,12 +192,25 @@ const invoiceTemplates = ref([])
 const estimateTemplates = ref([])
 const isLoading = ref(true)
 const isSaving = ref(false)
+const headerFiles = ref([])
+const footerFiles = ref([])
+const watermarkFiles = ref([])
+const paidStampFiles = ref([])
 const settings = reactive({
   allowed_invoice_templates: [],
   default_invoice_template: null,
   allowed_estimate_templates: [],
   default_estimate_template: null,
+  header_mode: 'none',
+  header_html: '',
+  footer_mode: 'none',
+  footer_html: '',
 })
+const brandingModes = computed(() => [
+  { value: 'none', label: t('settings.document_templates.mode_none') },
+  { value: 'image', label: t('settings.document_templates.mode_image') },
+  { value: 'html', label: t('settings.document_templates.mode_html') },
+])
 
 const allowedInvoiceTemplates = computed(() =>
   invoiceTemplates.value.filter((template) =>
@@ -159,11 +260,67 @@ async function loadSettings() {
     invoiceTemplates.value = response.data.invoice_templates
     estimateTemplates.value = response.data.estimate_templates
     Object.assign(settings, response.data.settings)
+    headerFiles.value = response.data.settings.header_url
+      ? [{ image: response.data.settings.header_url }]
+      : []
+    footerFiles.value = response.data.settings.footer_url
+      ? [{ image: response.data.settings.footer_url }]
+      : []
+    watermarkFiles.value = response.data.settings.watermark_url
+      ? [{ image: response.data.settings.watermark_url }]
+      : []
+    paidStampFiles.value = response.data.settings.paid_stamp_url
+      ? [{ image: response.data.settings.paid_stamp_url }]
+      : []
   } catch (error) {
     handleError(error)
   } finally {
     isLoading.value = false
   }
+}
+
+async function uploadAsset(asset, file, fileList) {
+  await http.post(`/api/v1/company/document-branding/${asset}`, {
+    asset_data: JSON.stringify({ name: fileList.name, data: file }),
+  })
+}
+
+async function removeAsset(asset) {
+  await http.post(`/api/v1/company/document-branding/${asset}`, {
+    remove: true,
+  })
+}
+
+function onHeaderChange(name, file, count, fileList) {
+  return uploadAsset('header', file, fileList)
+}
+
+function onFooterChange(name, file, count, fileList) {
+  return uploadAsset('footer', file, fileList)
+}
+
+function onWatermarkChange(name, file, count, fileList) {
+  return uploadAsset('watermark', file, fileList)
+}
+
+function onPaidStampChange(name, file, count, fileList) {
+  return uploadAsset('paid_stamp', file, fileList)
+}
+
+function removeHeader() {
+  return removeAsset('header')
+}
+
+function removeFooter() {
+  return removeAsset('footer')
+}
+
+function removeWatermark() {
+  return removeAsset('watermark')
+}
+
+function removePaidStamp() {
+  return removeAsset('paid_stamp')
 }
 
 async function saveSettings() {

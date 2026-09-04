@@ -27,7 +27,34 @@ class Company extends Model implements HasMedia
 
     public const CUSTOMER_LEVEL = 'customer_level';
 
+    public const DOCUMENT_BRANDING_COLLECTIONS = [
+        'header' => 'document_header',
+        'footer' => 'document_footer',
+        'watermark' => 'document_watermark',
+        'paid_stamp' => 'document_paid_stamp',
+    ];
+
     protected $appends = ['logo', 'logo_path', 'dark_logo', 'favicon'];
+
+    public function registerMediaCollections(): void
+    {
+        foreach (self::DOCUMENT_BRANDING_COLLECTIONS as $collection) {
+            $this->addMediaCollection($collection)
+                ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
+                ->singleFile();
+        }
+    }
+
+    public function documentBrandingAssetUrl(string $asset): ?string
+    {
+        $collection = self::DOCUMENT_BRANDING_COLLECTIONS[$asset] ?? null;
+
+        if (! $collection) {
+            return null;
+        }
+
+        return $this->getFirstMediaUrl($collection) ?: null;
+    }
 
     public function getRolesAttribute()
     {

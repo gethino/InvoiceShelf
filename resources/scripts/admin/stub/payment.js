@@ -10,6 +10,7 @@ export default {
   invoice_id: '',
   notes: '',
   payment_method_id: '',
+  show_paid_stamp: true,
   customFields: [],
   fields: []
 }

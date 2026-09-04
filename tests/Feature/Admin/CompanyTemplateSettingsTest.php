@@ -2,6 +2,10 @@
 
 use App\Models\Company;
 use App\Models\CompanySetting;
+use App\Models\Currency;
+use App\Models\Customer;
+use App\Models\Invoice;
+use App\Models\Payment;
 use App\Models\User;
 use App\Services\DocumentTemplateService;
 use App\Space\PdfTemplateUtils;
@@ -10,6 +14,8 @@ use Silber\Bouncer\BouncerFacade;
 use Silber\Bouncer\Database\Role;
 
 use function Pest\Laravel\getJson;
+use function Pest\Laravel\patchJson;
+use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
 
 beforeEach(function () {
@@ -34,7 +40,95 @@ test('unconfigured company exposes all templates with legacy defaults', function
         )
         ->and($response->json('settings.default_estimate_template'))->toBe(
             in_array('estimate1', $estimateNames, true) ? 'estimate1' : $estimateNames[0]
-        );
+        )
+        ->and($response->json('settings.header_mode'))->toBe('none')
+        ->and($response->json('settings.footer_mode'))->toBe('none');
+});
+
+test('owner saves sanitized document header and footer html', function () {
+    $settings = getJson('/api/v1/company/document-templates')->json('settings');
+
+    putJson('/api/v1/company/document-templates', [
+        ...$settings,
+        'header_mode' => 'html',
+        'header_html' => '<h1 style="color:red" onclick="alert(1)">Header</h1><script>alert(2)</script>',
+        'footer_mode' => 'html',
+        'footer_html' => '<p>Footer</p>',
+    ])->assertOk();
+
+    expect(CompanySetting::getSetting('document_header_html', $this->company->id))
+        ->toBe('<h1>Header</h1>alert(2)')
+        ->and(CompanySetting::getSetting('document_footer_html', $this->company->id))
+        ->toBe('<p>Footer</p>');
+});
+
+test('owner uploads and removes raster branding assets while svg is rejected', function () {
+    $png = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
+
+    postJson('/api/v1/company/document-branding/header', [
+        'asset_data' => json_encode(['name' => 'header.png', 'data' => $png], JSON_THROW_ON_ERROR),
+    ])->assertOk()->assertJsonPath('asset', 'header');
+
+    expect($this->company->fresh()->documentBrandingAssetUrl('header'))->not->toBeNull();
+
+    postJson('/api/v1/company/document-branding/watermark', [
+        'asset_data' => json_encode([
+            'name' => 'watermark.svg',
+            'data' => 'data:image/svg+xml;base64,'.base64_encode('<svg></svg>'),
+        ], JSON_THROW_ON_ERROR),
+    ])->assertUnprocessable()->assertJsonValidationErrors('asset_data');
+
+    postJson('/api/v1/company/document-branding/header', ['remove' => true])
+        ->assertOk()
+        ->assertJsonPath('url', null);
+});
+
+test('paid stamp flags default true and a paid invoice can be toggled after financial lock', function () {
+    CompanySetting::setSettings([
+        'retrospective_edits' => 'disable_on_invoice_paid',
+    ], $this->company->id);
+
+    $currency = Currency::query()->firstOrFail();
+    $customer = Customer::query()->create([
+        'name' => 'Paid customer',
+        'company_id' => $this->company->id,
+        'currency_id' => $currency->id,
+    ]);
+    $invoice = Invoice::withoutEvents(fn () => Invoice::query()->create([
+        'invoice_date' => now(),
+        'due_date' => now(),
+        'invoice_number' => 'STAMP-1',
+        'unique_hash' => 'paid-stamp-invoice',
+        'status' => Invoice::STATUS_SENT,
+        'company_id' => $this->company->id,
+        'customer_id' => $customer->id,
+        'currency_id' => $currency->id,
+        'paid_status' => Invoice::STATUS_PAID,
+        'tax_per_item' => 'NO',
+        'discount_per_item' => 'NO',
+        'sub_total' => 1000,
+        'tax' => 0,
+        'total' => 1000,
+        'due_amount' => 0,
+    ]));
+    $payment = Payment::withoutEvents(fn () => Payment::query()->create([
+        'payment_number' => 'PAY-STAMP-1',
+        'payment_date' => now(),
+        'amount' => 1000,
+        'company_id' => $this->company->id,
+        'customer_id' => $customer->id,
+        'currency_id' => $currency->id,
+    ]));
+
+    expect($invoice->refresh()->show_paid_stamp)->toBeTrue()
+        ->and($payment->refresh()->show_paid_stamp)->toBeTrue()
+        ->and($invoice->allow_edit)->toBeFalse();
+
+    patchJson("/api/v1/invoices/{$invoice->id}/paid-stamp", [
+        'show_paid_stamp' => false,
+    ])->assertOk()->assertJsonPath('data.show_paid_stamp', false);
+
+    expect($invoice->refresh()->show_paid_stamp)->toBeFalse();
 });
 
 test('owner configures company template allowlists and defaults', function () {

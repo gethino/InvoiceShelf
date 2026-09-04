@@ -35,6 +35,10 @@ class UpdateDocumentTemplateSettingsRequest extends FormRequest
             'allowed_estimate_templates' => ['required', 'array', 'min:1'],
             'allowed_estimate_templates.*' => ['required', 'string', 'distinct', Rule::in($estimateNames)],
             'default_estimate_template' => ['required', 'string', Rule::in($this->input('allowed_estimate_templates', []))],
+            'header_mode' => ['sometimes', 'required', Rule::in(['none', 'image', 'html'])],
+            'header_html' => ['nullable', 'string', 'max:100000'],
+            'footer_mode' => ['sometimes', 'required', Rule::in(['none', 'image', 'html'])],
+            'footer_html' => ['nullable', 'string', 'max:100000'],
         ];
     }
 }
