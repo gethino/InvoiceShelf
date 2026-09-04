@@ -12,11 +12,7 @@ class CompanyPolicy
 
     public function create(User $user): bool
     {
-        if ($user->isOwner()) {
-            return true;
-        }
-
-        return false;
+        return $user->canCreateCompany();
     }
 
     public function delete(User $user, Company $company): bool

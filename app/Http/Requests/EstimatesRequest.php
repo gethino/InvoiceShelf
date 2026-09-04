@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\CompanySetting;
 use App\Models\Customer;
 use App\Models\Estimate;
+use App\Services\DocumentTemplateService;
 use App\Support\DocumentTotals;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -22,8 +23,18 @@ class EstimatesRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      */
-    public function rules(): array
+    public function rules(DocumentTemplateService $templates): array
     {
+        $allowedTemplates = $templates->allowedNames(
+            DocumentTemplateService::ESTIMATE,
+            (int) $this->header('company')
+        );
+        $estimate = $this->route('estimate');
+
+        if ($estimate instanceof Estimate && $estimate->template_name) {
+            $allowedTemplates[] = $estimate->template_name;
+        }
+
         $rules = [
             'estimate_date' => [
                 'required',
@@ -64,6 +75,7 @@ class EstimatesRequest extends FormRequest
             ],
             'template_name' => [
                 'required',
+                Rule::in(array_unique($allowedTemplates)),
             ],
             'items' => [
                 'required',

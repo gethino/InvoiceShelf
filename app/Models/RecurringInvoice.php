@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Facades\Hashids;
 use App\Http\Requests\RecurringInvoiceRequest;
+use App\Services\DocumentTemplateService;
 use App\Services\SerialNumberFormatter;
 use App\Support\DocumentTotals;
 use App\Support\SafeOrderBy;
@@ -337,7 +338,11 @@ class RecurringInvoice extends Model
         $newInvoice['total'] = $this->total;
         $newInvoice['customer_id'] = $this->customer_id;
         $newInvoice['currency_id'] = Customer::find($this->customer_id)->currency_id;
-        $newInvoice['template_name'] = $this->template_name;
+        $templates = app(DocumentTemplateService::class);
+        $allowedTemplateNames = $templates->allowedNames(DocumentTemplateService::INVOICE, $this->company_id);
+        $newInvoice['template_name'] = in_array($this->template_name, $allowedTemplateNames, true)
+            ? $this->template_name
+            : $templates->defaultName(DocumentTemplateService::INVOICE, $this->company_id);
         $newInvoice['due_amount'] = $this->total;
         $newInvoice['recurring_invoice_id'] = $this->id;
         $newInvoice['discount_val'] = $this->discount_val;

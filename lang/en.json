@@ -871,7 +871,17 @@
       "notes": "Notes",
       "exchange_rate": "Exchange Rate",
       "address_information": "Address Information",
-      "pdf_generation": "PDF Generation"
+      "pdf_generation": "PDF Generation",
+      "document_templates": "Document Templates"
+    },
+    "document_templates": {
+      "title": "Document Templates",
+      "description": "Choose templates available to this company and its defaults.",
+      "allowed_invoices": "Allowed invoice templates",
+      "default_invoice": "Default invoice template",
+      "allowed_estimates": "Allowed estimate templates",
+      "default_estimate": "Default estimate template",
+      "saved": "Document template settings saved."
     },
     "address_information": {
       "section_description": "  You can update Your Address information using form below."

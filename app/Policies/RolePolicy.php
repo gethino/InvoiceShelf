@@ -15,7 +15,7 @@ class RolePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isOwner();
+        return $user->canManageUsersForCompany((int) request()->header('company'));
     }
 
     /**

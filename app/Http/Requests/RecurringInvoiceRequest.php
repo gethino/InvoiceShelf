@@ -5,8 +5,10 @@ namespace App\Http\Requests;
 use App\Models\CompanySetting;
 use App\Models\Customer;
 use App\Models\RecurringInvoice;
+use App\Services\DocumentTemplateService;
 use App\Support\DocumentTotals;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RecurringInvoiceRequest extends FormRequest
 {
@@ -21,9 +23,18 @@ class RecurringInvoiceRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      */
-    public function rules(): array
+    public function rules(DocumentTemplateService $templates): array
     {
         $companyCurrency = CompanySetting::getSetting('currency', $this->header('company'));
+        $allowedTemplates = $templates->allowedNames(
+            DocumentTemplateService::INVOICE,
+            (int) $this->header('company')
+        );
+        $recurringInvoice = $this->route('recurring_invoice');
+
+        if ($recurringInvoice instanceof RecurringInvoice && $recurringInvoice->template_name) {
+            $allowedTemplates[] = $recurringInvoice->template_name;
+        }
 
         $rules = [
             'starts_at' => [
@@ -76,6 +87,10 @@ class RecurringInvoiceRequest extends FormRequest
             ],
             'limit_date' => [
                 'required_if:limit_by,DATE',
+            ],
+            'template_name' => [
+                'required',
+                Rule::in(array_unique($allowedTemplates)),
             ],
             'items' => [
                 'required',

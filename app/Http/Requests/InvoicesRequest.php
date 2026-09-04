@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\CompanySetting;
 use App\Models\Customer;
 use App\Models\Invoice;
+use App\Services\DocumentTemplateService;
 use App\Support\DocumentTotals;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -22,8 +23,18 @@ class InvoicesRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.s
      */
-    public function rules(): array
+    public function rules(DocumentTemplateService $templates): array
     {
+        $allowedTemplates = $templates->allowedNames(
+            DocumentTemplateService::INVOICE,
+            (int) $this->header('company')
+        );
+        $invoice = $this->route('invoice');
+
+        if ($invoice instanceof Invoice && $invoice->template_name) {
+            $allowedTemplates[] = $invoice->template_name;
+        }
+
         $rules = [
             'invoice_date' => [
                 'required',
@@ -63,6 +74,7 @@ class InvoicesRequest extends FormRequest
             ],
             'template_name' => [
                 'required',
+                Rule::in(array_unique($allowedTemplates)),
             ],
             'items' => [
                 'required',

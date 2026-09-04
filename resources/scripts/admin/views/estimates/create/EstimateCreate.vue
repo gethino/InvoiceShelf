@@ -87,12 +87,7 @@
 
         <!-- Estimate Footer Section -->
         <div
-          class="
-            block
-            mt-10
-            estimate-foot
-            lg:flex lg:justify-between lg:items-start
-          "
+          class="block mt-10 estimate-foot lg:flex lg:justify-between lg:items-start"
         >
           <div class="relative w-full lg:w-1/2">
             <!-- Estimate Custom Notes -->
@@ -119,7 +114,6 @@
               :store="estimateStore"
               component-name="EstimateTemplate"
               store-prop="newEstimate"
-              :is-mark-as-default="isMarkAsDefault"
             />
           </div>
 
@@ -173,7 +167,6 @@ const { t } = useI18n()
 
 const estimateValidationScope = 'newEstimate'
 let isSaving = ref(false)
-const isMarkAsDefault = ref(false)
 
 const estimateNoteFieldList = ref([
   'customer',
@@ -189,7 +182,7 @@ let router = useRouter()
 let isLoadingContent = computed(() => estimateStore.isFetchingInitialSettings)
 
 let pageTitle = computed(() =>
-  isEdit.value ? t('estimates.edit_estimate') : t('estimates.new_estimate')
+  isEdit.value ? t('estimates.edit_estimate') : t('estimates.new_estimate'),
 )
 
 let isEdit = computed(() => route.name === 'estimates.edit')
@@ -211,7 +204,7 @@ const rules = {
   reference_number: {
     maxLength: helpers.withMessage(
       t('validation.price_maxlength'),
-      maxLength(255)
+      maxLength(255),
     ),
   },
   customer_id: {
@@ -229,7 +222,7 @@ const rules = {
 const v$ = useVuelidate(
   rules,
   computed(() => estimateStore.newEstimate),
-  { $scope: estimateValidationScope }
+  { $scope: estimateValidationScope },
 )
 
 watch(
@@ -241,7 +234,7 @@ watch(
       estimateStore.newEstimate.selectedCurrency =
         companyStore.selectedCompanyCurrency
     }
-  }
+  },
 )
 
 estimateStore.resetCurrentEstimate()
@@ -254,7 +247,7 @@ watch(
   (newVal) => {
     estimateStore.newEstimate.tax_included = newVal === 'YES'
   },
-  {immediate: true}
+  { immediate: true },
 )
 
 async function submitForm() {
@@ -274,22 +267,18 @@ async function submitForm() {
   })
   if (data.discount_per_item === 'YES') {
     data.items.forEach((item, index) => {
-      if (item.discount_type === 'fixed'){
+      if (item.discount_type === 'fixed') {
         data.items[index].discount = Math.round(item.discount * 100)
       }
     })
-  }
-  else {
-    if (data.discount_type === 'fixed'){
+  } else {
+    if (data.discount_type === 'fixed') {
       data.discount = Math.round(data.discount * 100)
     }
   }
 
-  if (
-    !estimateStore.newEstimate.tax_per_item === 'YES'
-    && data.taxes.length
-  ){
-    data.tax_type_ids = data.taxes.map(_t => _t.tax_type_id)
+  if (!estimateStore.newEstimate.tax_per_item === 'YES' && data.taxes.length) {
+    data.tax_type_ids = data.taxes.map((_t) => _t.tax_type_id)
   }
 
   const action = isEdit.value

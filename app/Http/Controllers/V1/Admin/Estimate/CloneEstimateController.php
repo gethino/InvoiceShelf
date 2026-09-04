@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\EstimateResource;
 use App\Models\CompanySetting;
 use App\Models\Estimate;
+use App\Services\DocumentTemplateService;
 use App\Services\SerialNumberFormatter;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -19,7 +20,7 @@ class CloneEstimateController extends Controller
      *
      * @return JsonResponse
      */
-    public function __invoke(Request $request, Estimate $estimate)
+    public function __invoke(Request $request, Estimate $estimate, DocumentTemplateService $templates)
     {
         $this->authorize('view', $estimate);
         $this->authorize('create', Estimate::class);
@@ -47,6 +48,12 @@ class CloneEstimateController extends Controller
         }
 
         $exchange_rate = $estimate->exchange_rate;
+        $companyId = (int) $request->header('company');
+        $templateName = in_array(
+            $estimate->template_name,
+            $templates->allowedNames(DocumentTemplateService::ESTIMATE, $companyId),
+            true
+        ) ? $estimate->template_name : $templates->defaultName(DocumentTemplateService::ESTIMATE, $companyId);
 
         $newEstimate = Estimate::create([
             'estimate_date' => $date->format('Y-m-d'),
@@ -57,7 +64,7 @@ class CloneEstimateController extends Controller
             'reference_number' => $estimate->reference_number,
             'customer_id' => $estimate->customer_id,
             'company_id' => $request->header('company'),
-            'template_name' => $estimate->template_name,
+            'template_name' => $templateName,
             'status' => Estimate::STATUS_DRAFT,
             'sub_total' => $estimate->sub_total,
             'discount' => $estimate->discount,

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\InvoiceResource;
 use App\Models\CompanySetting;
 use App\Models\Invoice;
+use App\Services\DocumentTemplateService;
 use App\Services\SerialNumberFormatter;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -19,7 +20,7 @@ class CloneInvoiceController extends Controller
      *
      * @return JsonResponse
      */
-    public function __invoke(Request $request, Invoice $invoice)
+    public function __invoke(Request $request, Invoice $invoice, DocumentTemplateService $templates)
     {
         $this->authorize('view', $invoice);
         $this->authorize('create', Invoice::class);
@@ -47,6 +48,12 @@ class CloneInvoiceController extends Controller
         }
 
         $exchange_rate = $invoice->exchange_rate;
+        $companyId = (int) $request->header('company');
+        $templateName = in_array(
+            $invoice->template_name,
+            $templates->allowedNames(DocumentTemplateService::INVOICE, $companyId),
+            true
+        ) ? $invoice->template_name : $templates->defaultName(DocumentTemplateService::INVOICE, $companyId);
 
         $dateFormat = 'Y-m-d';
         $invoiceTimeEnabled = CompanySetting::getSetting(
@@ -67,7 +74,7 @@ class CloneInvoiceController extends Controller
             'reference_number' => $invoice->reference_number,
             'customer_id' => $invoice->customer_id,
             'company_id' => $request->header('company'),
-            'template_name' => $invoice->template_name,
+            'template_name' => $templateName,
             'status' => Invoice::STATUS_DRAFT,
             'paid_status' => Invoice::STATUS_UNPAID,
             'sub_total' => $invoice->sub_total,

@@ -881,7 +881,17 @@
       "notes": "ملاحظات",
       "exchange_rate": "Exchange Rate",
       "address_information": "Address Information",
-      "pdf_generation": "PDF Generation"
+      "pdf_generation": "PDF Generation",
+      "document_templates": "قوالب المستندات"
+    },
+    "document_templates": {
+      "title": "قوالب المستندات",
+      "description": "اختر القوالب المتاحة لهذه المنشأة والقوالب الافتراضية.",
+      "allowed_invoices": "قوالب الفواتير المتاحة",
+      "default_invoice": "قالب الفاتورة الافتراضي",
+      "allowed_estimates": "قوالب عروض الأسعار المتاحة",
+      "default_estimate": "قالب عرض السعر الافتراضي",
+      "saved": "تم حفظ إعدادات قوالب المستندات."
     },
     "address_information": {
       "section_description": "  You can update Your Address information using form below."

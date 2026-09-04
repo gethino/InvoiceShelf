@@ -16,11 +16,7 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        if ($user->isOwner()) {
-            return true;
-        }
-
-        return false;
+        return $user->canManageUsersForCompany($this->activeCompanyId());
     }
 
     /**
@@ -30,7 +26,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $user->isOwner() && $this->sharesActiveCompany($model);
+        return $this->canManage($user, $model);
     }
 
     /**
@@ -40,11 +36,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        if ($user->isOwner()) {
-            return true;
-        }
-
-        return false;
+        return $user->canManageUsersForCompany($this->activeCompanyId());
     }
 
     /**
@@ -54,7 +46,7 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->isOwner() && $this->sharesActiveCompany($model);
+        return $this->canManage($user, $model);
     }
 
     /**
@@ -64,7 +56,8 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return $user->isOwner() && $this->sharesActiveCompany($model);
+        return $user->canManageUserCompaniesForCompany($this->activeCompanyId())
+            && $this->sharesActiveCompany($model);
     }
 
     /**
@@ -116,11 +109,24 @@ class UserPolicy
      */
     public function deleteMultiple(User $user)
     {
-        if ($user->isOwner()) {
-            return true;
+        return $user->canManageUserCompaniesForCompany($this->activeCompanyId());
+    }
+
+    private function canManage(User $user, User $model): bool
+    {
+        $companyId = $this->activeCompanyId();
+
+        if (! $user->canManageUsersForCompany($companyId) || ! $this->sharesActiveCompany($model)) {
+            return false;
         }
 
-        return false;
+        return $user->canManageUserCompaniesForCompany($companyId)
+            || ! $model->isPrivilegedForCompany($companyId);
+    }
+
+    private function activeCompanyId(): int
+    {
+        return (int) request()->header('company');
     }
 
     /**

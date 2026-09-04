@@ -345,7 +345,71 @@ class User extends Authenticatable implements HasMedia
         return false;
     }
 
-    public static function createFromRequest(UserRequest $request)
+    public function ownsCompany(int $companyId): bool
+    {
+        return Company::query()
+            ->whereKey($companyId)
+            ->where('owner_id', $this->id)
+            ->exists();
+    }
+
+    public function ownsAnyCompany(): bool
+    {
+        return $this->companies()
+            ->where('owner_id', $this->id)
+            ->exists();
+    }
+
+    public function hasRoleInCompany(string $role, int $companyId): bool
+    {
+        return BouncerFacade::scope()->onceTo(
+            $companyId,
+            fn (): bool => $this->roles()->where('name', $role)->exists()
+        );
+    }
+
+    public function hasRoleInAnyCompany(string $role): bool
+    {
+        return $this->companies()
+            ->pluck('companies.id')
+            ->contains(fn (int $companyId): bool => $this->hasRoleInCompany($role, $companyId));
+    }
+
+    public function canSwitchCompanies(): bool
+    {
+        if ($this->ownsAnyCompany() || $this->hasRoleInAnyCompany('super admin')) {
+            return true;
+        }
+
+        return $this->companies()->count() > 1
+            && $this->hasRoleInAnyCompany('manager');
+    }
+
+    public function canCreateCompany(): bool
+    {
+        return $this->ownsAnyCompany() || $this->hasRoleInAnyCompany('super admin');
+    }
+
+    public function canManageUsersForCompany(int $companyId): bool
+    {
+        return $this->ownsCompany($companyId)
+            || $this->hasRoleInCompany('super admin', $companyId)
+            || $this->hasRoleInCompany('manager', $companyId);
+    }
+
+    public function canManageUserCompaniesForCompany(int $companyId): bool
+    {
+        return $this->ownsCompany($companyId)
+            || $this->hasRoleInCompany('super admin', $companyId);
+    }
+
+    public function isPrivilegedForCompany(int $companyId): bool
+    {
+        return $this->ownsCompany($companyId)
+            || $this->hasRoleInCompany('super admin', $companyId);
+    }
+
+    public static function createFromRequest(UserRequest $request, ?int $companyId = null)
     {
         $user = self::create($request->getUserPayload());
 
@@ -354,6 +418,10 @@ class User extends Authenticatable implements HasMedia
         ]);
 
         $companies = collect($request->companies);
+
+        if ($companyId) {
+            $companies = $companies->where('id', $companyId)->values();
+        }
         $user->companies()->sync($companies->pluck('id'));
 
         foreach ($companies as $company) {
@@ -365,11 +433,21 @@ class User extends Authenticatable implements HasMedia
         return $user;
     }
 
-    public function updateFromRequest(UserRequest $request)
+    public function updateFromRequest(UserRequest $request, ?int $companyId = null)
     {
         $this->update($request->getUserPayload());
 
         $companies = collect($request->companies);
+
+        if ($companyId) {
+            $company = $companies->firstWhere('id', $companyId);
+
+            BouncerFacade::scope()->to($companyId);
+            BouncerFacade::sync($this)->roles([$company['role']]);
+
+            return $this;
+        }
+
         $this->companies()->sync($companies->pluck('id'));
 
         foreach ($companies as $company) {

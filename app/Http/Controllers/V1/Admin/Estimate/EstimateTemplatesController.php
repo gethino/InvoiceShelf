@@ -4,7 +4,7 @@ namespace App\Http\Controllers\V1\Admin\Estimate;
 
 use App\Http\Controllers\Controller;
 use App\Models\Estimate;
-use App\Space\PdfTemplateUtils;
+use App\Services\DocumentTemplateService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -15,14 +15,15 @@ class EstimateTemplatesController extends Controller
      *
      * @return JsonResponse
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, DocumentTemplateService $templates)
     {
         $this->authorize('viewAny', Estimate::class);
 
-        $estimateTemplates = PdfTemplateUtils::getFormattedTemplates('estimate');
+        $companyId = (int) $request->header('company');
 
         return response()->json([
-            'estimateTemplates' => $estimateTemplates,
+            'estimateTemplates' => $templates->allowedTemplates(DocumentTemplateService::ESTIMATE, $companyId),
+            'defaultTemplate' => $templates->defaultName(DocumentTemplateService::ESTIMATE, $companyId),
         ]);
     }
 }

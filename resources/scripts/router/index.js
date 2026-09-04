@@ -31,6 +31,10 @@ router.beforeEach((to) => {
     if (!userStore.currentUser.is_owner) {
       return { name: 'dashboard' }
     }
+  } else if (to.meta.canManageUsers && isAppLoaded) {
+    if (!userStore.currentUser.can_manage_users) {
+      return { name: 'dashboard' }
+    }
   }
 })
 

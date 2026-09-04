@@ -14,6 +14,10 @@ class UserResource extends JsonResource
      */
     public function toArray($request): array
     {
+        $companyId = (int) $request->header('company');
+        $actingUser = $request->user();
+        $isActingUser = $actingUser?->is($this->resource) ?? false;
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -32,6 +36,13 @@ class UserResource extends JsonResource
             'updated_at' => $this->updated_at,
             'avatar' => $this->avatar,
             'is_owner' => $this->isOwner(),
+            'is_super_admin' => $this->isPrivilegedForCompany($companyId),
+            'can_switch_companies' => $isActingUser && $this->canSwitchCompanies(),
+            'can_create_company' => $isActingUser && $this->canCreateCompany(),
+            'can_manage_users' => $isActingUser && $this->canManageUsersForCompany($companyId),
+            'can_manage_user_companies' => $isActingUser && $this->canManageUserCompaniesForCompany($companyId),
+            'can_edit' => $actingUser?->can('update', $this->resource) ?? false,
+            'can_delete' => $actingUser?->can('delete', $this->resource) ?? false,
             'roles' => $this->roles,
             'formatted_created_at' => $this->formattedCreatedAt,
             'currency' => $this->when($this->currency()->exists(), function () {

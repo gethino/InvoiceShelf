@@ -31,10 +31,6 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  isMarkAsDefault: {
-    type: Boolean,
-    default: false,
-  },
 })
 
 const modalStore = useModalStore()
@@ -42,17 +38,6 @@ const modalStore = useModalStore()
 const { t } = useI18n()
 
 function openTemplateModal() {
-  let markAsDefaultDescription = ''
-  if (props.storeProp == 'newEstimate') {
-    markAsDefaultDescription = t(
-      'estimates.mark_as_default_estimate_template_description'
-    )
-  } else if (props.storeProp == 'newInvoice') {
-    markAsDefaultDescription = t(
-      'invoices.mark_as_default_invoice_template_description'
-    )
-  }
-
   modalStore.openModal({
     title: t('general.choose_template'),
     componentName: 'SelectTemplate',
@@ -60,8 +45,6 @@ function openTemplateModal() {
       templates: props.store.templates,
       store: props.store,
       storeProp: props.storeProp,
-      isMarkAsDefault: props.isMarkAsDefault,
-      markAsDefaultDescription,
     },
   })
 }

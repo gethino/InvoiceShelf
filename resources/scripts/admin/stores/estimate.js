@@ -13,7 +13,6 @@ import { handleError } from '@/scripts/helpers/error-handling'
 import estimateStub from '../stub/estimate'
 import estimateItemStub from '../stub/estimate-item'
 import taxStub from '../stub/tax'
-import { useUserStore } from './user'
 import { useNotesStore } from './note'
 
 export const useEstimateStore = (useWindow = false) => {
@@ -23,6 +22,7 @@ export const useEstimateStore = (useWindow = false) => {
   return defineStoreFunc('estimate', {
     state: () => ({
       templates: [],
+      defaultTemplate: null,
 
       estimates: [],
       selectAllField: false,
@@ -504,6 +504,7 @@ export const useEstimateStore = (useWindow = false) => {
             .get(`/api/v1/estimates/templates`, { params })
             .then((response) => {
               this.templates = response.data.estimateTemplates
+              this.defaultTemplate = response.data.defaultTemplate
               resolve(response)
             })
             .catch((err) => {
@@ -561,7 +562,6 @@ export const useEstimateStore = (useWindow = false) => {
         const itemStore = useItemStore()
         const taxTypeStore = useTaxTypeStore()
         const route = useRoute()
-        const userStore = useUserStore()
         const notesStore = useNotesStore()
 
         this.isFetchingInitialSettings = true
@@ -622,11 +622,7 @@ export const useEstimateStore = (useWindow = false) => {
                 this.newEstimate.estimate_number = res4.data.nextNumber
               }
 
-              this.setTemplate(this.templates[0].name)
-              this.newEstimate.template_name = userStore.currentUserSettings
-                .default_estimate_template
-                ? userStore.currentUserSettings.default_estimate_template
-                : this.newEstimate.template_name
+              this.setTemplate(this.defaultTemplate || this.templates[0]?.name)
             }
 
             if (isEdit) {

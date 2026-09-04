@@ -4,11 +4,15 @@
       <BaseButton v-if="route.name === 'users.view'" variant="primary">
         <BaseIcon name="EllipsisHorizontalIcon" class="h-5 text-white" />
       </BaseButton>
-      <BaseIcon v-else name="EllipsisHorizontalIcon" class="h-5 text-gray-500" />
+      <BaseIcon
+        v-else
+        name="EllipsisHorizontalIcon"
+        class="h-5 text-gray-500"
+      />
     </template>
 
     <!-- edit user  -->
-    <router-link :to="`/admin/users/${row.id}/edit`">
+    <router-link v-if="row.can_edit" :to="`/admin/users/${row.id}/edit`">
       <BaseDropdownItem>
         <BaseIcon
           name="PencilIcon"
@@ -19,7 +23,7 @@
     </router-link>
 
     <!-- delete user  -->
-    <BaseDropdownItem @click="removeUser(row.id)">
+    <BaseDropdownItem v-if="row.can_delete" @click="removeUser(row.id)">
       <BaseIcon
         name="TrashIcon"
         class="w-5 h-5 me-3 text-gray-400 group-hover:text-gray-500"

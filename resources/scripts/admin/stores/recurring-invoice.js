@@ -430,7 +430,9 @@ export const useRecurringInvoiceStore = (useWindow = false) => {
             }
 
             if (!isEdit) {
-              this.setTemplate(this.templates[0].name)
+              this.setTemplate(
+                invoiceStore.defaultTemplate || this.templates[0]?.name,
+              )
             }
 
             if (isEdit && res5?.data) {

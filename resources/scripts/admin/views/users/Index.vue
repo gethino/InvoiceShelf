@@ -26,7 +26,7 @@
           </BaseButton>
 
           <BaseButton
-            v-if="userStore.currentUser.is_owner"
+            v-if="userStore.currentUser.can_manage_users"
             @click="$router.push('users/create')"
           >
             <template #left="slotProps">
@@ -82,7 +82,7 @@
 
       <template #actions>
         <BaseButton
-          v-if="userStore.currentUser.is_owner"
+          v-if="userStore.currentUser.can_manage_users"
           variant="primary-outline"
           @click="$router.push('/admin/users/create')"
         >
@@ -96,26 +96,17 @@
 
     <div v-show="!showEmptyScreen" class="relative table-container">
       <div
-        class="
-          relative
-          flex
-          items-center
-          justify-end
-          h-5
-          border-gray-200 border-solid
-        "
+        class="relative flex items-center justify-end h-5 border-gray-200 border-solid"
       >
-        <BaseDropdown v-if="usersStore.selectedUsers.length">
+        <BaseDropdown
+          v-if="
+            userStore.currentUser.can_manage_user_companies &&
+            usersStore.selectedUsers.length
+          "
+        >
           <template #activator>
             <span
-              class="
-                flex
-                text-sm
-                font-medium
-                cursor-pointer
-                select-none
-                text-primary-400
-              "
+              class="flex text-sm font-medium cursor-pointer select-none text-primary-400"
             >
               {{ $t('general.actions') }}
               <BaseIcon name="ChevronDownIcon" class="h-5" />
@@ -138,6 +129,7 @@
         <template #header>
           <div class="absolute z-10 items-center left-6 top-2.5 select-none">
             <BaseCheckbox
+              v-if="userStore.currentUser.can_manage_user_companies"
               v-model="selectAllFieldStatus"
               variant="primary"
               @change="usersStore.selectAllUsers"
@@ -147,6 +139,7 @@
         <template #cell-status="{ row }">
           <div class="custom-control custom-checkbox">
             <BaseCheckbox
+              v-if="userStore.currentUser.can_manage_user_companies"
               :id="row.data.id"
               v-model="selectField"
               :value="row.data.id"
@@ -157,11 +150,15 @@
 
         <template #cell-name="{ row }">
           <router-link
+            v-if="row.data.can_edit"
             :to="{ path: `users/${row.data.id}/edit` }"
             class="font-medium text-primary-500"
           >
             {{ row.data.name }}
           </router-link>
+          <span v-else class="font-medium text-gray-900">
+            {{ row.data.name }}
+          </span>
         </template>
 
         <template #cell-phone="{ row }">
@@ -172,8 +169,9 @@
           <span>{{ row.data.formatted_created_at }}</span>
         </template>
 
-        <template v-if="userStore.currentUser.is_owner" #cell-actions="{ row }">
+        <template #cell-actions="{ row }">
           <UserDropdown
+            v-if="row.data.can_edit || row.data.can_delete"
             :row="row.data"
             :table="table"
             :load-data="refreshTable"
@@ -271,7 +269,7 @@ watch(
   () => {
     setFilters()
   },
-  { deep: true }
+  { deep: true },
 )
 
 onMounted(() => {

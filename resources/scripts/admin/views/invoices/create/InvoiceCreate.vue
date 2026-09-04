@@ -86,12 +86,7 @@
 
         <!-- Invoice Footer Section -->
         <div
-          class="
-            block
-            mt-10
-            invoice-foot
-            lg:flex lg:justify-between lg:items-start
-          "
+          class="block mt-10 invoice-foot lg:flex lg:justify-between lg:items-start"
         >
           <div class="relative w-full lg:w-1/2 lg:mr-4">
             <!-- Invoice Custom Notes -->
@@ -118,7 +113,6 @@
               :store="invoiceStore"
               store-prop="newInvoice"
               component-name="InvoiceTemplate"
-              :is-mark-as-default="isMarkAsDefault"
             />
           </div>
 
@@ -179,7 +173,6 @@ let router = useRouter()
 
 const invoiceValidationScope = 'newInvoice'
 let isSaving = ref(false)
-const isMarkAsDefault = ref(false)
 const dueDateManuallyChanged = ref(false)
 let isAutoUpdatingDueDate = false
 let expectedAutoDueDate = ref(null)
@@ -193,11 +186,12 @@ const invoiceNoteFieldList = ref([
 ])
 
 let isLoadingContent = computed(
-  () => invoiceStore.isFetchingInvoice || invoiceStore.isFetchingInitialSettings
+  () =>
+    invoiceStore.isFetchingInvoice || invoiceStore.isFetchingInitialSettings,
 )
 
 let pageTitle = computed(() =>
-  isEdit.value ? t('invoices.edit_invoice') : t('invoices.new_invoice')
+  isEdit.value ? t('invoices.edit_invoice') : t('invoices.new_invoice'),
 )
 
 const salesTaxEnabled = computed(() => {
@@ -216,7 +210,7 @@ const rules = {
   reference_number: {
     maxLength: helpers.withMessage(
       t('validation.price_maxlength'),
-      maxLength(255)
+      maxLength(255),
     ),
   },
   customer_id: {
@@ -237,7 +231,7 @@ const rules = {
 const v$ = useVuelidate(
   rules,
   computed(() => invoiceStore.newInvoice),
-  { $scope: invoiceValidationScope }
+  { $scope: invoiceValidationScope },
 )
 
 customFieldStore.resetCustomFields()
@@ -254,7 +248,7 @@ watch(
       invoiceStore.newInvoice.selectedCurrency =
         companyStore.selectedCompanyCurrency
     }
-  }
+  },
 )
 
 watch(
@@ -262,54 +256,71 @@ watch(
   (newVal) => {
     invoiceStore.newInvoice.tax_included = newVal === 'YES'
   },
-  {immediate: true}
+  { immediate: true },
 )
 
 // Watch for manual changes to due_date
-watch(() => invoiceStore.newInvoice.due_date, (newDueDate, oldDueDate) => {
-  if (!isAutoUpdatingDueDate && newDueDate !== oldDueDate && oldDueDate !== undefined && newDueDate !== expectedAutoDueDate.value) {
-    dueDateManuallyChanged.value = true
-  }
-});
+watch(
+  () => invoiceStore.newInvoice.due_date,
+  (newDueDate, oldDueDate) => {
+    if (
+      !isAutoUpdatingDueDate &&
+      newDueDate !== oldDueDate &&
+      oldDueDate !== undefined &&
+      newDueDate !== expectedAutoDueDate.value
+    ) {
+      dueDateManuallyChanged.value = true
+    }
+  },
+)
 
 // Watch invoice_date and automatically update due_date when it changes
-watch(() => invoiceStore.newInvoice.invoice_date, (newInvoiceDate, oldInvoiceDate) => {
-  if (
-    companyStore.selectedCompanySettings?.invoice_set_due_date_automatically === 'YES' &&
-    newInvoiceDate &&
-    newInvoiceDate !== oldInvoiceDate &&
-    oldInvoiceDate !== undefined
-  ) {
+watch(
+  () => invoiceStore.newInvoice.invoice_date,
+  (newInvoiceDate, oldInvoiceDate) => {
+    if (
+      companyStore.selectedCompanySettings
+        ?.invoice_set_due_date_automatically === 'YES' &&
+      newInvoiceDate &&
+      newInvoiceDate !== oldInvoiceDate &&
+      oldInvoiceDate !== undefined
+    ) {
+      const dueDateDays = parseInt(
+        companyStore.selectedCompanySettings.invoice_due_date_days || 0,
+      )
+      const invoiceDate = moment(newInvoiceDate)
 
-    const dueDateDays = parseInt(companyStore.selectedCompanySettings.invoice_due_date_days || 0);
-    const invoiceDate = moment(newInvoiceDate)
-    
-    if (invoiceDate.isValid()) {
-      const calculatedDueDate = invoiceDate.clone().add(dueDateDays, 'days').format('YYYY-MM-DD')
-      expectedAutoDueDate.value = calculatedDueDate
-      
-      
-      if (dueDateManuallyChanged.value) {
-        const currentDueDate = invoiceStore.newInvoice.due_date
-        if (currentDueDate) {
-          const dueDateMoment = moment(currentDueDate)
-          if (dueDateMoment.isValid() && dueDateMoment.isSameOrAfter(invoiceDate, 'day')) {
-            return // Manual due date still valid/in the future
+      if (invoiceDate.isValid()) {
+        const calculatedDueDate = invoiceDate
+          .clone()
+          .add(dueDateDays, 'days')
+          .format('YYYY-MM-DD')
+        expectedAutoDueDate.value = calculatedDueDate
+
+        if (dueDateManuallyChanged.value) {
+          const currentDueDate = invoiceStore.newInvoice.due_date
+          if (currentDueDate) {
+            const dueDateMoment = moment(currentDueDate)
+            if (
+              dueDateMoment.isValid() &&
+              dueDateMoment.isSameOrAfter(invoiceDate, 'day')
+            ) {
+              return // Manual due date still valid/in the future
+            }
           }
+
+          // Manual due date is in the past/invalid
+          dueDateManuallyChanged.value = false
         }
 
-        // Manual due date is in the past/invalid
-        dueDateManuallyChanged.value = false
+        // Set the calculated due date
+        isAutoUpdatingDueDate = true
+        invoiceStore.newInvoice.due_date = calculatedDueDate
+        isAutoUpdatingDueDate = false
       }
-      
-      // Set the calculated due date
-      isAutoUpdatingDueDate = true
-      invoiceStore.newInvoice.due_date = calculatedDueDate
-      isAutoUpdatingDueDate = false
     }
-    
-  }
-})
+  },
+)
 
 async function submitForm() {
   v$.value.$touch()
@@ -329,21 +340,17 @@ async function submitForm() {
   })
   if (data.discount_per_item === 'YES') {
     data.items.forEach((item, index) => {
-      if (item.discount_type === 'fixed'){
+      if (item.discount_type === 'fixed') {
         data.items[index].discount = item.discount * 100
       }
     })
-  }
-  else {
-    if (data.discount_type === 'fixed'){
+  } else {
+    if (data.discount_type === 'fixed') {
       data.discount = data.discount * 100
     }
   }
-    if (
-    !invoiceStore.newInvoice.tax_per_item === 'YES'
-    && data.taxes.length
-  ){
-    data.tax_type_ids = data.taxes.map(_t => _t.tax_type_id)
+  if (!invoiceStore.newInvoice.tax_per_item === 'YES' && data.taxes.length) {
+    data.tax_type_ids = data.taxes.map((_t) => _t.tax_type_id)
   }
 
   try {

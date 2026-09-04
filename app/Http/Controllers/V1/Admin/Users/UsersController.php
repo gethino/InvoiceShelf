@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Silber\Bouncer\Database\Role;
 
 class UsersController extends Controller
 {
@@ -47,7 +48,14 @@ class UsersController extends Controller
     {
         $this->authorize('create', User::class);
 
-        $user = User::createFromRequest($request);
+        $companyId = (int) $request->header('company');
+        $restrictToActiveCompany = ! $request->user()->canManageUserCompaniesForCompany($companyId);
+
+        if ($restrictToActiveCompany) {
+            $this->authorizeManagerPayload($request, $companyId);
+        }
+
+        $user = User::createFromRequest($request, $restrictToActiveCompany ? $companyId : null);
 
         return new UserResource($user);
     }
@@ -74,7 +82,14 @@ class UsersController extends Controller
     {
         $this->authorize('update', $user);
 
-        $user->updateFromRequest($request);
+        $companyId = (int) $request->header('company');
+        $restrictToActiveCompany = ! $request->user()->canManageUserCompaniesForCompany($companyId);
+
+        if ($restrictToActiveCompany) {
+            $this->authorizeManagerPayload($request, $companyId);
+        }
+
+        $user->updateFromRequest($request, $restrictToActiveCompany ? $companyId : null);
 
         return new UserResource($user);
     }
@@ -105,5 +120,26 @@ class UsersController extends Controller
         return response()->json([
             'success' => true,
         ]);
+    }
+
+    private function authorizeManagerPayload(UserRequest $request, int $companyId): void
+    {
+        $companies = collect($request->validated('companies'));
+        $company = $companies->first();
+
+        abort_if(
+            $companies->count() !== 1
+            || (int) ($company['id'] ?? 0) !== $companyId
+            || ($company['role'] ?? null) === 'super admin',
+            403
+        );
+
+        abort_unless(
+            Role::query()
+                ->where('scope', $companyId)
+                ->where('name', $company['role'])
+                ->exists(),
+            403
+        );
     }
 }

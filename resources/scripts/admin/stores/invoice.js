@@ -14,7 +14,6 @@ import { useCustomerStore } from './customer'
 import { useTaxTypeStore } from './tax-type'
 import { useCompanyStore } from './company'
 import { useItemStore } from './item'
-import { useUserStore } from './user'
 import { useNotesStore } from './note'
 
 export const useInvoiceStore = (useWindow = false) => {
@@ -25,6 +24,7 @@ export const useInvoiceStore = (useWindow = false) => {
   return defineStoreFunc('invoice', {
     state: () => ({
       templates: [],
+      defaultTemplate: null,
       invoices: [],
       selectedInvoices: [],
       selectAllField: false,
@@ -430,6 +430,7 @@ export const useInvoiceStore = (useWindow = false) => {
             .get(`/api/v1/invoices/templates`, { params })
             .then((response) => {
               this.templates = response.data.invoiceTemplates
+              this.defaultTemplate = response.data.defaultTemplate
               resolve(response)
             })
             .catch((err) => {
@@ -488,7 +489,6 @@ export const useInvoiceStore = (useWindow = false) => {
         const itemStore = useItemStore()
         const taxTypeStore = useTaxTypeStore()
         const route = useRoute()
-        const userStore = useUserStore()
         const notesStore = useNotesStore()
 
         this.isFetchingInitialSettings = true
@@ -556,11 +556,9 @@ export const useInvoiceStore = (useWindow = false) => {
               }
 
               if (res3.data) {
-                this.setTemplate(this.templates[0].name)
-                this.newInvoice.template_name = userStore.currentUserSettings
-                  .default_invoice_template
-                  ? userStore.currentUserSettings.default_invoice_template
-                  : this.newInvoice.template_name
+                this.setTemplate(
+                  this.defaultTemplate || this.templates[0]?.name,
+                )
               }
             }
             if (isEdit) {

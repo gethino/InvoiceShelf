@@ -30,9 +30,7 @@ const CompanyInfo = () =>
 const Preferences = () =>
   import('@/scripts/admin/views/settings/PreferencesSetting.vue')
 const Customization = () =>
-  import(
-    '@/scripts/admin/views/settings/customization/CustomizationSetting.vue'
-  )
+  import('@/scripts/admin/views/settings/customization/CustomizationSetting.vue')
 const Notifications = () =>
   import('@/scripts/admin/views/settings/NotificationsSetting.vue')
 const TaxTypes = () =>
@@ -58,6 +56,8 @@ const RolesSettings = () =>
   import('@/scripts/admin/views/settings/RolesSettings.vue')
 const PDFGenerationSettings = () =>
   import('@/scripts/admin/views/settings/PDFGenerationSetting.vue')
+const DocumentTemplatesSettings = () =>
+  import('@/scripts/admin/views/settings/DocumentTemplatesSetting.vue')
 
 // Items
 const ItemsIndex = () => import('@/scripts/admin/views/items/Index.vue')
@@ -94,9 +94,7 @@ const InvoiceView = () => import('@/scripts/admin/views/invoices/View.vue')
 const RecurringInvoiceIndex = () =>
   import('@/scripts/admin/views/recurring-invoices/Index.vue')
 const RecurringInvoiceCreate = () =>
-  import(
-    '@/scripts/admin/views/recurring-invoices/create/RecurringInvoiceCreate.vue'
-  )
+  import('@/scripts/admin/views/recurring-invoices/create/RecurringInvoiceCreate.vue')
 const RecurringInvoiceView = () =>
   import('@/scripts/admin/views/recurring-invoices/View.vue')
 
@@ -350,6 +348,12 @@ export default [
             meta: { isOwner: true },
             component: PDFGenerationSettings,
           },
+          {
+            path: 'document-templates',
+            name: 'document.templates',
+            meta: { isOwner: true },
+            component: DocumentTemplatesSettings,
+          },
         ],
       },
 
@@ -395,19 +399,19 @@ export default [
       {
         path: 'users',
         name: 'users.index',
-        meta: { isOwner: true },
+        meta: { canManageUsers: true },
         component: UserIndex,
       },
       {
         path: 'users/create',
-        meta: { isOwner: true },
+        meta: { canManageUsers: true },
         name: 'users.create',
         component: UserCreate,
       },
       {
         path: 'users/:id/edit',
         name: 'users.edit',
-        meta: { isOwner: true },
+        meta: { canManageUsers: true },
         component: UserCreate,
       },
 

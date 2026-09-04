@@ -197,6 +197,16 @@ return [
             'model' => '',
         ],
         [
+            'title' => 'settings.menu_title.document_templates',
+            'group' => '',
+            'name' => 'Document Templates',
+            'link' => '/admin/settings/document-templates',
+            'icon' => 'DocumentTextIcon',
+            'owner_only' => true,
+            'ability' => '',
+            'model' => '',
+        ],
+        [
             'title' => 'settings.menu_title.pdf_generation',
             'group' => '',
             'name' => 'PDF Generation',

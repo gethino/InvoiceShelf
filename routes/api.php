@@ -72,6 +72,7 @@ use App\Http\Controllers\V1\Admin\Role\RolesController;
 use App\Http\Controllers\V1\Admin\Settings\CompanyController;
 use App\Http\Controllers\V1\Admin\Settings\CompanyCurrencyCheckTransactionsController;
 use App\Http\Controllers\V1\Admin\Settings\DiskController;
+use App\Http\Controllers\V1\Admin\Settings\DocumentTemplateSettingsController;
 use App\Http\Controllers\V1\Admin\Settings\GetCompanyMailConfigurationController;
 use App\Http\Controllers\V1\Admin\Settings\GetCompanySettingsController;
 use App\Http\Controllers\V1\Admin\Settings\GetSettingsController;
@@ -242,6 +243,10 @@ Route::prefix('/v1')->group(function () {
             Route::get('/number-placeholders', NumberPlaceholdersController::class);
 
             Route::get('/current-company', AdminCompanyController::class);
+
+            Route::get('/company/document-templates', [DocumentTemplateSettingsController::class, 'show']);
+
+            Route::put('/company/document-templates', [DocumentTemplateSettingsController::class, 'update']);
 
             // Customers
             // ----------------------------------

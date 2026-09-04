@@ -6,6 +6,7 @@ use App;
 use App\Facades\Hashids;
 use App\Facades\PDF;
 use App\Mail\SendEstimateMail;
+use App\Services\DocumentTemplateService;
 use App\Services\SerialNumberFormatter;
 use App\Space\PdfTemplateUtils;
 use App\Support\DocumentTotals;
@@ -519,18 +520,12 @@ class Estimate extends Model implements HasMedia
     public function getInvoiceTemplateName()
     {
         $templateName = Str::replace('estimate', 'invoice', $this->template_name);
+        $templates = app(DocumentTemplateService::class);
+        $allowedNames = $templates->allowedNames(DocumentTemplateService::INVOICE, $this->company_id);
 
-        $name = [];
-
-        foreach (PdfTemplateUtils::getFormattedTemplates('invoice') as $template) {
-            $name[] = $template['name'];
-        }
-
-        if (in_array($templateName, $name) == false) {
-            $templateName = 'invoice1';
-        }
-
-        return $templateName;
+        return in_array($templateName, $allowedNames, true)
+            ? $templateName
+            : $templates->defaultName(DocumentTemplateService::INVOICE, $this->company_id);
     }
 
     public function checkForEstimateConvertAction()
