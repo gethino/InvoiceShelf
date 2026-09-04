@@ -7,17 +7,19 @@
     />
   </BaseContentPlaceholders>
 
-  <div v-else :class="computedContainerClass" class="relative flex flex-row">
+  <div
+    v-else
+    :class="computedContainerClass"
+    class="base-date-picker relative flex flex-row"
+  >
     <svg
       v-if="showCalendarIcon && !hasIconSlot"
       viewBox="0 0 20 20"
       fill="currentColor"
-      class="
+      class="base-date-picker-icon
         absolute
-        inset-s-0
         w-4
         h-4
-        ms-2
         my-2.5
         text-sm
         not-italic
@@ -123,7 +125,7 @@ const props = defineProps({
   defaultInputClass: {
     type: String,
     default:
-      'font-base ps-8 py-2 outline-hidden focus:ring-primary-400 focus:outline-hidden focus:border-primary-400 block w-full sm:text-sm border-gray-200 rounded-md text-start rtl:text-right text-black',
+      'base-date-picker-input font-base py-2 outline-hidden focus:ring-primary-400 focus:outline-hidden focus:border-primary-400 block w-full sm:text-sm border-gray-200 rounded-md text-black',
   },
   time24hr: {
     type: Boolean,
@@ -242,7 +244,10 @@ let config = reactive({
   altInput: true,
   enableTime: props.enableTime,
   time_24hr: props.time24hr,
-  locale: fpLocale
+  locale: fpLocale,
+  onReady: (_selectedDates, _dateString, instance) => {
+    instance.altInput?.setAttribute('dir', 'ltr')
+  },
 })
 
 const date = computed({

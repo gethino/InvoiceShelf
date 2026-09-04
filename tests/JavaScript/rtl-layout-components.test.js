@@ -149,10 +149,14 @@ test('keeps multiselect controls and text clear in RTL', () => {
   const createItems = readProjectFile(
     'resources/scripts/admin/components/estimate-invoice-common/CreateItems.vue',
   )
+  const styles = readProjectFile('resources/css/invoiceshelf.css')
 
-  assert.match(multiselect, /rtl:justify-start/)
-  assert.match(multiselect, /rtl:ps-10 rtl:pe-3\.5/)
-  assert.match(multiselect, /relative ms-1 me-2 opacity-40/)
+  assert.match(multiselect, /base-multiselect-control-text/)
+  assert.match(multiselect, /base-multiselect-caret/)
+  assert.doesNotMatch(multiselect, /rtl:justify-start/)
+  assert.match(styles, /\[dir="rtl"\] \.base-multiselect-caret/)
+  assert.match(styles, /left: 0\.5rem/)
+  assert.match(styles, /padding-left: 2\.5rem/)
   assert.match(multiselect, /'ps-3\.5 relative z-10/)
   assert.match(multiselect, /z-10 ms-3\.5 animate-spin/)
   assert.match(multiselect, /\btext-start\b/)
@@ -177,13 +181,15 @@ test('keeps date picker text clear of its logical-start icon', () => {
   const datePicker = readProjectFile(
     'resources/scripts/components/base/BaseDatePicker.vue',
   )
+  const styles = readProjectFile('resources/css/invoiceshelf.css')
 
-  assert.match(datePicker, /\binset-s-0\b/)
-  assert.match(datePicker, /\bms-2\b/)
-  assert.match(datePicker, /font-base ps-8 py-2/)
+  assert.match(datePicker, /base-date-picker-icon/)
+  assert.match(datePicker, /base-date-picker-input font-base py-2/)
   assert.match(datePicker, /dir="ltr"/)
-  assert.match(datePicker, /rtl:text-right/)
-  assert.doesNotMatch(datePicker, /font-base pl-8 py-2/)
+  assert.match(datePicker, /altInput\?\.setAttribute\('dir', 'ltr'\)/)
+  assert.match(styles, /\[dir="rtl"\] \.base-date-picker-icon/)
+  assert.match(styles, /unicode-bidi: isolate/)
+  assert.match(styles, /text-align: right/)
 })
 
 test('isolates telephone values and mirrors the Flatpickr popup', () => {
@@ -223,10 +229,11 @@ test('aligns shared text fields with the active writing direction', () => {
     'resources/scripts/components/base/BaseTimePicker.vue',
   )
 
-  for (const control of [input, textarea, datePicker, timePicker]) {
+  for (const control of [input, textarea, timePicker]) {
     assert.match(control, /\btext-start\b/)
   }
 
+  assert.match(datePicker, /base-date-picker-input/)
   assert.doesNotMatch(textarea, /\btext-left\b/)
   assert.match(timePicker, /\binset-s-0\b/)
   assert.match(timePicker, /font-base ps-8 py-2/)

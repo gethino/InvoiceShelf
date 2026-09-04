@@ -437,7 +437,7 @@ export default {
       required: false,
       default: () => ({
         container:
-          'p-0 relative mx-auto w-full flex items-center justify-end rtl:justify-start box-border cursor-pointer border border-gray-200 rounded-md bg-white text-sm leading-snug outline-hidden max-h-10',
+          'base-multiselect p-0 relative mx-auto w-full flex items-center justify-end box-border cursor-pointer border border-gray-200 rounded-md bg-white text-sm leading-snug outline-hidden max-h-10',
         containerDisabled:
           'cursor-default bg-gray-200/50 !text-gray-400',
         containerOpen: '',
@@ -447,11 +447,11 @@ export default {
           'border-red-400 ring-red-400 focus:ring-red-400 focus:border-red-400',
         containerInvalidActive: 'ring-1 border-red-400 ring-red-400',
         singleLabel:
-          'flex items-center h-full absolute inset-s-0 top-0 pointer-events-none bg-transparent leading-snug ps-3.5 pe-10 rtl:ps-10 rtl:pe-3.5',
+          'base-multiselect-control-text flex items-center h-full absolute inset-0 pointer-events-none bg-transparent leading-snug',
         multipleLabel:
-          'flex items-center h-full absolute inset-s-0 top-0 pointer-events-none bg-transparent leading-snug ps-3.5 pe-10 rtl:ps-10 rtl:pe-3.5',
+          'base-multiselect-control-text flex items-center h-full absolute inset-0 pointer-events-none bg-transparent leading-snug',
         search:
-          'w-full absolute inset-0 outline-hidden appearance-none box-border border-0 text-sm font-sans bg-white rounded-md ps-3.5 pe-10 rtl:ps-10 rtl:pe-3.5',
+          'base-multiselect-control-text w-full absolute inset-0 outline-hidden appearance-none box-border border-0 text-sm font-sans bg-white rounded-md',
         tags: 'grow shrink flex flex-wrap mt-1 ps-2',
         tag: 'bg-primary-500 text-white text-sm font-semibold py-0.5 ps-2 rounded me-1 mb-1 flex items-center whitespace-nowrap',
         tagDisabled: 'pe-2 !bg-gray-400 text-white',
@@ -464,9 +464,9 @@ export default {
           'absolute inset-0 border-0 focus:outline-hidden !shadow-none !focus:shadow-none appearance-none p-0 text-sm font-sans box-border w-full',
         tagsSearchCopy: 'invisible whitespace-pre-wrap inline-block h-px',
         placeholder:
-          'flex items-center h-full absolute inset-s-0 top-0 pointer-events-none bg-transparent leading-snug ps-3.5 pe-10 rtl:ps-10 rtl:pe-3.5 text-gray-400 text-sm',
+          'base-multiselect-control-text flex items-center h-full absolute inset-0 pointer-events-none bg-transparent leading-snug text-gray-400 text-sm',
         caret:
-          'bg-multiselect-caret bg-center bg-no-repeat w-5 h-5 py-px box-content z-5 relative ms-1 me-2 opacity-40 shrink-0 grow-0 transition-transform',
+          'base-multiselect-caret bg-multiselect-caret bg-center bg-no-repeat w-5 h-5 py-px box-content z-5 absolute opacity-40 shrink-0 grow-0 transition-transform',
         caretOpen: 'rotate-180 pointer-events-auto',
         clear:
           'ps-3.5 relative z-10 opacity-40 transition duration-300 shrink-0 grow-0 flex hover:opacity-80',

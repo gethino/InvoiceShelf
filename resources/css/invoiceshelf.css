@@ -46,6 +46,52 @@
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 320 512' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M207.6 256l107.72-107.72c6.23-6.23 6.23-16.34 0-22.58l-25.03-25.03c-6.23-6.23-16.34-6.23-22.58 0L160 208.4 52.28 100.68c-6.23-6.23-16.34-6.23-22.58 0L4.68 125.7c-6.23 6.23-6.23 16.34 0 22.58L112.4 256 4.68 363.72c-6.23 6.23-6.23 16.34 0 22.58l25.03 25.03c6.23 6.23 16.34 6.23 22.58 0L160 303.6l107.72 107.72c6.23 6.23 16.34 6.23 22.58 0l25.03-25.03c6.23-6.23 6.23-16.34 0-22.58L207.6 256z'/%3E%3C/svg%3E");
 }
 
+.base-multiselect-caret {
+  right: 0.5rem;
+}
+
+.base-multiselect-control-text {
+  padding-right: 2.5rem;
+  padding-left: 0.875rem;
+  text-align: left;
+}
+
+[dir="rtl"] .base-multiselect-caret {
+  right: auto;
+  left: 0.5rem;
+}
+
+[dir="rtl"] .base-multiselect-control-text {
+  padding-right: 0.875rem;
+  padding-left: 2.5rem;
+  text-align: right;
+}
+
+.base-date-picker-icon {
+  right: 0.5rem;
+}
+
+.base-date-picker-input,
+.base-date-picker .flatpickr-input {
+  padding-right: 2rem;
+  padding-left: 0.75rem;
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: isolate;
+}
+
+[dir="rtl"] .base-date-picker-icon {
+  right: auto;
+  left: 0.5rem;
+}
+
+[dir="rtl"] .base-date-picker-input,
+[dir="rtl"] .base-date-picker .flatpickr-input {
+  padding-right: 0.75rem;
+  padding-left: 2rem;
+  text-align: right;
+}
+
 [dir="rtl"] .flatpickr-calendar,
 .flatpickr-calendar.rtl {
   direction: rtl;
