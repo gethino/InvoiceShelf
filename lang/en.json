@@ -483,7 +483,8 @@
     "marked_as_sent_message": "Invoice marked as sent successfully",
     "something_went_wrong": "something went wrong",
     "invalid_due_amount_message": "Total Invoice amount cannot be less than total paid amount for this Invoice. Please update the invoice or delete the associated payments to continue.",
-    "mark_as_default_invoice_template_description": "If enabled, the selected template will be automatically selected for new invoices."
+    "mark_as_default_invoice_template_description": "If enabled, the selected template will be automatically selected for new invoices.",
+    "show_line_discount": "Add line discount"
   },
   "recurring_invoices": {
     "title": "Recurring Invoices",

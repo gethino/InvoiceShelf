@@ -115,6 +115,16 @@ function tripoliCenterEstimateTemplateData(): array
     return $data;
 }
 
+it('omits discount rows when an invoice has no discount', function () {
+    $html = view(
+        'pdf_templates::invoice.tripoli-center-modern-ar',
+        tripoliCenterInvoiceTemplateData()
+    )->render();
+
+    expect($html)
+        ->not->toContain('<td class="label-cell" style="width: 18%">الخصم<br>Discount</td>');
+});
+
 it('discovers the Tripoli Center templates and their preview images', function () {
     $templates = collect(PdfTemplateUtils::getFormattedTemplates('invoice', 'path'))
         ->where('custom', true)

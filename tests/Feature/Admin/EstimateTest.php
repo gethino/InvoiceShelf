@@ -66,15 +66,35 @@ test('create estimate', function () {
 });
 
 test('clone estimate', function () {
-
-    $estimate = Estimate::factory()->create();
+    $estimate = Estimate::factory()
+        ->hasItems(2)
+        ->hasTaxes(1)
+        ->create([
+            'notes' => 'Keep these notes',
+            'discount' => 12,
+            'discount_val' => 1200,
+            'discount_per_item' => 'YES',
+            'tax_included' => true,
+        ]);
 
     $beforeCount = Estimate::count();
 
-    $response = $this->post("/api/v1/estimates/{$estimate->id}/clone");
+    $response = $this->postJson("/api/v1/estimates/{$estimate->id}/clone")
+        ->assertCreated();
 
     $this->assertDatabaseCount('estimates', $beforeCount + 1);
 
+    $clone = Estimate::query()->findOrFail($response->json('data.id'));
+
+    expect($clone->id)->not->toBe($estimate->id)
+        ->and($clone->estimate_number)->not->toBe($estimate->estimate_number)
+        ->and($clone->status)->toBe(Estimate::STATUS_DRAFT)
+        ->and($clone->customer_id)->toBe($estimate->customer_id)
+        ->and($clone->notes)->toBe($estimate->notes)
+        ->and($clone->discount_val)->toBe($estimate->discount_val)
+        ->and($clone->tax_included)->toBeTrue()
+        ->and($clone->items)->toHaveCount(2)
+        ->and($clone->taxes)->toHaveCount(1);
 });
 
 test('store validates using a form request', function () {

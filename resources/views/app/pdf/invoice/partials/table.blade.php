@@ -1,3 +1,7 @@
+@php
+    $showItemDiscounts = $invoice->discount_per_item === 'YES'
+        && $invoice->items->contains(fn ($item) => (float) $item->discount_val !== 0.0);
+@endphp
 <table width="100%" class="items-table" cellspacing="0" border="0">
     <tr class="item-table-heading-row">
         <th width="2%" class="pr-20 text-right item-table-heading">#</th>
@@ -7,7 +11,7 @@
         @endforeach
         <th class="pr-20 text-right item-table-heading">@lang('pdf_quantity_label')</th>
         <th class="pr-20 text-right item-table-heading">@lang('pdf_price_label')</th>
-        @if($invoice->discount_per_item === 'YES')
+        @if($showItemDiscounts)
         <th class="pl-10 text-right item-table-heading">@lang('pdf_discount_label')</th>
         @endif
         @if($invoice->tax_per_item === 'YES')
@@ -51,7 +55,7 @@
                 {!! format_money_pdf($item->price, $invoice->customer->currency) !!}
             </td>
 
-            @if($invoice->discount_per_item === 'YES')
+            @if($showItemDiscounts)
                 <td
                     class="pl-10 text-right item-cell"
                     style="vertical-align: top;"
@@ -98,7 +102,7 @@
             </td>
         </tr>
 
-        @if($invoice->discount > 0)
+        @if((float) $invoice->discount_val !== 0.0)
             @if ($invoice->discount_per_item === 'NO')
                 <tr>
                     <td class="border-0 total-table-attribute-label">

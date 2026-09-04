@@ -66,7 +66,19 @@
               v-if="store[storeProp].discount_per_item === 'YES'"
               class="px-5 py-4 text-start align-top"
             >
-              <div class="flex flex-col">
+              <BaseButton
+                v-if="!showDiscount"
+                type="button"
+                variant="white"
+                class="!p-2"
+                :title="$t('invoices.show_line_discount')"
+                @click="showDiscount = true"
+              >
+                <BaseIcon name="ReceiptPercentIcon" class="h-5 w-5" />
+                <span class="sr-only">{{ $t('invoices.show_line_discount') }}</span>
+              </BaseButton>
+
+              <div v-else class="flex flex-col">
                 <div class="flex" style="width: 120px" role="group">
                   <BaseInput
                     v-model="discount"
@@ -239,6 +251,9 @@ const emit = defineEmits(['update', 'remove', 'itemValidate'])
 
 const companyStore = useCompanyStore()
 const itemStore = useItemStore()
+const showDiscount = ref(
+  Number(props.itemData.discount_val) !== 0 || Number(props.itemData.discount) !== 0
+)
 
 let route = useRoute()
 const { t, locale } = useI18n()

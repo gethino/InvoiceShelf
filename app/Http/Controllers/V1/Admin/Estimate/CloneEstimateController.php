@@ -20,7 +20,7 @@ class CloneEstimateController extends Controller
      *
      * @return JsonResponse
      */
-    public function __invoke(Request $request, Estimate $estimate, DocumentTemplateService $templates)
+    public function __invoke(Request $request, Estimate $estimate, DocumentTemplateService $templates): EstimateResource
     {
         $this->authorize('view', $estimate);
         $this->authorize('create', Estimate::class);
@@ -71,7 +71,6 @@ class CloneEstimateController extends Controller
             'discount_type' => $estimate->discount_type,
             'discount_val' => $estimate->discount_val,
             'total' => $estimate->total,
-            'due_amount' => $estimate->total,
             'tax_per_item' => $estimate->tax_per_item,
             'discount_per_item' => $estimate->discount_per_item,
             'tax' => $estimate->tax,
@@ -81,10 +80,10 @@ class CloneEstimateController extends Controller
             'base_discount_val' => $estimate->discount_val * $exchange_rate,
             'base_sub_total' => $estimate->sub_total * $exchange_rate,
             'base_tax' => $estimate->tax * $exchange_rate,
-            'base_due_amount' => $estimate->total * $exchange_rate,
             'currency_id' => $estimate->currency_id,
             'sales_tax_type' => $estimate->sales_tax_type,
             'sales_tax_address_type' => $estimate->sales_tax_address_type,
+            'tax_included' => $estimate->tax_included,
         ]);
 
         $newEstimate->unique_hash = Hashids::connection(Estimate::class)->encode($newEstimate->id);

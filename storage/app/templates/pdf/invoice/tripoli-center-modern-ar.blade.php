@@ -681,8 +681,10 @@
 
         <table class="summary-table">
             <tr>
+                @if ((float) $discountAmount !== 0.0)
                 <td class="value-cell discount-value" style="width: 32%">{!! format_money_pdf($discountAmount, $invoice->customer->currency, $tripoliLocale) !!}</td>
                 <td class="label-cell" style="width: 18%">الخصم<br>Discount</td>
+                @endif
                 <td class="value-cell" style="width: 32%">{!! format_money_pdf($invoice->sub_total, $invoice->customer->currency, $tripoliLocale) !!}</td>
                 <td class="label-cell" style="width: 18%">المجموع الفرعي<br>Subtotal</td>
             </tr>

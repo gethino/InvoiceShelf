@@ -539,7 +539,7 @@
                 <td class="summary-value">{!! format_money_pdf($invoice->sub_total, $invoice->customer->currency, $tripoliLocale) !!}</td>
             </tr>
 
-            @if ($invoice->discount > 0 && $invoice->discount_per_item === 'NO')
+            @if ((float) $invoice->discount_val !== 0.0 && $invoice->discount_per_item === 'NO')
                 <tr>
                     <td class="summary-label">
                         {{ $tripoliLabels['discount'] }}

@@ -67,6 +67,7 @@ class Estimate extends Model implements HasMedia
             'discount' => 'float',
             'discount_val' => 'integer',
             'exchange_rate' => 'float',
+            'tax_included' => 'boolean',
         ];
     }
 

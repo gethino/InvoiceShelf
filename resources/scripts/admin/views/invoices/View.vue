@@ -70,9 +70,11 @@ const getCurrentInvoiceId = computed(() => {
   return null
 })
 
-watch(route, (to, from) => {
+watch(route, async (to) => {
   if (to.name === 'invoices.view') {
-    loadInvoice()
+    invoiceList.value = []
+    await loadInvoice()
+    await loadInvoices()
   }
 })
 
@@ -120,6 +122,9 @@ async function loadInvoices(pageNumber, fromScrollListener = false) {
   }
 
   let params = {}
+  if (invoiceData.value.customer_id) {
+    params.customer_id = invoiceData.value.customer_id
+  }
   if (
     searchData.searchText !== '' &&
     searchData.searchText !== null &&
@@ -228,8 +233,12 @@ function updateSentInvoice() {
   }
 }
 
-loadInvoices()
-loadInvoice()
+async function initializeInvoiceView() {
+  await loadInvoice()
+  await loadInvoices()
+}
+
+initializeInvoiceView()
 onSearched = debounce(onSearched, 500)
 </script>
 

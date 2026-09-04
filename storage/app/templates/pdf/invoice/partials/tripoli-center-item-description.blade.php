@@ -14,7 +14,7 @@
     @endif
 @endforeach
 
-@if ($invoice->discount_per_item === 'YES' && $item->discount_val > 0)
+@if ($invoice->discount_per_item === 'YES' && (float) $item->discount_val !== 0.0)
     <span class="item-meta">
         <span class="item-meta-label">{{ $tripoliLabels['discount'] }}:</span>
         @if ($item->discount_type === 'percentage')
