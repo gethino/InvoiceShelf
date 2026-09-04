@@ -466,7 +466,7 @@ export default {
         placeholder:
           'flex items-center h-full absolute inset-s-0 top-0 pointer-events-none bg-transparent leading-snug ps-3.5 pe-10 rtl:ps-10 rtl:pe-3.5 text-gray-400 text-sm',
         caret:
-          'bg-multiselect-caret bg-center bg-no-repeat w-5 h-5 py-px box-content z-5 relative ms-1 opacity-40 shrink-0 grow-0 transition-transform',
+          'bg-multiselect-caret bg-center bg-no-repeat w-5 h-5 py-px box-content z-5 relative ms-1 me-2 opacity-40 shrink-0 grow-0 transition-transform',
         caretOpen: 'rotate-180 pointer-events-auto',
         clear:
           'ps-3.5 relative z-10 opacity-40 transition duration-300 shrink-0 grow-0 flex hover:opacity-80',

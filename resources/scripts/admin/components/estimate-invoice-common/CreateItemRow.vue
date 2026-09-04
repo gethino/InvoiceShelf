@@ -1,6 +1,6 @@
 <template>
   <tr class="box-border bg-white border border-gray-200 border-solid rounded-b">
-    <td colspan="5" class="p-0 text-left align-top">
+    <td colspan="5" class="p-0 text-start align-top">
       <table class="w-full">
         <colgroup>
           <col style="width: 40%; min-width: 280px" />
@@ -14,10 +14,10 @@
         </colgroup>
         <tbody>
           <tr>
-            <td class="px-5 py-4 text-left align-top">
+            <td class="px-5 py-4 text-start align-top">
               <div class="flex justify-start">
                 <div
-                  class="flex items-center justify-center w-5 h-5 mt-2 mr-2 text-gray-300 cursor-move  handle"
+                  class="flex items-center justify-center w-5 h-5 mt-2 me-2 text-gray-300 cursor-move handle"
                 >
                   <DragIcon />
                 </div>
@@ -35,7 +35,7 @@
                 />
               </div>
             </td>
-            <td class="px-5 py-4 text-right align-top">
+            <td class="px-5 py-4 text-end align-top">
               <BaseInput
                 v-model="quantity"
                 :invalid="v$.quantity.$error"
@@ -47,7 +47,7 @@
                 @input="v$.quantity.$touch()"
               />
             </td>
-            <td class="px-5 py-4 text-left align-top">
+            <td class="px-5 py-4 text-start align-top">
               <div class="flex flex-col">
                 <div class="flex-auto flex-fill bd-highlight">
                   <div class="relative w-full">
@@ -64,7 +64,7 @@
             </td>
             <td
               v-if="store[storeProp].discount_per_item === 'YES'"
-              class="px-5 py-4 text-left align-top"
+              class="px-5 py-4 text-start align-top"
             >
               <div class="flex flex-col">
                 <div class="flex" style="width: 120px" role="group">
@@ -96,7 +96,7 @@
 
                           <BaseIcon
                             name="ChevronDownIcon"
-                            class="w-4 h-4 ml-1 text-gray-500"
+                            class="w-4 h-4 ms-1 text-gray-500"
                           />
                         </span>
                       </BaseButton>
@@ -113,7 +113,7 @@
                 </div>
               </div>
             </td>
-            <td class="px-5 py-4 text-right align-top">
+            <td class="px-5 py-4 text-end align-top">
               <div class="flex items-center justify-end text-sm">
                 <span>
                   <BaseContentPlaceholders v-if="loading">
@@ -138,8 +138,8 @@
             </td>
           </tr>
           <tr v-if="store[storeProp].tax_per_item === 'YES'">
-            <td class="px-5 py-4 text-left align-top" />
-            <td colspan="4" class="px-5 py-4 text-left align-top">
+            <td class="px-5 py-4 text-start align-top" />
+            <td colspan="4" class="px-5 py-4 text-start align-top">
               <BaseContentPlaceholders v-if="loading">
                 <BaseContentPlaceholdersText
                   :lines="1"

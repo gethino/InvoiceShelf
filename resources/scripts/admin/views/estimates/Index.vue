@@ -298,9 +298,9 @@ const estimateColumns = computed(() => {
   return [
     {
       key: 'checkbox',
-      thClass: 'extra w-10 pr-0',
+      thClass: 'extra w-10 pe-0',
       sortable: false,
-      tdClass: 'font-medium text-gray-900 pr-0',
+      tdClass: 'font-medium text-gray-900 pe-0',
     },
     {
       key: 'estimate_date',
@@ -318,8 +318,8 @@ const estimateColumns = computed(() => {
     },
     {
       key: 'actions',
-      tdClass: 'text-right text-sm font-medium pl-0',
-      thClass: 'text-right pl-0',
+      tdClass: 'text-end text-sm font-medium ps-0',
+      thClass: 'text-end ps-0',
       sortable: false,
     },
   ]

@@ -152,7 +152,7 @@ test('keeps multiselect controls and text clear in RTL', () => {
 
   assert.match(multiselect, /rtl:justify-start/)
   assert.match(multiselect, /rtl:ps-10 rtl:pe-3\.5/)
-  assert.match(multiselect, /relative ms-1 opacity-40/)
+  assert.match(multiselect, /relative ms-1 me-2 opacity-40/)
   assert.match(multiselect, /'ps-3\.5 relative z-10/)
   assert.match(multiselect, /z-10 ms-3\.5 animate-spin/)
   assert.match(multiselect, /\btext-start\b/)
@@ -181,7 +181,32 @@ test('keeps date picker text clear of its logical-start icon', () => {
   assert.match(datePicker, /\binset-s-0\b/)
   assert.match(datePicker, /\bms-2\b/)
   assert.match(datePicker, /font-base ps-8 py-2/)
+  assert.match(datePicker, /dir="ltr"/)
+  assert.match(datePicker, /rtl:text-right/)
   assert.doesNotMatch(datePicker, /font-base pl-8 py-2/)
+})
+
+test('isolates telephone values and mirrors the Flatpickr popup', () => {
+  const input = readProjectFile(
+    'resources/scripts/components/base/BaseInput.vue',
+  )
+  const styles = readProjectFile('resources/css/invoiceshelf.css')
+
+  assert.match(input, /:dir="type === 'tel' \? 'ltr' : undefined"/)
+  assert.match(input, /'rtl:text-right': type === 'tel'/)
+  assert.match(styles, /\[dir="rtl"\] \.flatpickr-calendar/)
+  assert.match(styles, /flex-direction: row-reverse/)
+  assert.match(styles, /\.flatpickr-calendar\.rtl \.dayContainer/)
+})
+
+test('keeps estimate table checkboxes inside logical columns', () => {
+  const estimates = readProjectFile(
+    'resources/scripts/admin/views/estimates/Index.vue',
+  )
+
+  assert.match(estimates, /thClass: 'extra w-10 pe-0'/)
+  assert.match(estimates, /tdClass: 'font-medium text-gray-900 pe-0'/)
+  assert.doesNotMatch(estimates, /w-10 pr-0/)
 })
 
 test('aligns shared text fields with the active writing direction', () => {

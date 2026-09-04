@@ -90,6 +90,7 @@
     <input
       v-bind="$attrs"
       :type="type"
+      :dir="type === 'tel' ? 'ltr' : undefined"
       :value="modelValue"
       :disabled="disabled"
       :class="[
@@ -98,6 +99,7 @@
         inputAddonClass,
         inputInvalidClass,
         inputDisabledClass,
+        { 'rtl:text-right': type === 'tel' },
       ]"
       @input="emitValue"
     />

@@ -129,7 +129,7 @@
 
                 <BaseIcon
                   name="ChevronDownIcon"
-                  class="w-4 h-4 ml-1 text-gray-500"
+                  class="w-4 h-4 ms-1 text-gray-500"
                 />
               </span>
             </BaseButton>
