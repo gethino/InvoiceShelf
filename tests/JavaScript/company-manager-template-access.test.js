@@ -6,15 +6,15 @@ function readProjectFile(path) {
   return readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8')
 }
 
-test('company switcher uses server capabilities and preserves a static company label', () => {
+test('company switcher is hidden unless another company is accessible', () => {
   const switcher = readProjectFile(
     'resources/scripts/components/CompanySwitcher.vue',
   )
 
   assert.match(switcher, /currentUser\.can_switch_companies/)
   assert.match(switcher, /currentUser\.can_create_company/)
-  assert.match(switcher, /v-else/)
-  assert.match(switcher, /selectedCompany\?\.name/)
+  assert.match(switcher, /companyStore\.companies\.length > 1/)
+  assert.doesNotMatch(switcher, /\n\s*<div\n\s*v-else/)
 })
 
 test('manager user routes and forms use explicit management capabilities', () => {

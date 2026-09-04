@@ -65,10 +65,22 @@
           </TransitionChild>
           <div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
             <div class="flex items-center shrink-0 px-4 mb-10">
-              <MainLogo
-                class="block h-auto max-w-full w-36 text-primary-400"
-                alt="InvoiceShelf Logo"
+              <img
+                v-if="companyStore.selectedCompany?.logo"
+                :src="companyStore.selectedCompany.logo"
+                class="block h-14 max-w-48 object-contain"
+                :alt="companyStore.selectedCompany.name"
               />
+              <div v-else class="flex items-center gap-3 text-gray-900">
+                <span
+                  class="flex h-11 w-11 items-center justify-center rounded-lg bg-primary-100 text-lg font-semibold text-primary-600"
+                >
+                  {{ companyInitial }}
+                </span>
+                <span class="max-w-48 truncate font-semibold">
+                  {{ companyStore.selectedCompany?.name }}
+                </span>
+              </div>
             </div>
 
             <nav
@@ -158,8 +170,6 @@
 </template>
 
 <script setup>
-import MainLogo from '@/scripts/components/icons/MainLogo.vue'
-
 import {
   Dialog,
   DialogOverlay,
@@ -169,9 +179,15 @@ import {
 
 import { useRoute } from 'vue-router'
 import { useGlobalStore } from '@/scripts/admin/stores/global'
+import { useCompanyStore } from '@/scripts/admin/stores/company'
+import { computed } from 'vue'
 
 const route = useRoute()
 const globalStore = useGlobalStore()
+const companyStore = useCompanyStore()
+const companyInitial = computed(
+  () => companyStore.selectedCompany?.name?.trim().charAt(0).toUpperCase() || ''
+)
 
 function hasActiveUrl(url) {
   return route.path.indexOf(url) > -1

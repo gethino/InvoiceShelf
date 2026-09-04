@@ -138,6 +138,7 @@
     "copy_to_clipboard": "Copy to Clipboard"
   },
   "dashboard": {
+    "hello": "مرحباً،",
     "select_year": "اختر السنة",
     "cards": {
       "due_amount": "المبلغ المستحق",

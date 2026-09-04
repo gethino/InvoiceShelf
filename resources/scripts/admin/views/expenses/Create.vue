@@ -315,6 +315,7 @@ import useVuelidate from '@vuelidate/core'
 import { useExpenseStore } from '@/scripts/admin/stores/expense'
 import { useCategoryStore } from '@/scripts/admin/stores/category'
 import { useCompanyStore } from '@/scripts/admin/stores/company'
+import { findCashPaymentMethod } from '@/scripts/helpers/payment-methods'
 import { useCustomerStore } from '@/scripts/admin/stores/customer'
 import { useCustomFieldStore } from '@/scripts/admin/stores/custom-field'
 import { useModalStore } from '@/scripts/stores/modal'
@@ -467,6 +468,11 @@ async function loadData() {
 
   isFetchingInitialData.value = true
   await expenseStore.fetchPaymentModes({ limit: 'all' })
+
+  if (!isEdit.value) {
+    expenseStore.currentExpense.payment_method_id =
+      findCashPaymentMethod(expenseStore.paymentModes)?.id || ''
+  }
 
   if (isEdit.value) {
     const expenseData = await expenseStore.fetchExpense(route.params.id)

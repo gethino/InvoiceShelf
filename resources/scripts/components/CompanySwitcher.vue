@@ -1,6 +1,9 @@
 <template>
   <div
-    v-if="userStore.currentUser.can_switch_companies"
+    v-if="
+      userStore.currentUser.can_switch_companies &&
+      companyStore.companies.length > 1
+    "
     ref="companySwitchBar"
     class="relative rounded"
   >
@@ -94,14 +97,6 @@
         </div>
       </div>
     </transition>
-  </div>
-  <div
-    v-else
-    class="flex h-8 items-center justify-center rounded bg-white/20 px-3 text-sm text-white md:h-9"
-  >
-    <span class="w-16 truncate text-sm font-medium sm:w-auto">
-      {{ companyStore.selectedCompany?.name }}
-    </span>
   </div>
 </template>
 

@@ -7,6 +7,7 @@ import { useNotificationStore } from '@/scripts/stores/notification'
 import paymentStub from '../stub/payment'
 import { handleError } from '@/scripts/helpers/error-handling'
 import { useNotesStore } from './note'
+import { findCashPaymentMethod } from '@/scripts/helpers/payment-methods'
 
 export const usePaymentStore = (useWindow = false) => {
   const defineStoreFunc = useWindow ? window.pinia.defineStore : defineStore
@@ -86,6 +87,8 @@ export const usePaymentStore = (useWindow = false) => {
               this.currentPayment.payment_number = res2.data.nextNumber
               this.currentPayment.currency =
                 companyStore.selectedCompanyCurrency
+              this.currentPayment.payment_method_id =
+                findCashPaymentMethod(this.paymentModes)?.id || ''
             }
 
             this.isFetchingInitialData = false

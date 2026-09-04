@@ -3,12 +3,13 @@ import DashboardStats from '../dashboard/DashboardStats.vue'
 import DashboardChart from '../dashboard/DashboardChart.vue'
 import DashboardTable from '../dashboard/DashboardTable.vue'
 import { useUserStore } from '@/scripts/admin/stores/user'
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const userStore = useUserStore()
 const router = useRouter()
+const greetingName = computed(() => userStore.currentUser?.name || '')
 
 onMounted(() => {
   if (route.meta.ability && !userStore.hasAbilities(route.meta.ability)) {
@@ -21,6 +22,10 @@ onMounted(() => {
 
 <template>
   <BasePage>
+    <h1 class="mb-6 text-2xl font-semibold text-gray-900">
+      {{ $t('dashboard.hello') }}
+      <bdi dir="auto">{{ greetingName }}</bdi>
+    </h1>
     <DashboardStats />
     <DashboardChart />
     <DashboardTable />

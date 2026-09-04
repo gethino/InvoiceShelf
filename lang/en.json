@@ -125,6 +125,7 @@
     "copy_to_clipboard": "Copy to Clipboard"
   },
   "dashboard": {
+    "hello": "Hello,",
     "select_year": "Select year",
     "cards": {
       "due_amount": "Amount Due",
