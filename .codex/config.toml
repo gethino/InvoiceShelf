@@ -2,3 +2,8 @@
 
 [mcp_servers.dokploy-mcp.env]
 DOKPLOY_TOOL_PRESET = "deploy"
+
+[mcp_servers.laravel-boost]
+command = "php"
+args = ["artisan", "boost:mcp"]
+cwd = "/Users/apple/PhpstormProjects/tripolicenter/invoiceshelf"

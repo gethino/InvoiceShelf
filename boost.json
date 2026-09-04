@@ -1,18 +1,21 @@
 {
     "agents": [
-        "cursor"
+        "claude_code",
+        "codex"
     ],
     "guidelines": true,
     "herd_mcp": false,
     "mcp": true,
     "nightwatch_mcp": false,
     "packages": [
-        "spatie/laravel-medialibrary"
+        "spatie/laravel-medialibrary",
+        "spatie/laravel-backup"
     ],
     "sail": false,
     "skills": [
         "pest-testing",
         "tailwindcss-development",
+        "laravel-backup",
         "medialibrary-development"
     ]
 }
