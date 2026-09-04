@@ -44,7 +44,21 @@ test('customer phone controls use telephone bidi behavior', () => {
 test('customer workflow strings are bilingual', () => {
   const english = JSON.parse(readProjectFile('lang/en.json'))
   const arabic = JSON.parse(readProjectFile('lang/ar.json'))
+  const tripoliArabic = JSON.parse(
+    readProjectFile('Modules/TripoliCustomizations/Resources/locales/ar.json'),
+  )
 
   assert.equal(english.customers.show_optional_info, 'Show optional info')
   assert.equal(arabic.customers.show_optional_info, 'إظهار المعلومات الاختيارية')
+  assert.equal(english.customers.display_name, 'Customer name')
+  assert.equal(arabic.customers.display_name, 'اسم العميل (شخص)')
+  assert.equal(
+    arabic.customers.primary_contact_name,
+    'اسم شخص الاتصال (اختياري)',
+  )
+  assert.equal(
+    tripoliArabic.tripoli_customizations.customer_organization.label,
+    'الشركة (اختياري)',
+  )
+  assert.doesNotMatch(arabic.customers.display_name, /العرض/)
 })
