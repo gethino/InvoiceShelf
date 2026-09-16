@@ -218,6 +218,7 @@
 </head>
 
 <body>
+    @include('app.pdf.partials.document-font')
     <div class="sub-container">
         <table class="report-header">
             <tr>

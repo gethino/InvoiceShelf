@@ -393,6 +393,7 @@
 </head>
 
 <body>
+    @include('app.pdf.partials.document-font')
     @include('app.pdf.partials.company-branding')
     <div class="header-container">
         <table width="100%">

@@ -1,7 +1,7 @@
 #:schema https://developers.openai.com/codex/config-schema.json
 
 [mcp_servers.dokploy-mcp.env]
-DOKPLOY_TOOL_PRESET = "deploy"
+DOKPLOY_TOOL_PRESET = "all"
 
 [mcp_servers.laravel-boost]
 command = "php"
@@ -11,3 +11,5 @@ cwd = "/Users/apple/PhpstormProjects/tripolicenter/invoiceshelf"
 [mcp_servers.codegraph]
 command = "codegraph"
 args = ["serve", "--mcp"]
+
+DOKPLOY_API_KEY = "FAhRVWSUNOQqGeSjaVkHLjsIuXGPwgZUzOnYuKbrXIbRELCzVzHaphKRfsrkpMoK"

@@ -885,6 +885,7 @@
       "default_invoice": "Default invoice template",
       "allowed_estimates": "Allowed estimate templates",
       "default_estimate": "Default estimate template",
+      "template_font": "Template font",
       "saved": "Document template settings saved.",
       "branding": "Document branding",
       "header_mode": "Header type",

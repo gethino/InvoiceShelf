@@ -36,3 +36,18 @@ it('does not load Almarai from a remote stylesheet', function () {
         ->not->toContain('fonts.googleapis.com')
         ->not->toContain('fonts.gstatic.com');
 });
+
+it('uses local configurable fonts across every PDF template type', function (string $path) {
+    expect(File::get(base_path($path)))
+        ->toContain("@include('app.pdf.partials.document-font')");
+})->with([
+    'invoice' => 'resources/views/app/pdf/invoice/invoice1.blade.php',
+    'estimate' => 'resources/views/app/pdf/estimate/estimate1.blade.php',
+    'payment' => 'resources/views/app/pdf/payment/payment.blade.php',
+    'expenses report' => 'resources/views/app/pdf/reports/expenses.blade.php',
+    'customer sales report' => 'resources/views/app/pdf/reports/sales-customers.blade.php',
+    'item sales report' => 'resources/views/app/pdf/reports/sales-items.blade.php',
+    'profit and loss report' => 'resources/views/app/pdf/reports/profit-loss.blade.php',
+    'tax summary report' => 'resources/views/app/pdf/reports/tax-summary.blade.php',
+    'Tripoli custom template' => 'storage/app/templates/pdf/invoice/tripoli-center-modern-ar.blade.php',
+]);

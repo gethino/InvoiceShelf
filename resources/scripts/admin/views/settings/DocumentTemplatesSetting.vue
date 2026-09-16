@@ -70,6 +70,17 @@
             class="w-full"
           />
         </BaseInputGroup>
+
+        <BaseInputGroup :label="$t('settings.document_templates.template_font')">
+          <BaseMultiselect
+            v-model="settings.document_template_font"
+            :options="fontOptions"
+            value-prop="value"
+            label="label"
+            :can-deselect="false"
+            :content-loading="isLoading"
+          />
+        </BaseInputGroup>
       </BaseInputGrid>
 
       <BaseDivider class="my-6" />
@@ -190,6 +201,7 @@ const { t } = useI18n()
 const notificationStore = useNotificationStore()
 const invoiceTemplates = ref([])
 const estimateTemplates = ref([])
+const fontOptions = ref([])
 const isLoading = ref(true)
 const isSaving = ref(false)
 const headerFiles = ref([])
@@ -201,6 +213,7 @@ const settings = reactive({
   default_invoice_template: null,
   allowed_estimate_templates: [],
   default_estimate_template: null,
+  document_template_font: 'poppins',
   header_mode: 'none',
   header_html: '',
   footer_mode: 'none',
@@ -259,6 +272,7 @@ async function loadSettings() {
     const response = await http.get('/api/v1/company/document-templates')
     invoiceTemplates.value = response.data.invoice_templates
     estimateTemplates.value = response.data.estimate_templates
+    fontOptions.value = response.data.font_options
     Object.assign(settings, response.data.settings)
     headerFiles.value = response.data.settings.header_url
       ? [{ image: response.data.settings.header_url }]

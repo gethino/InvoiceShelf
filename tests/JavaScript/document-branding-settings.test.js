@@ -21,6 +21,15 @@ test('company document settings expose html, image, watermark and stamp controls
   assert.match(settings, /settings\.footer_mode === 'image'/)
 })
 
+test('company document settings expose primary template font selection', () => {
+  const settings = readProjectFile(
+    'resources/scripts/admin/views/settings/DocumentTemplatesSetting.vue',
+  )
+
+  assert.match(settings, /settings\.document_template_font/)
+  assert.match(settings, /fontOptions\.value = response\.data\.font_options/)
+})
+
 test('payment and paid invoice views expose paid stamp checkboxes', () => {
   const payment = readProjectFile(
     'resources/scripts/admin/views/payments/Create.vue',

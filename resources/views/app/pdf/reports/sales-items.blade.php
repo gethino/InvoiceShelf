@@ -145,6 +145,7 @@
 </head>
 
 <body>
+    @include('app.pdf.partials.document-font')
     @include('app.pdf.partials.company-branding')
     <div class="sub-container">
         <table class="report-header">
