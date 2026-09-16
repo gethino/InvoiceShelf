@@ -27,3 +27,4 @@ package-lock.json
 /docker/production/docker-compose.yml
 /docker-compose.yaml
 storage/framework/testing/_pest.php
+.codex/config.toml

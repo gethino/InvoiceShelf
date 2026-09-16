@@ -13,6 +13,8 @@ class DocumentTemplateService
 
     public const ESTIMATE = 'estimate';
 
+    public function __construct(private readonly DocumentFontService $documentFontService) {}
+
     /**
      * @return array<int, array{name: string, path: string, custom: bool}>
      */
@@ -64,7 +66,7 @@ class DocumentTemplateService
     }
 
     /**
-     * @return array{allowed_invoice_templates: array<int, string>, default_invoice_template: string, allowed_estimate_templates: array<int, string>, default_estimate_template: string}
+     * @return array{allowed_invoice_templates: array<int, string>, default_invoice_template: string, allowed_estimate_templates: array<int, string>, default_estimate_template: string, document_template_font: string}
      */
     public function configuration(int $companyId): array
     {
@@ -75,6 +77,7 @@ class DocumentTemplateService
             'default_invoice_template' => $this->defaultName(self::INVOICE, $companyId),
             'allowed_estimate_templates' => $this->allowedNames(self::ESTIMATE, $companyId),
             'default_estimate_template' => $this->defaultName(self::ESTIMATE, $companyId),
+            'document_template_font' => $this->documentFontService->valueFor($company),
             'header_mode' => CompanySetting::getSetting('document_header_mode', $companyId) ?? 'none',
             'header_html' => CompanySetting::getSetting('document_header_html', $companyId) ?? '',
             'footer_mode' => CompanySetting::getSetting('document_footer_mode', $companyId) ?? 'none',
@@ -104,6 +107,10 @@ class DocumentTemplateService
         if (array_key_exists('footer_mode', $configuration)) {
             $settings['document_footer_mode'] = $configuration['footer_mode'];
             $settings['document_footer_html'] = PdfHtmlSanitizer::sanitize($configuration['footer_html'] ?? '');
+        }
+
+        if (array_key_exists('document_template_font', $configuration)) {
+            $settings[DocumentFontService::SETTING] = $configuration['document_template_font'];
         }
 
         CompanySetting::setSettings($settings, $companyId);

@@ -41,8 +41,50 @@ test('unconfigured company exposes all templates with legacy defaults', function
         ->and($response->json('settings.default_estimate_template'))->toBe(
             in_array('estimate1', $estimateNames, true) ? 'estimate1' : $estimateNames[0]
         )
+        ->and($response->json('settings.document_template_font'))->toBe('poppins')
+        ->and($response->json('font_options'))->toEqual([
+            ['value' => 'poppins', 'label' => 'Poppins'],
+            ['value' => 'almarai', 'label' => 'Almarai'],
+        ])
         ->and($response->json('settings.header_mode'))->toBe('none')
         ->and($response->json('settings.footer_mode'))->toBe('none');
+});
+
+test('owner saves a company template font and it renders with an Arabic fallback', function () {
+    $settings = getJson('/api/v1/company/document-templates')->json('settings');
+
+    putJson('/api/v1/company/document-templates', [
+        ...$settings,
+        'document_template_font' => 'almarai',
+    ])->assertOk()->assertJsonPath('settings.document_template_font', 'almarai');
+
+    $previewHtml = view('app.pdf.partials.document-font', ['company' => $this->company])->render();
+    $pdfHtml = view('app.pdf.partials.document-font', [
+        'company' => $this->company,
+        'dompdfRendering' => true,
+    ])->render();
+
+    expect(CompanySetting::getSetting('document_template_font', $this->company->id))
+        ->toBe('almarai')
+        ->and($previewHtml)
+        ->toContain('/build/assets/Poppins-Regular-')
+        ->toContain('/build/assets/Almarai-Regular-')
+        ->toContain('font-family: "Almarai", "Almarai", "DejaVu Sans", sans-serif !important;')
+        ->not->toContain('fonts.googleapis.com')
+        ->and($previewHtml)
+        ->toContain('/build/assets/Poppins-Regular-')
+        ->and($pdfHtml)
+        ->toContain(resource_path('static/fonts/Poppins-Regular.ttf'));
+});
+
+test('template font must be supported', function () {
+    $settings = getJson('/api/v1/company/document-templates')->json('settings');
+
+    putJson('/api/v1/company/document-templates', [
+        ...$settings,
+        'document_template_font' => 'unsupported-font',
+    ])->assertUnprocessable()
+        ->assertJsonValidationErrors('document_template_font');
 });
 
 test('owner saves sanitized document header and footer html', function () {
@@ -198,12 +240,17 @@ test('template and branding settings remain isolated by company', function () {
         'default_invoice_template' => $invoiceNames[0],
         'allowed_estimate_templates' => [$estimateNames[0]],
         'default_estimate_template' => $estimateNames[0],
+        'document_template_font' => 'almarai',
     ]);
 
     expect(app(DocumentTemplateService::class)->allowedNames('invoice', $this->company->id))
         ->toBe([$invoiceNames[0]])
         ->and(app(DocumentTemplateService::class)->allowedNames('invoice', $otherCompany->id))
         ->toEqual($invoiceNames)
+        ->and(app(DocumentTemplateService::class)->configuration($this->company->id)['document_template_font'])
+        ->toBe('almarai')
+        ->and(app(DocumentTemplateService::class)->configuration($otherCompany->id)['document_template_font'])
+        ->toBe('poppins')
         ->and(CompanySetting::getSetting('brand_color', $this->company->id))->toBe('#111111')
         ->and(CompanySetting::getSetting('brand_color', $otherCompany->id))->toBe('#222222');
 });

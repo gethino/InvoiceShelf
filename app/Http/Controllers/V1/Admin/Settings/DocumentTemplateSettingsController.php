@@ -5,12 +5,13 @@ namespace App\Http\Controllers\V1\Admin\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateDocumentTemplateSettingsRequest;
 use App\Models\Company;
+use App\Services\DocumentFontService;
 use App\Services\DocumentTemplateService;
 use Illuminate\Http\JsonResponse;
 
 class DocumentTemplateSettingsController extends Controller
 {
-    public function show(DocumentTemplateService $templates): JsonResponse
+    public function show(DocumentTemplateService $templates, DocumentFontService $fonts): JsonResponse
     {
         $company = Company::query()->findOrFail(request()->header('company'));
         $this->authorize('manage company', $company);
@@ -18,6 +19,7 @@ class DocumentTemplateSettingsController extends Controller
         return response()->json([
             'invoice_templates' => $templates->catalog(DocumentTemplateService::INVOICE),
             'estimate_templates' => $templates->catalog(DocumentTemplateService::ESTIMATE),
+            'font_options' => $fonts->options(),
             'settings' => $templates->configuration($company->id),
         ]);
     }

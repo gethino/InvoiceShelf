@@ -31,6 +31,7 @@ export default defineConfig({
     }),
     laravel({
       input: ['resources/scripts/main.js'],
+      assets: ['resources/static/fonts/*.ttf'],
     })
   ]
 });
